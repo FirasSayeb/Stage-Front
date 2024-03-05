@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
                 ),
                 Container(
                   alignment: FractionalOffset.center,
-                  height: 220,
+                  height: MediaQuery.of(context).size.height*0.4,
                   child: Lottie.asset("assets/Animation.json"),
                 ),
                 const Padding(padding: EdgeInsets.all(5)),

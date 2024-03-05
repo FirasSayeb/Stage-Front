@@ -122,10 +122,10 @@ Widget build(BuildContext context) {
                                           Navigator.push(  
                                             context, 
                                             MaterialPageRoute(
-                                              builder: (context) => Profil(widget.email),
+                                              builder: (context) => Profil(snapshot.data![index]['email']),
                                             ),
                                           );
-                                        },
+                                        },  
                                         child: Text('Modifier'),
                                       ),
                                       ElevatedButton(

@@ -210,7 +210,7 @@ TextFormField(
   
                             label: Text(
   
-                              'Pick File',
+                              'Pick Image',
   
                               style: TextStyle(fontSize: 25),
   

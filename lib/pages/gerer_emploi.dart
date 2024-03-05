@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:app/pages/modifier_enseignant.dart';
 import 'package:http/http.dart' as http; 
 import 'package:app/pages/Admin.dart';
 import 'package:app/pages/AjouterEnseignant.dart';
@@ -119,9 +120,9 @@ Widget build(BuildContext context) {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => Profil(snapshot.data![index]['email']),
+                                              builder: (context) => ModEnsignant(snapshot.data![index]['email']),
                                             ),
-                                          );
+                                          ); 
                                         },
                                         child: Text('Modifier'),
                                       ),
@@ -129,7 +130,7 @@ Widget build(BuildContext context) {
                                         onPressed: () {
                                           deleteEnseignant(snapshot.data![index]['email']);
                                           Navigator.push(
-                                            context,
+                                            context, 
                                             MaterialPageRoute(
                                               builder: (context) => GererEmploi(widget.email),
                                             ),

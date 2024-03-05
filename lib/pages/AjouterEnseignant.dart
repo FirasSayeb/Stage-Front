@@ -1,7 +1,9 @@
+import 'dart:convert'; 
 import 'package:app/pages/gerer_emploi.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 class AjouterEnseignant extends StatefulWidget {
   final String email;
 
@@ -12,6 +14,7 @@ class AjouterEnseignant extends StatefulWidget {
 }
 
 class _HomeState extends State<AjouterEnseignant> { 
+  List<String> selectedClasses = [];
   PlatformFile? file;
   String? path; 
   late String nom;
@@ -35,10 +38,12 @@ class _HomeState extends State<AjouterEnseignant> {
   String errorMessage = '';
 
   @override
-  void initState() {
-    super.initState();
-    errorMessage = '';
-  }
+void initState() {
+  super.initState();
+  errorMessage = '';
+
+}
+
 
   @override
   Widget build(BuildContext context) { 
@@ -65,7 +70,7 @@ class _HomeState extends State<AjouterEnseignant> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                 TextFormField(
+                 TextFormField( 
                   validator: (value) {
                             if (value!.isEmpty || value.length == 0) {
                               return "champs obligatoire";
@@ -176,17 +181,68 @@ TextFormField(validator: (value) {
   
                             label: Text(
   
-                              'Pick File',
+                              'Pick Image',
   
                               style: TextStyle(fontSize: 25),
   
                             )
   
                           ),
-),Center(
-  child:   GestureDetector(
+), Center(
+  child:   FutureBuilder<List<Map<String, dynamic>>>(
+  
+                          future: getClasses(),
+                              
+                          builder: (context, snapshot) {
+  
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+  
+                              return Center(child: CircularProgressIndicator());
+  
+                            } else if (snapshot.hasError) {
+  
+                              return Center(child: Text('Failed to get classes'));
+  
+                            } else {
+  
+                              return DropdownButton(
+  
+    value: selectedClasses.isNotEmpty ? selectedClasses.first : null, 
+  
+    hint: Text("select classe(s)"), 
+  
+    items: snapshot.data!.map((e){
+  
+      return DropdownMenuItem(
+  
+        child: Text(e['name'].toString()),
+  
+        value: e['name'].toString(),
+  
+      ); 
+  
+    }).toList(),  
+    
+    onChanged: (value) { 
+      setState(() {   
+          if(!selectedClasses.contains(value))
+        selectedClasses.addAll([value.toString()]);
+      });
+     
+    },
+  
+  );
+  
+             }
+  
+                          },
+  
+                        ),
+),
+Center(
+  child:   GestureDetector( 
   onTap: () async {
-  if (fkey.currentState!.validate()) {
+  if (fkey.currentState!.validate()) { 
     fkey.currentState!.save();
     try {
       final response = await http.post(
@@ -198,23 +254,26 @@ TextFormField(validator: (value) {
           'address': address,     
           'file': path ?? '', 
           'phone': phone,
+          'list':selectedClasses.join(',')
         }, 
-      );/*print(<String, dynamic>{ 
-          'name': nom,  
+      );print(<String, dynamic>{ 
+          'name': nom,   
           'email': email, 
           'password': password,
           'address': address,
-          'file': path ?? '', 
+          'file': path ?? '',   
           'phone': phone,
-        });*/
+          'list':selectedClasses.join(',')
+        });
       if (response.statusCode == 200) {
         print(<String, dynamic>{    
           'name': nom,
           'email': email,      
-          'password': password,
-          'address': address, 
+          'password': password, 
+          'address': address,  
           'file': path ?? '',  
-          'phone': phone,    
+          'phone': phone,  
+          'list':selectedClasses.join(',')  
         });
         Navigator.push(
           context,
@@ -285,4 +344,19 @@ TextFormField(validator: (value) {
                    
     );
   }
+  Future<List<Map<String,dynamic>>> getClasses() async {
+  try {
+    final response = await get(Uri.parse("http://10.0.2.2:8000/api/getClasses"));
+    if (response.statusCode == 200) {
+      List<dynamic> classesData = jsonDecode(response.body)['list'];
+      List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);
+      return classes; 
+    } else {
+      throw Exception('Failed to load classes');
+    }
+  } catch (e) { 
+    print('Error: $e');
+    throw Exception('Failed to load classes'); 
+  }
+}
 }
