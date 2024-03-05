@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:app/pages/Admin.dart';
+import 'package:app/pages/NotificationService.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
@@ -90,6 +91,7 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                                        'message':message,
                                        'list':selectedClasses.join(',')
                                     };
+                                     
                                     Response response = await post( 
                                       Uri.parse( 
                                           "http://10.0.2.2:8000/api/addNotification"),
@@ -97,15 +99,19 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                                     );  
                                     print(userData);
                                     if (response.statusCode == 200) { 
-                                      print(userData);
-                                      Navigator.push(
+                                      print(userData); 
+                                      NotificationService().showNotification(
+                                        title: 'Simple title',
+                                        body: 'It works'
+                                      );  
+                                     /* Navigator.push(
                                           context, 
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  Admin(widget.email)));
+                                                  Admin(widget.email)));*/
                                     } else {
-                                      setState(() {
-                                        errorMessage =
+                                      setState(() { 
+                                        errorMessage = 
                                             "Error: ${response.statusCode}, ${response.body}";
                                       });
                                     }
