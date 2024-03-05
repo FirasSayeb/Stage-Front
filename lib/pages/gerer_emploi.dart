@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:app/pages/ajouter_notification.dart';
 import 'package:app/pages/modifier_enseignant.dart';
 import 'package:http/http.dart' as http; 
 import 'package:app/pages/Admin.dart';
@@ -162,7 +163,7 @@ Widget build(BuildContext context) {
           color: const Color.fromARGB(160, 0, 54, 99),
           child: ListView(
             children: [
-              const Padding(padding: EdgeInsets.only(top: 50)),
+              const Padding(padding: EdgeInsets.only(top: 30)),
               ListTile(
                 title: Text(" ${widget.email}"),
                 leading: Icon(Icons.person),
@@ -204,7 +205,13 @@ Widget build(BuildContext context) {
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));
                 },
-              ),
+              ),ListTile(
+                  title: const Text("Envoyer Notification"), 
+                  leading: const Icon(Icons.notification_add),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterNotification(widget.email)));
+                  },
+                ),
               ListTile(
                 title: const Text("Deconnexion"),
                 leading: const Icon(Icons.exit_to_app),

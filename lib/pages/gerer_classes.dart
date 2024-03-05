@@ -3,6 +3,7 @@ import 'package:app/pages/Admin.dart';
 import 'package:app/pages/AjouterClasse.dart';
 import 'package:app/pages/Home.dart';
 import 'package:app/pages/Profile.dart';
+import 'package:app/pages/ajouter_notification.dart';
 import 'package:app/pages/gerer_eleves.dart';
 import 'package:app/pages/gerer_emploi.dart';
 import 'package:app/pages/gerer_utilisateurs.dart';
@@ -134,7 +135,7 @@ String fileName2WithExtension = pathPart.last;
           child: Container(  
             color: const Color.fromARGB(160, 0, 54, 99),
             child: ListView(
-              children: [const Padding(padding: EdgeInsets.only(top: 50)),ListTile( 
+              children: [const Padding(padding: EdgeInsets.only(top: 30)),ListTile( 
                   title:  Text(" ${widget.email}"),
                   leading: const Icon(Icons.person), 
                   onTap: () {
@@ -175,6 +176,12 @@ String fileName2WithExtension = pathPart.last;
                   leading: const Icon(Icons.smart_toy_rounded),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));
+                  },
+                ),ListTile(
+                  title: const Text("Envoyer Notification"), 
+                  leading: const Icon(Icons.notification_add),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterNotification(widget.email)));
                   },
                 ),
                 ListTile(  
