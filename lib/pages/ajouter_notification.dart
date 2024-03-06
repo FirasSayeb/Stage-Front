@@ -103,7 +103,7 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                                       NotificationService().showNotification(
                                         title: 'Notification',
                                         body: message
-                                      );    
+                                      );      
                                      /* Navigator.push(
                                           context, 
                                           MaterialPageRoute(
