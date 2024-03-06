@@ -5,7 +5,7 @@ FlutterLocalNotificationsPlugin();
 
 Future<void> initNotification() async {
   AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('flutter_logo'); // Update the icon resource name here
+      AndroidInitializationSettings('flutter_logo');  
   
   var initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
@@ -18,7 +18,7 @@ Future<void> initNotification() async {
     },
   );
 }
-
+ 
 
 
 Future showNotification({

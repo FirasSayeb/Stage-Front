@@ -35,7 +35,7 @@ class _AjouterNotificationState extends State<AjouterNotification> {
           },onSaved: (newValue) {
             message=newValue!;
           },
-          decoration: InputDecoration( 
+          decoration: InputDecoration(  
             label: Text('Message :')
           ),
         ),FutureBuilder<List<Map<String,dynamic>>>(future: getUsers(), builder: (context, snapshot) {
@@ -46,7 +46,7 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                             } else if (snapshot.hasError) {
   
                               return Center(child: Text('Failed to get classes'));
-  
+   
                             } else {
   
                               return DropdownButton(
@@ -101,9 +101,9 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                                     if (response.statusCode == 200) { 
                                       print(userData); 
                                       NotificationService().showNotification(
-                                        title: 'Simple title',
-                                        body: 'It works'
-                                      );  
+                                        title: 'Notification',
+                                        body: message
+                                      );    
                                      /* Navigator.push(
                                           context, 
                                           MaterialPageRoute(
