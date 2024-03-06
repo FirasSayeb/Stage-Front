@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:app/pages/Admin.dart';
 import 'package:app/pages/NotificationService.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
@@ -20,6 +21,14 @@ class _AjouterNotificationState extends State<AjouterNotification> {
   List<String> selectedClasses = [];
   late String message;
   String errorMessage='';
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  @override
+  void initState() {
+    super.initState();
+    _firebaseMessaging.getToken().then((String? token) {
+      print("Firebase Token: $token");
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +36,7 @@ class _AjouterNotificationState extends State<AjouterNotification> {
           elevation: 0,
           backgroundColor: const Color.fromARGB(160, 0, 54, 99),),
     body: SingleChildScrollView(
-      child: Form(child:Column(children: [ 
+      child: Form(key:fkey ,child:Column(children: [ 
         Lottie.asset('assets/aaa.json',height: MediaQuery.of(context).size.height*0.4,width:MediaQuery.of(context).size.width),
         TextFormField(
           onChanged: (value) {
@@ -89,7 +98,8 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                                     Map<String, dynamic> userData = {
                                        'email':widget.email,
                                        'message':message,
-                                       'list':selectedClasses.join(',')
+                                       'list':selectedClasses.join(','),
+                                       'device_token': await _firebaseMessaging.getToken(),
                                     };
                                      
                                     Response response = await post( 
@@ -100,10 +110,29 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                                     print(userData);
                                     if (response.statusCode == 200) { 
                                       print(userData); 
-                                      NotificationService().showNotification(
+                                      Response response2 = await post(
+  Uri.parse('https://fcm.googleapis.com/fcm/send'),
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer AAAA4WMATYA:APA91bFxzOAlkcvXkHv6pyk9-Bqb8rtUwF6TXiBiEAQLuiGUwr6X084p-GR2lSSfJM_-H6urIktOdKGYhqPjKEscHN9XoxN8AMMvxXjbq27ZzQbk-S589EH-euzjPeduKyoXgt1lXuSE',
+  },
+  body: jsonEncode({
+    "to": await _firebaseMessaging.getToken(),
+    "notification": {"title": "Notification", "body": message}
+  }),
+); 
+
+if (response2.statusCode == 200) {
+  /*Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => Admin(widget.email)),
+  );*/
+}
+
+                                     /* NotificationService().showNotification(
                                         title: 'Notification',
                                         body: message
-                                      );      
+                                      );*/      
                                      /* Navigator.push(
                                           context, 
                                           MaterialPageRoute(
@@ -128,7 +157,7 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                                 ),
                               ),
         )
-      ],),key:fkey ,),
+      ],),),
     ),
     ); 
   }
