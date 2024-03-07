@@ -114,7 +114,7 @@ class _AjouterNotificationState extends State<AjouterNotification> {
   Uri.parse('https://fcm.googleapis.com/fcm/send'),
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer AAAA4WMATYA:APA91bFxzOAlkcvXkHv6pyk9-Bqb8rtUwF6TXiBiEAQLuiGUwr6X084p-GR2lSSfJM_-H6urIktOdKGYhqPjKEscHN9XoxN8AMMvxXjbq27ZzQbk-S589EH-euzjPeduKyoXgt1lXuSE',
+    'Authorization': 'key=AAAA4WMATYA:APA91bFxzOAlkcvXkHv6pyk9-Bqb8rtUwF6TXiBiEAQLuiGUwr6X084p-GR2lSSfJM_-H6urIktOdKGYhqPjKEscHN9XoxN8AMMvxXjbq27ZzQbk-S589EH-euzjPeduKyoXgt1lXuSE',
   },
   body: jsonEncode({
     "to": await _firebaseMessaging.getToken(),

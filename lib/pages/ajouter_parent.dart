@@ -1,5 +1,6 @@
 import 'package:app/pages/gerer_utilisateurs.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 class AjouterParent extends StatefulWidget {
@@ -20,6 +21,8 @@ class _HomeState extends State<AjouterParent> {
   late String address;
   late String phone;
   bool hide=true;
+  String? deviceToken;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   Future<void> picksinglefile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
@@ -38,6 +41,11 @@ class _HomeState extends State<AjouterParent> {
   void initState() {
     super.initState();
     errorMessage = '';
+     _firebaseMessaging.getToken().then((String? token) {
+      setState(() {
+        deviceToken = token;
+      });
+    });
   }
 
   @override
@@ -198,6 +206,7 @@ TextFormField(validator: (value) {
           'address': address,     
           'file': path ?? '', 
           'phone': phone,
+          'token':deviceToken 
         }, 
       );/*print(<String, dynamic>{ 
           'name': nom,  
