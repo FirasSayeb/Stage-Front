@@ -1,8 +1,7 @@
 
 import 'dart:convert';
-import 'package:collection/collection.dart';
 import 'package:app/pages/Admin.dart';
-import 'package:app/pages/NotificationService.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -18,6 +17,7 @@ class AjouterNotification extends StatefulWidget {
 
 class _AjouterNotificationState extends State<AjouterNotification> {
   final fkey=GlobalKey<FormState>();
+  late Response response2;
   List<String> selectedClasses = [];
   List<String>tokens=[];
   late String message;
@@ -125,7 +125,7 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                                       if (response.statusCode == 200) { 
                                         print(userData);  
                                         for (int j = 0; j < tokens.length; j++) {
-                Response response2 = await post(
+                 response2 = await post(
                   Uri.parse('https://fcm.googleapis.com/fcm/send'),
                   headers: {
                     'Content-Type': 'application/json',
@@ -146,12 +146,12 @@ class _AjouterNotificationState extends State<AjouterNotification> {
               }
                                         
         
-        /*if (response2.statusCode == 200) {
-          /*Navigator.push(
+        if (response2.statusCode == 200) { 
+          Navigator.push( 
             context,
             MaterialPageRoute(builder: (context) => Admin(widget.email)),
-          );*/
-        }*/  
+          );
+        }  
         
                                        /* NotificationService().showNotification(
                                           title: 'Notification',

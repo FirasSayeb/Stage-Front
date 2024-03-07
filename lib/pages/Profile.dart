@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:app/pages/Admin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -182,15 +181,10 @@ Future<void> pickSingleFile() async {
                                 'email': widget.email,
                                 'password':password,
                                 'file':path, 
-                                'phone':phone,
+                                'phone':phone, 
                                 'address':address
                               },);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute( 
-                                  builder: (context) => Admin(widget.email),
-                                ),
-                              ); 
+                             Navigator.pop(context);
                             }
                           }
                         },
