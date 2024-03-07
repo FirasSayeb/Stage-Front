@@ -44,7 +44,13 @@ class _GererClassesState extends State<GererEleves> {
                       child: ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          
+                           if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+      return Center(child: Text('Error: ${snapshot.error}'));
+    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+      return const Center(child: Text('No data available'));
+    }
                           return Card(
   elevation: 4,
   margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
@@ -60,7 +66,7 @@ class _GererClassesState extends State<GererEleves> {
           Text(
             "Name: ${snapshot.data![index]['name']}",
            
-          ),Text(  
+          ),Text(    
             "LastName: ${snapshot.data![index]['lastname']}",
             
           ),Text( 

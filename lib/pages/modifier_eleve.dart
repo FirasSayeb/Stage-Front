@@ -5,8 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-
-
 class ModifierEleve extends StatefulWidget {
   final int id;
   final String email;
@@ -18,52 +16,29 @@ class ModifierEleve extends StatefulWidget {
 
 class _ModifierEleveState extends State<ModifierEleve> {
   Future<void> pickSingleFile() async {
-  FilePickerResult? result = await FilePicker.platform.pickFiles();
-  if (result != null) {
-    setState(() {
-      file = result.files.first;
-      name = file!.name;
-      path = file!.path;
-      print("$name  name from function");
-      print("$path path from function");
-    });
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      setState(() {
+        file = result.files.first;
+        name = file!.name;
+        path = file!.path;
+      });
+    }
   }
-}
- PlatformFile? file;
+
+  PlatformFile? file;
   String? path;
-   String? select;
+  String? select;
   late String name = '';
   late String lastname = '';
   late String date = '';
   late String classe = '';
-  late String parent1 = ''; 
-  late String parent2 = ''; 
-  
+  late String parent1 = '';
+  late String parent2 = '';
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Future<Map<String, dynamic>> getEleve() async {
-    try {
-      final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/getEleve/${widget.id}"));
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body)['eleve'] as Map<String, dynamic>;
-        
-        name = data['name']; 
-        lastname = data['lastname'];
-        date = data['date_of_birth'];
-        classe = data['class_name']; 
-       parent1 = data['parent_names'].isNotEmpty ? data['parent_names'][0] : '';
-parent2 = data['parent_names'].length > 1 ? data['parent_names'][1] : '';
-        return data;
-      } else { 
-        throw Exception('Failed to load eleve');
-      }
-    } catch (e) {
-      print('Error: $e'); 
-      throw Exception('Failed to load eleve');
-    }  
-  }
-  
-  @override       
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -92,19 +67,23 @@ parent2 = data['parent_names'].length > 1 ? data['parent_names'][1] : '';
                       if (eleve == null) {
                         return Center(child: Text('Eleve not found'));
                       }
-                       path= file==null ? snapshot.data!['profil'] : path;
+
+                      path ??= eleve['profil'];
+                      classe = eleve['class_name']; // Set initial value for classe
+
                       return Column(
-                        children: [ GestureDetector(
-  onTap: () {
-    pickSingleFile(); 
-  }, 
-  child: ListTile( 
-    title: CircleAvatar(
-      backgroundImage:  FileImage(File(path ?? '')) ,
-      radius: 30,   
-    ),
-  ), 
-),
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              pickSingleFile();
+                            },
+                            child: ListTile(
+                              title: CircleAvatar(
+                                backgroundImage: FileImage(File(path ?? '')),
+                                radius: 30,
+                              ),
+                            ),
+                          ),
                           Container(
                             height: 350,
                             child: Card(
@@ -115,14 +94,11 @@ parent2 = data['parent_names'].length > 1 ? data['parent_names'][1] : '';
                                 title: Column(
                                   children: [
                                     TextFormField(
-                                      initialValue: name,
+                                      initialValue: eleve['name'],
                                       style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                       onChanged: (value) {
                                         name = value;
                                       },
-                                      onSaved: (value) {
-                                        name = value!;
-                                      },
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Please enter some text';
@@ -131,14 +107,11 @@ parent2 = data['parent_names'].length > 1 ? data['parent_names'][1] : '';
                                       },
                                     ),
                                     TextFormField(
-                                      initialValue: lastname,
+                                      initialValue: eleve['lastname'],
                                       style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                       onChanged: (value) {
                                         lastname = value;
                                       },
-                                      onSaved: (value) {
-                                        lastname = value!;
-                                      },
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Please enter some text';
@@ -147,24 +120,16 @@ parent2 = data['parent_names'].length > 1 ? data['parent_names'][1] : '';
                                       },
                                     ),
                                     TextFormField(
-                                      initialValue: date,
-                                      onSaved: (newValue) {
-                                           date = newValue!;
-                                      },onChanged: (value) {
-                                        setState(() {
-                                          date=value;
-                                          print(date);
-                                        });
-                                      },
+                                      initialValue: eleve['date_of_birth'],
                                       decoration: InputDecoration(
                                         labelText: 'Date',
-                                        filled: true, 
+                                        filled: true,
                                         prefixIcon: Icon(Icons.calendar_today),
                                         enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
                                         focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
                                       ),
-                                      onTap: () {  
-                                        _selectDate(); 
+                                      onTap: () {
+                                        _selectDate(eleve['date_of_birth']);
                                       },
                                     ),
                                     FutureBuilder<List<Map<String, dynamic>>>(
@@ -178,7 +143,7 @@ parent2 = data['parent_names'].length > 1 ? data['parent_names'][1] : '';
                                           return Text('No data available');
                                         } else {
                                           return DropdownButton(
-                                            value: classe.isNotEmpty ? classe : null,
+                                            value: classe, // Set value to classe
                                             hint: Text("select classe"),
                                             items: snapshot.data!.map((e) {
                                               return DropdownMenuItem(
@@ -188,7 +153,7 @@ parent2 = data['parent_names'].length > 1 ? data['parent_names'][1] : '';
                                             }).toList(),
                                             onChanged: (value) {
                                               setState(() {
-                                                classe = value.toString();
+                                                classe = value.toString(); // Update classe when value changes
                                               });
                                             },
                                           );
@@ -196,32 +161,19 @@ parent2 = data['parent_names'].length > 1 ? data['parent_names'][1] : '';
                                       },
                                     ),
                                     TextFormField(
-                                      initialValue: parent1,
+                                      initialValue: eleve['parent_names'][0],
                                       style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                       onChanged: (value) {
                                         parent1 = value;
                                       },
-                                      onSaved: (value) {
-                                        parent1 = value!;
-                                      },
                                     ),
                                     TextFormField(
-                                      initialValue: parent2,
+                                      initialValue: eleve['parent_names'].length > 1 ? eleve['parent_names'][1] : '',
                                       style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                       onChanged: (value) {
                                         parent2 = value;
                                       },
-                                      onSaved: (value) { 
-                                        parent2 = value!; 
-                                      },
-                                    ), 
-                                  ],
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 8.0),
-                                    SizedBox(height: 8.0),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -236,27 +188,19 @@ parent2 = data['parent_names'].length > 1 ? data['parent_names'][1] : '';
                                   body: <String, dynamic>{
                                     'name': name,
                                     'lastname': lastname,
-                                    'date': select ?? date ,
-                                    'class': classe,   
-                                    'parent1': parent1, 
-                                    'parent2': parent2,  
-                                    'file':path 
-                                  }, 
+                                    'date': select ?? eleve['date_of_birth'],
+                                    'class': classe,
+                                    'parent1': parent1,
+                                    'parent2': parent2,
+                                    'file': path,
+                                  },
                                 );
-                                print(<String, dynamic>{ 
-                                    'name': name, 
-                                    'lastname': lastname,
-                                    'date': select ,
-                                    'class': classe, 
-                                    'parent1': parent1, 
-                                    'parent2': parent2, 
-                                    'file':path
-                                  },);
+
                                 if (response.statusCode == 200) {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));
                                 }
-                              } 
-                            },
+                              }
+                            },  
                             child: Text('Valider'),
                           ),
                         ],
@@ -266,30 +210,59 @@ parent2 = data['parent_names'].length > 1 ? data['parent_names'][1] : '';
                 ),
               ),
             ],
-          ), 
+          ),
         ),
-      ),  
-    ); 
-  }   
-   
-  Future<void> _selectDate() async {
+      ),
+    );
+  }
+
+  Future<void> _selectDate(String initialDate) async {
     DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2050),
     );
+
     if (picked != null) {
       setState(() {
         select = picked.toString().split(" ")[0];
-        print('Selected Date: $select');
       });
+    } else {
+      setState(() {
+        select = initialDate;
+      });
+    }
+  }
+
+  Future<Map<String, dynamic>> getEleve() async {
+    try {
+      final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/getEleve/${widget.id}"));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body)['eleve'] as Map<String, dynamic>;
+
+        name = data['name'];
+        lastname = data['lastname'];
+        date = data['date_of_birth'];
+        classe = data['class_name'];
+        parent1 = data['parent_names'].isNotEmpty ? data['parent_names'][0] : '';
+        parent2 = data['parent_names'].length > 1 ? data['parent_names'][1] : '';
+
+        return data;
+      } else {
+        throw Exception('Failed to load eleve');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Failed to load eleve');
     }
   }
 
   Future<List<Map<String, dynamic>>> getClasses() async {
     try {
       final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/getClasses"));
+
       if (response.statusCode == 200) {
         List<dynamic> classesData = jsonDecode(response.body)['list'];
         List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);
@@ -301,5 +274,5 @@ parent2 = data['parent_names'].length > 1 ? data['parent_names'][1] : '';
       print('Error: $e');
       throw Exception('Failed to load classes');
     }
-  } 
+  }
 }

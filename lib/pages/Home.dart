@@ -125,7 +125,7 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
                             child: Text('Forget Password '),
                             padding: EdgeInsets.all(10),
                           ),
-                        ),
+                        ), 
                         Center(
                           child: GestureDetector(
                             onTap: () async {
