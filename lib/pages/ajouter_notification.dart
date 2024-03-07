@@ -19,6 +19,7 @@ class AjouterNotification extends StatefulWidget {
 class _AjouterNotificationState extends State<AjouterNotification> {
   final fkey=GlobalKey<FormState>();
   List<String> selectedClasses = [];
+  List<String>tokens=[];
   late String message;
   String errorMessage='';
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -87,75 +88,89 @@ class _AjouterNotificationState extends State<AjouterNotification> {
   );
   
              }
-  
+           
                           
         },),
-        Center(
-           child:  GestureDetector(
-                                onTap: () async { 
-                                  if (fkey.currentState!.validate()) {
-                                    fkey.currentState!.save();
-                                    Map<String, dynamic> userData = {
-                                       'email':widget.email,
-                                       'message':message,
-                                       'list':selectedClasses.join(','),
-                                       'device_token': await _firebaseMessaging.getToken(),
-                                    };
-                                     
-                                    Response response = await post( 
-                                      Uri.parse( 
-                                          "http://10.0.2.2:8000/api/addNotification"),
-                                      body: userData,
-                                    );  
-                                    print(userData);
-                                    if (response.statusCode == 200) { 
-                                      print(userData); 
-                                      Response response2 = await post(
-  Uri.parse('https://fcm.googleapis.com/fcm/send'),
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'key=AAAA4WMATYA:APA91bFxzOAlkcvXkHv6pyk9-Bqb8rtUwF6TXiBiEAQLuiGUwr6X084p-GR2lSSfJM_-H6urIktOdKGYhqPjKEscHN9XoxN8AMMvxXjbq27ZzQbk-S589EH-euzjPeduKyoXgt1lXuSE',
-  },
-  body: jsonEncode({
-    "to": await _firebaseMessaging.getToken(),
-    "notification": {"title": "Notification", "body": message}
-  }),
-); 
-
-if (response2.statusCode == 200) {
-  /*Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => Admin(widget.email)),
-  );*/
-}
-
-                                     /* NotificationService().showNotification(
-                                        title: 'Notification',
-                                        body: message
-                                      );*/      
-                                     /* Navigator.push(
-                                          context, 
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Admin(widget.email)));*/
-                                    } else {
-                                      setState(() { 
-                                        errorMessage = 
-                                            "Error: ${response.statusCode}, ${response.body}";
-                                      });
+        FutureBuilder<List<Map<String,dynamic>>>(
+          future: getUsers(),
+          builder:(context, snapshot) {
+            return  Center(
+             child:  GestureDetector(
+                                  onTap: () async { 
+                                    if (fkey.currentState!.validate()) {
+                                      fkey.currentState!.save();
+                                       for (int i = 0; i < selectedClasses.length; i++) {
+                    if (selectedClasses[i] == snapshot.data![i]['email']) {
+                      tokens.add(snapshot.data![i]['token']);
+                    }
+                  }
+                                      Map<String, dynamic> userData = {
+                                         'email':widget.email,
+                                         'message':message,
+                                         'list':selectedClasses.join(','),
+                                         'device_token': await _firebaseMessaging.getToken(),
+                                      };
+                                       
+                                      Response response = await post( 
+                                        Uri.parse( 
+                                            "http://10.0.2.2:8000/api/addNotification"),
+                                        body: userData,
+                                      );  
+                                      print(userData);
+                                      if (response.statusCode == 200) { 
+                                        print(userData); 
+                                        for (int j = 0; j < tokens.length; j++) {
+                Response response2 = await post(
+                  Uri.parse('https://fcm.googleapis.com/fcm/send'),
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization':
+                        'key=AAAA4WMATYA:APA91bFxzOAlkcvXkHv6pyk9-Bqb8rtUwF6TXiBiEAQLuiGUwr6X084p-GR2lSSfJM_-H6urIktOdKGYhqPjKEscHN9XoxN8AMMvxXjbq27ZzQbk-S589EH-euzjPeduKyoXgt1lXuSE',
+                  },
+                  body: jsonEncode({
+                    "to": tokens[j],
+                    "notification": {"title": "Notification", "body": message}
+                  }),
+                );
+              }
+                                        
+        
+        /*if (response2.statusCode == 200) {
+          /*Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Admin(widget.email)),
+          );*/
+        }*/
+        
+                                       /* NotificationService().showNotification(
+                                          title: 'Notification',
+                                          body: message
+                                        );*/      
+                                       /* Navigator.push(
+                                            context, 
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Admin(widget.email)));*/
+                                      } else {
+                                        setState(() { 
+                                          errorMessage = 
+                                              "Error: ${response.statusCode}, ${response.body}";
+                                        });
+                                      }
                                     }
-                                  }
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(20),
-                                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                                  decoration: BoxDecoration(
-                                    color: Colors.lightBlueAccent,
-                                    borderRadius: BorderRadius.circular(8),
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(20), 
+                                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                                    decoration: BoxDecoration(
+                                      color: Colors.lightBlueAccent,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: const Text("Envoyer "),
                                   ),
-                                  child: const Text("Envoyer "),
                                 ),
-                              ),
+          );
+          },
         )
       ],),),
     ),
