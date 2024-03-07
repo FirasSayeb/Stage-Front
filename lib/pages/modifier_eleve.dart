@@ -40,6 +40,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
 
   @override
   Widget build(BuildContext context) {
+    print('Building UI with classe: $classe');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -142,21 +143,26 @@ class _ModifierEleveState extends State<ModifierEleve> {
                                         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                                           return Text('No data available');
                                         } else {
-                                          return DropdownButton(
-                                            value: classe, // Set value to classe
-                                            hint: Text("select classe"),
-                                            items: snapshot.data!.map((e) {
-                                              return DropdownMenuItem(
-                                                child: Text(e['name'].toString()),
-                                                value: e['name'].toString(),
-                                              );
-                                            }).toList(),
-                                            onChanged: (value) {
-                                              setState(() {
-                                                classe = value.toString(); // Update classe when value changes
-                                              });
-                                            },
-                                          );
+                                          return  DropdownButton(
+  value: classe.isNotEmpty ? classe : null, // Set initial value to null
+  hint: Text("select classe"),
+  items: snapshot.data!.map((e) {
+    return DropdownMenuItem(
+      child: Text(e['name'].toString()),
+      value: e['name'].toString(),
+    );
+  }).toList(), 
+  onChanged: (value) {
+    print("Selected class: $value"); // Debugging
+    
+      classe = value.toString(); // Update classe when value changes
+  
+  },
+);
+
+
+
+
                                         }
                                       },
                                     ),
@@ -183,6 +189,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
+                                print("classe $classe");
                                 final response = await http.put(
                                   Uri.parse("http://10.0.2.2:8000/api/updateEleve/${widget.id}"),
                                   body: <String, dynamic>{
@@ -192,7 +199,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
                                     'class': classe,
                                     'parent1': parent1,
                                     'parent2': parent2,
-                                    'file': path,
+                                    'file': path,  
                                   },
                                 );
 
