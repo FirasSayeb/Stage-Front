@@ -1,6 +1,6 @@
 
 import 'dart:convert';
-
+import 'package:collection/collection.dart';
 import 'package:app/pages/Admin.dart';
 import 'package:app/pages/NotificationService.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -100,25 +100,30 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                                     if (fkey.currentState!.validate()) {
                                       fkey.currentState!.save();
                                        for (int i = 0; i < selectedClasses.length; i++) {
-                    if (selectedClasses[i] == snapshot.data![i]['email']) {
-                      tokens.add(snapshot.data![i]['token']);
-                    }
+                                        Map<String, dynamic>? user = snapshot.data!.firstWhereOrNull((user) => user['email'] == selectedClasses[i]);
+      
+      
+      if (user != null) {
+        tokens.add(user['token']);
+      }
                   }
+                              print(tokens);
                                       Map<String, dynamic> userData = {
                                          'email':widget.email,
                                          'message':message,
                                          'list':selectedClasses.join(','),
                                          'device_token': await _firebaseMessaging.getToken(),
                                       };
-                                       
+                                          
                                       Response response = await post( 
                                         Uri.parse( 
                                             "http://10.0.2.2:8000/api/addNotification"),
                                         body: userData,
                                       );  
                                       print(userData);
+                                      
                                       if (response.statusCode == 200) { 
-                                        print(userData); 
+                                        print(userData);  
                                         for (int j = 0; j < tokens.length; j++) {
                 Response response2 = await post(
                   Uri.parse('https://fcm.googleapis.com/fcm/send'),
@@ -132,6 +137,12 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                     "notification": {"title": "Notification", "body": message}
                   }),
                 );
+                print("-------------------------------");
+                print( {
+                    "to": tokens[j],
+                    "notification": {"title": "Notification", "body": message}
+                  }
+                    );
               }
                                         
         

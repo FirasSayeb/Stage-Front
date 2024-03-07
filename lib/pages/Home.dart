@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app/model/user.dart';
 import 'package:app/pages/Enseignant.dart';
 import 'package:app/pages/forgot_password.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
 import 'package:app/pages/Admin.dart';
@@ -17,11 +18,23 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _firebaseMessaging.getToken().then((String? token) {
+      print("Firebase Token: $token");
+      mtoken=token;
+
+    });
+  }
+  String? mtoken;
   bool hide = true;
   User user = User();
   final fkey = GlobalKey<FormState>();
   String errorMessage = '';
-
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,8 +136,9 @@ class _HomeState extends State<Home> {
                                 Map<String, String> userData = {
                                   'email': user.email,
                                   'password': user.password,
-                                };
-
+                                  'token':mtoken!,
+                                };  
+                                 print(mtoken); 
                                 Response response = await post(
                                   Uri.parse("http://10.0.2.2:8000/api/auth"),
                                   body: userData,
