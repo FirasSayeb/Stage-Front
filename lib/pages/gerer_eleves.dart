@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:app/pages/ajouter_notification.dart';
+import 'package:app/pages/gerer_services.dart';
 import 'package:app/pages/modifier_eleve.dart';
 import 'package:http/http.dart' as http;
 import 'package:app/pages/Admin.dart';
@@ -161,7 +162,13 @@ class _GererClassesState extends State<GererEleves> {
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEmploi(widget.email)));
                   },
-                ),
+                ),ListTile(
+                title: const Text("Gérer Services"),
+                leading: const Icon(Icons.miscellaneous_services),
+                onTap: () { 
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
+                },
+              ),
                 ListTile(
                   title: const Text("Gérer Parents"),
                   leading: const Icon(Icons.verified_user), 

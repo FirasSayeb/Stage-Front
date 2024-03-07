@@ -6,6 +6,7 @@ import 'package:app/pages/Profile.dart';
 import 'package:app/pages/ajouter_notification.dart';
 import 'package:app/pages/gerer_eleves.dart';
 import 'package:app/pages/gerer_emploi.dart';
+import 'package:app/pages/gerer_services.dart';
 import 'package:app/pages/gerer_utilisateurs.dart';
 import 'package:app/pages/modifier_classe.dart';
 import 'package:flutter/material.dart';
@@ -156,7 +157,13 @@ String fileName2WithExtension = pathPart.last;
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEmploi(widget.email)));
                   },
-                ),
+                ),ListTile(
+                title: const Text("Gérer Services"),
+                leading: const Icon(Icons.miscellaneous_services),
+                onTap: () { 
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
+                },
+              ),
                 ListTile(
                   title: const Text("Gérer Parents"),
                   leading: const Icon(Icons.verified_user), 

@@ -150,7 +150,7 @@ class _AjouterNotificationState extends State<AjouterNotification> {
           Navigator.push( 
             context,
             MaterialPageRoute(builder: (context) => Admin(widget.email)),
-          );
+          ); 
         }  
         
                                        /* NotificationService().showNotification(

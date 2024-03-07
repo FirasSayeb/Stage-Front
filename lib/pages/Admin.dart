@@ -3,6 +3,7 @@ import 'package:app/pages/Detail.dart';
 import 'package:app/pages/Profile.dart';
 import 'package:app/pages/ajouter_actualite.dart';
 import 'package:app/pages/ajouter_notification.dart';
+import 'package:app/pages/gerer_services.dart';
 import 'package:app/pages/moifier_actualite.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -148,7 +149,13 @@ class _AdminState extends State<Admin> {
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEmploi(widget.email)));
                   },
-                ),
+                ),ListTile(
+                title: const Text("Gérer Services"),
+                leading: const Icon(Icons.miscellaneous_services),
+                onTap: () { 
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
+                },
+              ),
                 ListTile(
                   title: const Text("Gérer Parents"),
                   leading: const Icon(Icons.verified_user), 
