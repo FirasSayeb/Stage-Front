@@ -9,6 +9,7 @@ import 'package:app/pages/ajouter_parent.dart';
 import 'package:app/pages/gerer_classes.dart';
 import 'package:app/pages/gerer_eleves.dart';
 import 'package:app/pages/gerer_emploi.dart';
+import 'package:app/pages/gerer_events.dart';
 import 'package:app/pages/gerer_services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -192,6 +193,12 @@ Widget build(BuildContext context) {
                 onTap: () { 
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
                 },
+              ),ListTile(
+                title: const Text("Gérer Events"),
+                leading: const Icon(Icons.event),
+                onTap: () { 
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => GererEvents(widget.email))); 
+                }, 
               ),
                 ListTile(
                   title: const Text("Gérer Parents"),

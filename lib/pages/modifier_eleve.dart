@@ -144,7 +144,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
                                           return Text('No data available');
                                         } else {
                                           return  DropdownButton(
-  value: classe.isNotEmpty ? classe : null, // Set initial value to null
+  value: classe.isNotEmpty ? classe : null, 
   hint: Text("select classe"),
   items: snapshot.data!.map((e) {
     return DropdownMenuItem(
@@ -153,9 +153,9 @@ class _ModifierEleveState extends State<ModifierEleve> {
     );
   }).toList(), 
   onChanged: (value) {
-    print("Selected class: $value"); // Debugging
+    print("Selected class: $value"); 
     
-      classe = value.toString(); // Update classe when value changes
+      classe = value.toString(); 
   
   },
 );

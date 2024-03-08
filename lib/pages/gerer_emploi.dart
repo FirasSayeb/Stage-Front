@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:app/pages/ajouter_notification.dart';
+import 'package:app/pages/gerer_events.dart';
 import 'package:app/pages/gerer_services.dart';
 import 'package:app/pages/modifier_enseignant.dart';
 import 'package:http/http.dart' as http; 
@@ -190,6 +191,12 @@ Widget build(BuildContext context) {
                 leading: const Icon(Icons.miscellaneous_services), 
                 onTap: () { 
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
+                },
+              ),ListTile(
+                title: const Text("Gérer Events"),
+                leading: const Icon(Icons.event),
+                onTap: () { 
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => GererEvents(widget.email)));
                 },
               ),
               ListTile(

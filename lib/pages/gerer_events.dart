@@ -3,51 +3,57 @@
 import 'dart:convert';
 
 import 'package:app/pages/Admin.dart';
-import 'package:app/pages/AjouterService.dart';
 import 'package:app/pages/Home.dart';
+import 'package:app/pages/ModEvent.dart';
 import 'package:app/pages/ModService.dart';
 import 'package:app/pages/Profile.dart';
+import 'package:app/pages/ajouterEvent.dart';
 import 'package:app/pages/ajouter_notification.dart';
 import 'package:app/pages/gerer_classes.dart';
 import 'package:app/pages/gerer_eleves.dart';
 import 'package:app/pages/gerer_emploi.dart';
-import 'package:app/pages/gerer_events.dart';
+import 'package:app/pages/gerer_services.dart';
 import 'package:app/pages/gerer_utilisateurs.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart';  
 
-class GererServices extends StatefulWidget {
+class GererEvents extends StatefulWidget {
   final String email;
-  GererServices(this.email);
+  GererEvents(this.email);
 
   @override
-  State<GererServices> createState() => _GererServicesState();
+  State<GererEvents> createState() => _GererServicesState();
 }
 
-class _GererServicesState extends State<GererServices> {
-  Future<List<Map<String, dynamic>>> getServices() async { 
+class _GererServicesState extends State<GererEvents> {
+ Future<List<Map<String, dynamic>>> getEvents() async {
   try {
-    final response = await get(Uri.parse("http://10.0.2.2:8000/api/getServices"));
+    final response = await get(Uri.parse("http://10.0.2.2:8000/api/getEvents"));
     if (response.statusCode == 200) {
       print(response.body.toString());
-     final List<dynamic> responseData = jsonDecode(response.body.toString())['list'];
-      final List<Map<String, dynamic>> parentList = responseData.map((data) => data as Map<String, dynamic>).toList();
-      print(parentList);
-      return parentList; 
-      
+      final dynamic responseData = jsonDecode(response.body.toString())['list'];
+      if (responseData != null) {
+        final List<Map<String, dynamic>> parentList =
+            (responseData as List<dynamic>).map((data) => data as Map<String, dynamic>).toList();
+        print(parentList);
+        return parentList;
+      } else {
+        throw Exception('Response data is null');
+      }
     } else {
-      throw Exception('Failed to load services'); 
-    } 
+      throw Exception('Failed to load events');
+    }
   } catch (e) {
-    print('Error: $e'); 
-    throw Exception('Failed to load services');
+    print('Error: $e');
+    throw Exception('Failed to load events');
   }
 }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Gerer Services "),
+      appBar: AppBar( 
+        title: const Text("Gerer Events "),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Color.fromARGB(160, 0, 54, 99),
@@ -59,19 +65,19 @@ class _GererServicesState extends State<GererServices> {
             children: [
               Padding(padding: EdgeInsets.all(10)),
               GestureDetector(
-                child: Text('Ajouter Service'),
+                child: Text('Ajouter Event'),
                 onTap: () { 
-                  print('ajouter Service'); 
+                  print('ajouter Event'); 
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AjouterService(widget.email),
+                      builder: (context) => AjouterEvent(widget.email),
                     ),
                   );
                 },
               ),
               FutureBuilder<List<Map<String, dynamic>>>(
-                future: getServices(),
+                future: getEvents(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -100,17 +106,20 @@ class _GererServicesState extends State<GererServices> {
   "Price: ${snapshot.data![index]['price'].toString()}",
   style: TextStyle(color: Colors.grey),
 ), 
-
+Text(
+  "Date: ${snapshot.data![index]['date']}",
+  style: TextStyle(color: Colors.grey),
+), 
                                   SizedBox(height: 8),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      ElevatedButton(
+                                      ElevatedButton( 
                                         onPressed: () {
-                                          Navigator.push( 
+                                          Navigator.push(  
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => ModService(snapshot.data![index]['name']),
+                                              builder: (context) => ModEvent(snapshot.data![index]['name']),
                                             ),
                                           );  
                                         },
@@ -118,11 +127,11 @@ class _GererServicesState extends State<GererServices> {
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
-                                          deleteService(snapshot.data![index]['name']);
+                                          deleteEvent(snapshot.data![index]['name']);
                                           Navigator.push(
                                             context, 
                                             MaterialPageRoute(
-                                              builder: (context) => GererServices(widget.email),
+                                              builder: (context) => GererEvents(widget.email),
                                             ),
                                           ); 
                                         },
@@ -173,7 +182,7 @@ class _GererServicesState extends State<GererServices> {
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererEmploi(widget.email)));
                 },
-              ),
+              ), 
               ListTile(
                 title: const Text("Gérer Services"),
                 leading: const Icon(Icons.miscellaneous_services),
@@ -227,11 +236,11 @@ class _GererServicesState extends State<GererServices> {
       ),
     );
   } 
- deleteService(String name) async {
+ deleteEvent(String name) async {
   try {
-    final response = await delete(Uri.parse("http://10.0.2.2:8000/api/deleteService/$name"));
+    final response = await delete(Uri.parse("http://10.0.2.2:8000/api/deleteEvent/$name"));
     if (response.statusCode == 200) {
-      print('Success: Service deleted');
+      print('Success: Service deleted'); 
     } else { 
       throw Exception('Failed to delete service');
     }

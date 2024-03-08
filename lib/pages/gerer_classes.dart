@@ -6,6 +6,7 @@ import 'package:app/pages/Profile.dart';
 import 'package:app/pages/ajouter_notification.dart';
 import 'package:app/pages/gerer_eleves.dart';
 import 'package:app/pages/gerer_emploi.dart';
+import 'package:app/pages/gerer_events.dart';
 import 'package:app/pages/gerer_services.dart';
 import 'package:app/pages/gerer_utilisateurs.dart';
 import 'package:app/pages/modifier_classe.dart';
@@ -162,6 +163,12 @@ String fileName2WithExtension = pathPart.last;
                 leading: const Icon(Icons.miscellaneous_services),
                 onTap: () { 
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
+                },
+              ),ListTile(
+                title: const Text("Gérer Events"),
+                leading: const Icon(Icons.event),
+                onTap: () { 
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => GererEvents(widget.email)));
                 },
               ),
                 ListTile(
