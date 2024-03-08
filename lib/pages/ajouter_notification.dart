@@ -136,9 +136,9 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                     "to": tokens[j],
                     "notification": {"title": "Notification", "body": message}
                   }),
-                );
+                ); 
                 print("-------------------------------");
-                print( {
+                print( { 
                     "to": tokens[j],
                     "notification": {"title": "Notification", "body": message}
                   }
@@ -147,10 +147,10 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                                         
         
         if (response2.statusCode == 200) { 
-          Navigator.push( 
+         /* Navigator.push( 
             context,
             MaterialPageRoute(builder: (context) => Admin(widget.email)),
-          ); 
+          ); */
         }  
         
                                        /* NotificationService().showNotification(

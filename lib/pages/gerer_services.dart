@@ -28,14 +28,17 @@ class _GererServicesState extends State<GererServices> {
   try {
     final response = await get(Uri.parse("http://10.0.2.2:8000/api/getServices"));
     if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(response.body)['list'];
-      return data.cast<Map<String, dynamic>>(); 
+      print(response.body.toString());
+     final List<dynamic> responseData = jsonDecode(response.body.toString())['list'];
+      final List<Map<String, dynamic>> parentList = responseData.map((data) => data as Map<String, dynamic>).toList();
+      print(parentList);
+      return parentList; 
       
     } else {
-      throw Exception('Failed to load services');
+      throw Exception('Failed to load services'); 
     } 
   } catch (e) {
-    print('Error: $e');
+    print('Error: $e'); 
     throw Exception('Failed to load services');
   }
 }
@@ -83,7 +86,7 @@ class _GererServicesState extends State<GererServices> {
                             elevation: 4,
                             margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                             child: ListTile(
-                              title: Text(
+                              title: Text("Name : "+
                                 snapshot.data![index]['name'] 
                                 ,
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -93,9 +96,9 @@ class _GererServicesState extends State<GererServices> {
                                 children: [
                                   SizedBox(height: 4),
                                   Text(
-  "Price: ${double.parse(snapshot.data![index]['price'])}",
+  "Price: ${snapshot.data![index]['price'].toString()}",
   style: TextStyle(color: Colors.grey),
-),
+), 
 
                                   SizedBox(height: 8),
                                   Row(
