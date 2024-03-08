@@ -95,7 +95,7 @@ class _ModServiceState extends State<ModService> {
                                     'name':name,
                                     'price':price.toString()
                                   },  
-                                ); 
+                                );      
                                 if (response.statusCode == 200) {
                                   Navigator.pop(context);
                                 }
