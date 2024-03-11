@@ -29,17 +29,15 @@ class _GererServicesState extends State<GererServices> {
   try {
     final response = await get(Uri.parse("http://10.0.2.2:8000/api/getServices"));
     if (response.statusCode == 200) {
-      print(response.body.toString());
      final List<dynamic> responseData = jsonDecode(response.body.toString())['list'];
       final List<Map<String, dynamic>> parentList = responseData.map((data) => data as Map<String, dynamic>).toList();
-      print(parentList);
       return parentList; 
       
     } else {
       throw Exception('Failed to load services'); 
     } 
   } catch (e) {
-    print('Error: $e'); 
+    print('Error: $e');  
     throw Exception('Failed to load services');
   }
 }

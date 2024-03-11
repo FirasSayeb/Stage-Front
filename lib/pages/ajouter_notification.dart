@@ -198,7 +198,7 @@ class _AjouterNotificationState extends State<AjouterNotification> {
    }
    }catch(e){
     print(e); 
-    throw Exception('Failed to load classes'); 
+    throw Exception('Failed to load users'); 
    }
   }
 } 

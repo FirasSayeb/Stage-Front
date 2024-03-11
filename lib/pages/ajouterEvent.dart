@@ -114,9 +114,9 @@ class _AjouterServiceState extends State<AjouterEvent> {
                                   Uri.parse("http://10.0.2.2:8000/api/addEvent"),
                                   body: userData,   
                                 );
-                                   print(userData);
+                                  
                                 if (response.statusCode == 200) {  
-                                  print(userData);
+                                 
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererEvents(widget.email)));
                                 } else { 
                                   setState(() { 

@@ -30,12 +30,10 @@ class _GererServicesState extends State<GererEvents> {
   try {
     final response = await get(Uri.parse("http://10.0.2.2:8000/api/getEvents"));
     if (response.statusCode == 200) {
-      print(response.body.toString());
       final dynamic responseData = jsonDecode(response.body.toString())['list'];
       if (responseData != null) {
         final List<Map<String, dynamic>> parentList =
             (responseData as List<dynamic>).map((data) => data as Map<String, dynamic>).toList();
-        print(parentList);
         return parentList;
       } else {
         throw Exception('Response data is null');
