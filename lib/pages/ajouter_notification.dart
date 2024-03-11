@@ -32,8 +32,8 @@ class _AjouterNotificationState extends State<AjouterNotification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Ajouter Notification'),centerTitle: true,
-          elevation: 0,
+      appBar: AppBar(title: Text('Envoyer Notification'),centerTitle: true,
+          elevation: 0, 
           backgroundColor: const Color.fromARGB(160, 0, 54, 99),),
     body: SingleChildScrollView(
       child: Form(key:fkey ,child:Column(children: [ 

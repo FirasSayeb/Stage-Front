@@ -166,7 +166,7 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => const Enseignant()),
+                                          builder: (context) =>  Enseignant(user.email)),
                                     );
                                   }
                                 } else {
