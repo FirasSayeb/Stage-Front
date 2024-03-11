@@ -14,7 +14,7 @@ class ModEvent extends StatefulWidget {
 class _ModServiceState extends State<ModEvent> {
   final fkey=GlobalKey<FormState>();
  late String name = ''; 
-  late double price = 0.0;
+   double? price ;
   late String date;
   late String select = ''; 
   @override
@@ -75,12 +75,7 @@ class _ModServiceState extends State<ModEvent> {
                                   onChanged: (value) {
                                     price = double.parse(value);
                                   },
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
-                                    }  
-                                    return null;
-                                  },
+                                 
                                 ),TextFormField(
                                       initialValue: classe['date'],
                                       decoration: InputDecoration(
@@ -106,14 +101,14 @@ class _ModServiceState extends State<ModEvent> {
                                 final response = await put(
                                   Uri.parse("http://10.0.2.2:8000/api/updateEvent/${widget.name}"),
                                   body: <String, dynamic>{
-                                    'name':name ??  classe['name'],
-                                    'price':price.toString() ??  classe['price'],
-                                    'date': select ?? classe['date'], 
+                                    'name': name.isNotEmpty ? name : classe['name'], 
+        'price': price != null ? price.toString() : classe['price'].toString(),
+        'date': select.isNotEmpty ? select : classe['date'],
                                   },  
-                                );      
+                                );       
                                 if (response.statusCode == 200) {
                                   Navigator.pop(context);
-                                } 
+                                }  
                               }  
                             },
                             child: Text('Valider'), 

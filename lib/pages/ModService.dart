@@ -13,8 +13,8 @@ class ModService extends StatefulWidget {
 
 class _ModServiceState extends State<ModService> {
   final fkey=GlobalKey<FormState>();
-  late String name;
-  late double price;
+   late String name = ''; 
+   double? price;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,8 +92,8 @@ class _ModServiceState extends State<ModService> {
                                 final response = await put(
                                   Uri.parse("http://10.0.2.2:8000/api/updateService/${widget.name}"),
                                   body: <String, dynamic>{
-                                    'name':name,
-                                    'price':price.toString()
+                                     'name': name.isNotEmpty ? name : classe['name'], 
+        'price': price != null ? price.toString() : classe['price'].toString(),
                                   },  
                                 );      
                                 if (response.statusCode == 200) {
