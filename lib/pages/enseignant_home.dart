@@ -1,6 +1,7 @@
 
 
 import 'package:app/pages/gerer_exercices.dart';
+import 'package:app/pages/list_elves.dart';
 import 'package:flutter/material.dart';
 
 class ENSHome extends StatefulWidget {
@@ -20,13 +21,21 @@ class _ENSHomeState extends State<ENSHome> {
           elevation: 0, 
           backgroundColor: const Color.fromARGB(160, 0, 54, 99),),
           body: GridView(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),children: [
-            Card(child: GestureDetector(child: Container(
+            Card(child: GestureDetector(onTap: () {
+               Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ListEleves(widget.name),
+                    ),
+                  );
+            },
+              child: Container(
               color: const Color.fromARGB(255, 118, 178, 208),
               alignment: Alignment.center,  
                child: Text('Eleves'),
             )),), Card(child: GestureDetector(
               onTap: () {
-                Navigator.push(
+                Navigator.push( 
                     context,
                     MaterialPageRoute(
                       builder: (context) => GererExercices(widget.email,widget.name),
