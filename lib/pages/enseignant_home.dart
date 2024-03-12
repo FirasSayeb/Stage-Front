@@ -25,7 +25,7 @@ class _ENSHomeState extends State<ENSHome> {
                Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ListEleves(widget.name),
+                      builder: (context) => ListEleves(widget.email,widget.name),
                     ),
                   );
             },

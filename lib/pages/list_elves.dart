@@ -1,12 +1,14 @@
 
 import 'dart:convert';
 
+import 'package:app/pages/notifier_parent.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class ListEleves extends StatefulWidget {
   final String name;
-  ListEleves(this.name);
+  final String email;
+  ListEleves(this.email,this.name);
 
   @override
   State<ListEleves> createState() => _ListElevesState();
@@ -47,8 +49,9 @@ class _ListElevesState extends State<ListEleves> {
   }).toList(),
   onChanged: (value) {
     setState(() {
-      val = value.toString(); 
+      val = value.toString();   
     }); 
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NotifierParent(widget.email,val),));
   }, 
   value: val != "choose" ? val : (snapshot.data!.isNotEmpty ? snapshot.data![0]['name'] : null),
 )
