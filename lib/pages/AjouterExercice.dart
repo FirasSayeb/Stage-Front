@@ -105,6 +105,7 @@ class _AjouterExerciceState extends State<AjouterExercice> {
 
               Map<String, dynamic> userData = {
                 'name': name,
+                'email':widget.email, 
                 'description': description,
                 'class': widget.name
               };
@@ -112,7 +113,7 @@ class _AjouterExerciceState extends State<AjouterExercice> {
               Response response = await post(
                 Uri.parse("http://10.0.2.2:8000/api/addExercice"),
                 body: userData,
-              );
+              );  
 
               for (int i = 0; i < snapshot.data!.length; i++) {
                 final user = snapshot.data![i] as Map<String, dynamic>;
