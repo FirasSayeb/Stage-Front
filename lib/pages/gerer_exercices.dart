@@ -19,20 +19,20 @@ class _GererExercicesState extends State<GererExercices> {
 
   Future<List<Map<String, dynamic>>> getExercices() async {
   try {
-    final response = await get(Uri.parse("http://10.0.2.2:8000/api/getExercices"));
+    final response = await get(Uri.parse("http://10.0.2.2:8000/api/getExercices/${widget.name}"));
     if (response.statusCode == 200) {
       final dynamic responseData = jsonDecode(response.body.toString())['list'];
-      if (responseData != null) {
+      if (responseData != null) { 
         final List<Map<String, dynamic>> parentList =
             (responseData as List<dynamic>).map((data) => data as Map<String, dynamic>).toList();
-        return parentList;
+        return parentList; 
       } else {
         throw Exception('Response data is null');
       } 
-    } else {
+    } else { 
       throw Exception('Failed to load exercices');
     }
-  } catch (e) {
+  } catch (e) { 
     print('Error: $e');
     throw Exception('Failed to load exercices');
   }
