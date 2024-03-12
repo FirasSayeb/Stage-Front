@@ -119,7 +119,7 @@ Text(
                                             MaterialPageRoute(
                                               builder: (context) => ModEvent(snapshot.data![index]['name']),
                                             ),
-                                          );  
+                                          ).then((_) => setState(() {}));
                                         },
                                         child: Text('Modifier'),
                                       ),

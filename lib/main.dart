@@ -12,7 +12,7 @@ void main() async {
   ):await Firebase.initializeApp(); 
   await NotificationService().initNotification();  
   runApp(const MaterialApp( 
-    debugShowCheckedModeBanner: false, 
+    debugShowCheckedModeBanner: false,  
     home: Home(), 
   ));
 }

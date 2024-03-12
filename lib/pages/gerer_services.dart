@@ -110,7 +110,7 @@ class _GererServicesState extends State<GererServices> {
                                             MaterialPageRoute(
                                               builder: (context) => ModService(snapshot.data![index]['name']),
                                             ),
-                                          );  
+                                          ).then((_) => setState(() {})); 
                                         },
                                         child: Text('Modifier'),
                                       ),

@@ -17,7 +17,7 @@ class GererExercices extends StatefulWidget {
 
 class _GererExercicesState extends State<GererExercices> {
 
-  Future<List<Map<String, dynamic>>> getExercices() async {
+  Future<List<Map<String, dynamic>>> getExercices() async { 
   try {
     final response = await get(Uri.parse("http://10.0.2.2:8000/api/getExercices/${widget.name}"));
     if (response.statusCode == 200) {
@@ -28,10 +28,10 @@ class _GererExercicesState extends State<GererExercices> {
         return parentList; 
       } else {
         throw Exception('Response data is null');
-      } 
-    } else { 
+      }  
+    } else {  
       throw Exception('Failed to load exercices');
-    }
+    }  
   } catch (e) { 
     print('Error: $e');
     throw Exception('Failed to load exercices');
@@ -108,12 +108,12 @@ class _GererExercicesState extends State<GererExercices> {
                                             MaterialPageRoute(
                                               builder: (context) => ModExercice(snapshot.data![index]['name']),
                                             ),
-                                          );
-                                        },
+                                          ).then((_) => setState(() {}));
+                                        }, 
                                         child: Text('Modifier'),
-                                      ),
+                                      ), 
                                       ElevatedButton(
-                                        onPressed: () {
+                                        onPressed: () { 
                                           deleteExercice(snapshot.data![index]['name']);
                                           Navigator.push(
                                             context, 

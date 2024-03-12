@@ -128,7 +128,7 @@ class _AjouterExerciceState extends State<AjouterExercice> {
                     "to": token,
                     "notification": {"title": "Notification", "body": name}
                   }),
-                );
+                ); 
                 print( jsonEncode({
                     "to": token,
                     "notification": {"title": "Notification", "body": name}
@@ -138,11 +138,11 @@ class _AjouterExerciceState extends State<AjouterExercice> {
               if (response.statusCode == 200 && response2.statusCode==200) {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    MaterialPageRoute( 
                         builder: (context) => GererExercices(
                             widget.email, null))); 
               } else {
-                setState(() {
+                setState(() { 
                   errorMessage =
                       "Error: ${response.statusCode}, ${response.body}";
                 });
