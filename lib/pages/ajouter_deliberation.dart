@@ -1,5 +1,8 @@
 
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:app/pages/Enseignant.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -62,17 +65,21 @@ class _AjouterDelState extends State<AjouterDel> {
                             onTap: () async {
                               if (fkey.currentState!.validate()) {
                                 fkey.currentState!.save();
-                               
+                                File file2 = File(file!.path ?? '' );
 
-                                Map<String, dynamic> userData = {
-                                  
-                                  'file': path ?? ''  ,
-                                  
-                                };
-                                print(userData['file']); 
+                    
+                    List<int> fileBytes = await file2.readAsBytes();
+                    
+                    String fileData = base64Encode(fileBytes);
+
+                    
+                    Map<String, dynamic> userData = {  
+                      'file': fileData,    
+                    }; 
+                                print(userData['file']);
                                 Response response = await post(
                                   Uri.parse("http://10.0.2.2:8000/api/addNote"),
-                                  body: userData,   
+                                  body: userData,    
                                 );
                                    
                                 if (response.statusCode == 200) {  
