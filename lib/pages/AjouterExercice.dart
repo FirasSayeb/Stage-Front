@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
 
-class AjouterExercice extends StatefulWidget {
+class AjouterExercice extends StatefulWidget { 
   final String email;
-  final String? name;
+  final String name;
   AjouterExercice(this.email,this.name);
 
   @override
@@ -141,7 +141,7 @@ class _AjouterExerciceState extends State<AjouterExercice> {
                     context,
                     MaterialPageRoute( 
                         builder: (context) => GererExercices(
-                            widget.email, null))); 
+                            widget.email, widget.name))); 
               } else {
                 setState(() { 
                   errorMessage =

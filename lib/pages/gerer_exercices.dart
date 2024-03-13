@@ -8,7 +8,7 @@ import 'package:http/http.dart';
 
 class GererExercices extends StatefulWidget {
   final String email;
-  final String? name;
+  final String name;
   GererExercices(this.email,this.name);
 
   @override
@@ -112,13 +112,13 @@ class _GererExercicesState extends State<GererExercices> {
                                         }, 
                                         child: Text('Modifier'),
                                       ), 
-                                      ElevatedButton(
+                                      ElevatedButton( 
                                         onPressed: () { 
                                           deleteExercice(snapshot.data![index]['name']);
                                           Navigator.push(
                                             context, 
                                             MaterialPageRoute(
-                                              builder: (context) => GererExercices(widget.email,null),
+                                              builder: (context) => GererExercices(widget.email,widget.name),
                                             ),
                                           ); 
                                         }, 

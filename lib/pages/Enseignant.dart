@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:app/pages/AjouterClasse.dart';
 import 'package:app/pages/Home.dart';
+import 'package:app/pages/Profile.dart';
 import 'package:app/pages/enseignant_home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -104,8 +105,14 @@ String fileName2WithExtension = pathPart.last;
          
           color:  Color.fromARGB(160,0,54,99),
           child: ListView(  
-            children: [  
-             Padding(padding: EdgeInsets.only(top:50)),
+            children: [ const Padding(padding: EdgeInsets.only(top: 30)), ListTile( 
+                  title:  Text(" ${widget.email}"),
+                  leading: const Icon(Icons.person),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Profil(widget.email)));
+                  },
+                ),
+             
               ListTile(
                 title: Text("Home"),
                 leading: Icon(Icons.home),
