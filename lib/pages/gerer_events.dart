@@ -8,6 +8,7 @@ import 'package:app/pages/ModEvent.dart';
 import 'package:app/pages/ModService.dart';
 import 'package:app/pages/Profile.dart';
 import 'package:app/pages/ajouterEvent.dart';
+import 'package:app/pages/ajouter_deliberation.dart';
 import 'package:app/pages/ajouter_notification.dart';
 import 'package:app/pages/gerer_classes.dart';
 import 'package:app/pages/gerer_eleves.dart';
@@ -200,7 +201,13 @@ Text(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)));
                 },
-              ),
+              ),ListTile(
+                  title: const Text("Gérer Notes"), 
+                  leading: const Icon(Icons.grade),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterDel(widget.email)));
+                  },
+                ),
               ListTile(
                 title: const Text("Gérer Classes"),
                 leading: const Icon(Icons.class_),

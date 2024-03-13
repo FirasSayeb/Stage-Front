@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:app/pages/ajouter_deliberation.dart';
 import 'package:app/pages/ajouter_notification.dart';
 import 'package:app/pages/gerer_events.dart';
 import 'package:app/pages/gerer_services.dart';
@@ -205,7 +206,13 @@ Widget build(BuildContext context) {
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)));
                 },
-              ),
+              ),ListTile(
+                  title: const Text("Gérer Notes"), 
+                  leading: const Icon(Icons.grade),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterDel(widget.email)));
+                  },
+                ),
               ListTile(
                 title: const Text("Gérer Classes"),
                 leading: const Icon(Icons.class_),

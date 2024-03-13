@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:app/pages/Detail.dart';
 import 'package:app/pages/Profile.dart';
 import 'package:app/pages/ajouter_actualite.dart';
+import 'package:app/pages/ajouter_deliberation.dart';
 import 'package:app/pages/ajouter_notification.dart';
 import 'package:app/pages/gerer_events.dart';
 import 'package:app/pages/gerer_services.dart';
@@ -168,6 +169,12 @@ class _AdminState extends State<Admin> {
                   leading: const Icon(Icons.verified_user), 
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)));
+                  },
+                ), ListTile(
+                  title: const Text("Gérer Notes"), 
+                  leading: const Icon(Icons.grade),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterDel(widget.email)));
                   },
                 ),
                 ListTile(

@@ -110,8 +110,8 @@ class _GererExercicesState extends State<GererExercices> {
                                             ),
                                           ).then((_) => setState(() {}));
                                         }, 
-                                        child: Text('Modifier'),
-                                      ), 
+                                        child: Text('Modifier'), 
+                                      ),  
                                       ElevatedButton( 
                                         onPressed: () { 
                                           deleteExercice(snapshot.data![index]['name']);
