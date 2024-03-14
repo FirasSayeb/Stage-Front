@@ -81,7 +81,7 @@ class _GererClassesState extends State<GererEleves> {
              
           ), 
          Text(
-    "Parents : ${snapshot.data != null && snapshot.data!.isNotEmpty ? snapshot.data![index]['parent_names'] ?? '' : ''} ",
+    "Tuteurs : ${snapshot.data != null && snapshot.data!.isNotEmpty ? snapshot.data![index]['parent_names'] ?? '' : ''} ",
 ),
 
  
@@ -178,7 +178,7 @@ class _GererClassesState extends State<GererEleves> {
                 },
               ),
                 ListTile(
-                  title: const Text("Gérer Parents"),
+                  title: const Text("Gérer Tuteurs"),
                   leading: const Icon(Icons.verified_user), 
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)));

@@ -187,7 +187,7 @@ class _GererServicesState extends State<GererServices> {
                 },
               ),
               ListTile(
-                title: const Text("Gérer Parents"),
+                title: const Text("Gérer Tuteurs"),
                 leading: const Icon(Icons.verified_user),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)));

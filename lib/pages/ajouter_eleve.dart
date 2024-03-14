@@ -178,7 +178,7 @@ PlatformFile? file;
   },
   keyboardType: TextInputType.emailAddress,
   decoration: InputDecoration(
-    hintText: "Parent 1 email:",
+    hintText: "Tuteur 1 email:",
     icon: Icon(Icons.email),
   ),
 ),  
@@ -189,7 +189,7 @@ TextFormField(
   },
   keyboardType: TextInputType.emailAddress,
   decoration: InputDecoration(
-    hintText: "Parent 2 email:",
+    hintText: "Tuteur 2 email:",
     icon: Icon(Icons.email),
   ),
 ),ElevatedButton.icon(
