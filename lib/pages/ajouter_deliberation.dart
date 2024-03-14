@@ -7,6 +7,7 @@ import 'package:app/pages/Enseignant.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 
 
 class AjouterDel extends StatefulWidget {
@@ -47,7 +48,8 @@ class _AjouterDelState extends State<AjouterDel> {
           key: fkey,
           child: Column(
             children: [
-              Padding(padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.05)),
+              Lottie.asset('assets/file.json',height: MediaQuery.of(context).size.height*0.4,width:MediaQuery.of(context).size.width),
+              Padding(padding: EdgeInsets.all(MediaQuery.of(context).size.height*0.02)),
               ElevatedButton.icon(
                           onPressed: picksinglefile,
                           style: ButtonStyle(
@@ -55,7 +57,7 @@ class _AjouterDelState extends State<AjouterDel> {
                               Color.fromARGB(255, 61, 186, 228)
                             )
                           ),
-                          icon: Icon(Icons.insert_drive_file_sharp),
+                          icon: Icon(Icons.insert_drive_file_sharp), 
                           label: Text(
                             'Pick Excel File',
                             style: TextStyle(fontSize: 25), 
@@ -75,12 +77,12 @@ class _AjouterDelState extends State<AjouterDel> {
                     
                     Map<String, dynamic> userData = {  
                       'file': fileData,    
-                    }; 
-                                print(userData['file']);
+                    };  
+                                print(userData['file']); 
                                 Response response = await post(
                                   Uri.parse("http://10.0.2.2:8000/api/addNote"),
                                   body: userData,    
-                                );
+                                ); 
                                    
                                 if (response.statusCode == 200) {  
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => Enseignant(widget.email)));

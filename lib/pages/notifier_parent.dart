@@ -52,33 +52,29 @@ class _NotifierParentState extends State<NotifierParent> {
    
                             } else {
   
-                              return DropdownButton(
-  
-    value: selectedClasses.isNotEmpty ? selectedClasses.first : null, 
-  
-    hint: Text("to "), 
-  
-    items: snapshot.data!.map((e){
-  
-      return DropdownMenuItem(
-  
-        child: Text(e['email'].toString()),
-  
-        value: e['email'].toString(),
-  
-      ); 
-  
-    }).toList(),  
-    
-    onChanged: (value) { 
-      setState(() {   
-          if(!selectedClasses.contains(value))
-        selectedClasses.addAll([value.toString()]);
-      });   
-     
-    },
-  
-  );
+                              return ListView.builder(
+  shrinkWrap: true,
+  itemCount: snapshot.data!.length,   
+  itemBuilder: (context, index) {
+    final eleve = snapshot.data![index];
+    final email = eleve['email'].toString();
+    final isChecked = selectedClasses.contains(email);
+    return CheckboxListTile(
+      title: Text(email),
+      value: isChecked,
+      onChanged: (value) {
+        setState(() {
+          if (value == true) {
+            selectedClasses.add(email);
+          } else {
+            selectedClasses.remove(email);
+          }
+        });
+      },
+    );
+  },
+);
+
   
              }
            
@@ -190,7 +186,7 @@ class _NotifierParentState extends State<NotifierParent> {
       return classes;
    }else{
     throw Exception('failed to get parents');
-   }
+   } 
    }catch(e){ 
     print(e); 
     throw Exception('Failed to load parents'); 
