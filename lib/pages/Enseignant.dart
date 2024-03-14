@@ -4,6 +4,7 @@ import 'package:app/pages/AjouterClasse.dart';
 import 'package:app/pages/Home.dart';
 import 'package:app/pages/Profile.dart';
 import 'package:app/pages/enseignant_home.dart';
+import 'package:app/pages/list_elves.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
@@ -72,12 +73,12 @@ String fileName2WithExtension = pathPart.last;
       onTap: () { 
         Navigator.push(
       context,   
-      MaterialPageRoute(builder: (context) => ENSHome(widget.email,snapshot.data![index]['name'])));
+      MaterialPageRoute(builder: (context) => ListEleves(widget.email,snapshot.data![index]['name'])));
       },
       title: Text( 
         "Name: ${snapshot.data![index]['name']}\nEmploi : $fileNameWithExtension \nExamens : $fileName2WithExtension",
        
-      ),
+      ), 
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
