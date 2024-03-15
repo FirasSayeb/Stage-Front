@@ -53,7 +53,7 @@ class _NotifierParentState extends State<NotifierParent> {
                             } else {
   
                               return ListView.builder(
-  shrinkWrap: true,
+  shrinkWrap: true,  
   itemCount: snapshot.data!.length,   
   itemBuilder: (context, index) {
     final eleve = snapshot.data![index];
@@ -61,7 +61,7 @@ class _NotifierParentState extends State<NotifierParent> {
     final isChecked = selectedClasses.contains(email);
     return CheckboxListTile(
       title: Text(email),
-      value: isChecked,
+      value: isChecked, 
       onChanged: (value) {
         setState(() {
           if (value == true) {
