@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:app/pages/Enseignant.dart';
+import 'package:app/pages/Admin.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
@@ -60,7 +60,7 @@ class _AjouterDelState extends State<AjouterDel> {
       
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Enseignant(widget.email)),
+        MaterialPageRoute(builder: (context) => Admin(widget.email)),
       );
     } else {
      
