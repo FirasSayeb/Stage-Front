@@ -1,23 +1,22 @@
+
+
 import 'dart:convert';
 
 import 'package:app/model/Actualite.dart';
-import 'package:app/pages/Home.dart';
-import 'package:app/pages/Profile.dart';
-import 'package:app/pages/voir_notes.dart';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
-class Parent extends StatefulWidget {
-  final String email;
-  Parent(this.email);
-  @override
-  State<Parent> createState() => _SignupState();
-} 
+class ListActualites extends StatefulWidget {
+ final String email;
+ ListActualites(this.email);
 
-class _SignupState extends State<Parent> { 
-   Future<List<Actualite>> getActualites() async {
-    try { 
+  @override
+  State<ListActualites> createState() => _ListActualitesState();
+}
+
+class _ListActualitesState extends State<ListActualites> {
+  Future<List<Actualite>> getActualites() async {
+    try {
       final response = await get(Uri.parse("http://10.0.2.2:8000/api/getActualites"));
       if (response.statusCode == 200) {
         final List responseData = jsonDecode(response.body)['list']; 
@@ -29,13 +28,11 @@ class _SignupState extends State<Parent> {
       print('Error: $e');  
       throw Exception('Failed to load actualites');
     }
-  }   
+  } 
   @override
-  Widget build(BuildContext context) { 
-    return MaterialApp( 
-      debugShowCheckedModeBanner: false,
-     home:Scaffold(
-      appBar: AppBar(title: const Text("Parent "),centerTitle: true,elevation: 0,backgroundColor: Color.fromARGB(160,0,54,99),), 
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Actualites "),centerTitle: true,elevation: 0,backgroundColor: Color.fromARGB(160,0,54,99),),
       body: Container(
         child: FutureBuilder<List<Actualite>>( 
                 future: getActualites(),
@@ -90,47 +87,6 @@ class _SignupState extends State<Parent> {
                 },
               ),
       ),
-      drawer: Drawer(
-        child: Container(
-         
-          color:  Color.fromARGB(160,0,54,99),
-          child: ListView(  
-            children: [  
-             Padding(padding: EdgeInsets.only(top:50)),
-              ListTile( 
-                  title:  Text(" ${widget.email}"),
-                  leading: const Icon(Icons.person),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Profil(widget.email)));
-                  }, 
-                ),
-              ListTile(
-                title: Text("Home"),
-                leading: Icon(Icons.home),
-                onTap: () { Navigator.push(
-      context,   
-      MaterialPageRoute(builder: (context) => Parent(widget.email)));},
-              ),
-              ListTile(
-                title: Text("Voir Notes"),
-                leading: Icon(Icons.grade),
-                onTap: () { Navigator.push(
-      context,   
-      MaterialPageRoute(builder: (context) => VoirNotes(widget.email)));},
-              ),
-              
-               ListTile(
-                title: Text("Deconnexion"),
-                leading: Icon(Icons.exit_to_app),
-                onTap: () { Navigator.push(
-      context,   
-      MaterialPageRoute(builder: (context) => Home()));},
-              )
-            ],
-          ),
-        ),
-      )
-     )
-    );  
-  } 
+    );
+  }
 }

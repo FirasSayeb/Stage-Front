@@ -159,7 +159,7 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => const Parent()),
+                                          builder: (context) =>  Parent(user.email)),
                                     );
                                   } else if (json.decode(response.body)['redirect_url'] ==
                                       "enseignant") {

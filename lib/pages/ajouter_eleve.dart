@@ -63,12 +63,12 @@ PlatformFile? file;
                           "Ajouter Eleve ",
                           style: TextStyle(fontSize: 20),
                         ),
-                      ),
+                      ), 
                       const Padding(padding: EdgeInsets.all(5)),
-                      Center(
+                      Center(  
                         child: Form(
-                          key: fkey,
-                          child: Column(
+                          key: fkey,  
+                          child: Column(   
                             children: [
                               TextFormField(
                                 validator: (value) {

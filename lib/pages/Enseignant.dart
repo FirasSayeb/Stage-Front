@@ -4,6 +4,7 @@ import 'package:app/pages/AjouterClasse.dart';
 import 'package:app/pages/Home.dart';
 import 'package:app/pages/Profile.dart';
 import 'package:app/pages/enseignant_home.dart';
+import 'package:app/pages/list_actualites.dart';
 import 'package:app/pages/list_elves.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -120,6 +121,12 @@ String fileName2WithExtension = pathPart.last;
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => Enseignant(widget.email)));},
+              ),ListTile(
+                title: Text("Voir Actualites"),
+                leading: Icon(Icons.newspaper),
+                onTap: () { Navigator.push(
+      context,   
+      MaterialPageRoute(builder: (context) => ListActualites(widget.email)));},
               ), 
               
                ListTile(
