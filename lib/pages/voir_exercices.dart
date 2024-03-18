@@ -1,32 +1,32 @@
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
-class VoirNotes extends StatefulWidget {
+class VoirExcercices extends StatefulWidget {
   final String email;
-  VoirNotes(this.email);
+  VoirExcercices(this.email);
 
   @override
-  State<VoirNotes> createState() => _VoirNotesState();
+  State<VoirExcercices> createState() => _VoirExcercicesState();
 }
 
-class _VoirNotesState extends State<VoirNotes> {
-  int? _selectedEleveId;
-
-  Future<List<Map<String, dynamic>>> getNotes(int id) async {
+class _VoirExcercicesState extends State<VoirExcercices> {
+   int? _selectedEleveId;
+  Future<List<Map<String, dynamic>>> getExercices(int id) async {
     try {
-      final response = await get(Uri.parse("http://10.0.2.2:8000/api/getNotes/$id"));
+      final response = await get(Uri.parse("http://10.0.2.2:8000/api/getExer/$id"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> notes = List<Map<String, dynamic>>.from(responseData);
         return Future.value(notes); 
       } else {
-        throw Exception('Failed to load notes');
+        throw Exception('Failed to load exercices');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load notes');
+      throw Exception('Failed to load exercices');
     }
   }
 
@@ -45,14 +45,13 @@ class _VoirNotesState extends State<VoirNotes> {
       throw Exception('Failed to load eleves');
     }
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       appBar: AppBar(
-        title: Text('Notes Viewer'),
+        title: Text('Exercices Viewer'),
       ),
-      body: SingleChildScrollView(
+      body: SingleChildScrollView( 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -102,7 +101,7 @@ class _VoirNotesState extends State<VoirNotes> {
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: FutureBuilder(
-                  future: getNotes(_selectedEleveId!),
+                  future: getExercices(_selectedEleveId!),
                   builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
@@ -116,7 +115,7 @@ class _VoirNotesState extends State<VoirNotes> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
-                              'Notes for selected eleve:',
+                              'Exercices for selected eleve:',
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -125,11 +124,11 @@ class _VoirNotesState extends State<VoirNotes> {
                             itemCount: notes.length,
                             itemBuilder: (context, index) {
                               final note = notes[index];
-                              final subject = note['matiere'] ?? 'Unknown';
-                              final noteText = note['note'] ?? 'No Note';
+                              final subject = note['name'] ?? 'Unknown';
+                              final noteText = note['description'] ?? 'No Description';
                               return ListTile(
-                                title: Text("Matiere: $subject"),
-                                subtitle: Text('Note: $noteText'),
+                                title: Text("Name: $subject"),
+                                subtitle: Text('Description: $noteText'),
                               );
                             },
                           ),

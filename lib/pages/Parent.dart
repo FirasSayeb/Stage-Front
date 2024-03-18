@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:app/model/Actualite.dart';
 import 'package:app/pages/Home.dart';
 import 'package:app/pages/Profile.dart';
+import 'package:app/pages/voir_exercices.dart';
 import 'package:app/pages/voir_notes.dart';
+import 'package:app/pages/voir_notifications.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -117,6 +119,20 @@ class _SignupState extends State<Parent> {
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirNotes(widget.email)));},
+              ),
+              ListTile(
+                title: Text("Voir Exercices"),
+                leading: Icon(Icons.task),
+                onTap: () { Navigator.push(
+      context,   
+      MaterialPageRoute(builder: (context) => VoirExcercices(widget.email)));},
+              ),
+               ListTile(
+                title: Text("Voir Notifications"),
+                leading: Icon(Icons.notification_add),
+                onTap: () { Navigator.push(
+      context,   
+      MaterialPageRoute(builder: (context) => VoirNotifications(widget.email)));},
               ),
               
                ListTile(
