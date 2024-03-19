@@ -86,14 +86,27 @@ class _ModifierEleveState extends State<ModifierEleve> {
                             ),
                           ),
                           Container(
-                            height: 350,
-                            child: Card(
-                              elevation: 4,
+                            height: 400,
+                            child: Card(  
+                              elevation: 4,  
                               margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                               child: ListTile(
                                 contentPadding: EdgeInsets.all(16.0),
-                                title: Column(
+                                title: Column( 
                                   children: [
+                                    TextFormField( 
+                                      initialValue: eleve['num'],
+                                      style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                      onChanged: (value) {
+                                        name = value;
+                                      },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter some text';
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                     TextFormField(
                                       initialValue: eleve['name'],
                                       style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),

@@ -53,11 +53,13 @@ class _VoirNotificationsState extends State<VoirNotifications> {
                         margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                         child: ListTile(
                           contentPadding: EdgeInsets.all(16.0),
-                          title: Text( 
-                            snapshot.data![index]["body"],
+                          title: Text("Body  : ${snapshot.data![index]["body"]}",
                             style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                           ),
-                          
+                          subtitle:Text( 
+                           "Envoyer en : ${snapshot.data![index]["created_at"]}" , 
+                            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                          ) , 
                         ),
                       );   
                       },    

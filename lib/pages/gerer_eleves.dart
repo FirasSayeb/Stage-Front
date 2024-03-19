@@ -66,6 +66,10 @@ class _GererClassesState extends State<GererEleves> {
                                 backgroundImage: FileImage(File(snapshot.data![index]['profil'] ?? '')),
                                 radius: 30,
                               ),
+                              Text( 
+            "Numero: ${snapshot.data![index]['num']}",
+           
+          ),
           Text(
             "Name: ${snapshot.data![index]['name']}",
            

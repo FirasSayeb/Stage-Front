@@ -16,6 +16,7 @@ class AjouterEleve extends StatefulWidget {
 class _AjouterEleveState extends State<AjouterEleve> {
   late String date="";
   late String name;
+  late String num;
   late String lastname;
   late String selectedClass; 
   final fkey = GlobalKey<FormState>();
@@ -70,6 +71,24 @@ PlatformFile? file;
                           key: fkey,  
                           child: Column(   
                             children: [
+                               TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty || value.length == 0) {
+                                    return "champs obligatoire";
+                                  } else if (value.length < 3) {
+                                    return "verifier votre champs";
+                                  }
+                                  return null;
+                                },
+                                onSaved: (newValue) {
+                                  num = newValue!;
+                                },
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  hintText: "Numero inscription:",
+                                  icon: Icon(Icons.text_fields_sharp),
+                                ),
+                              ),
                               TextFormField(
                                 validator: (value) {
                                   if (value!.isEmpty || value.length == 0) {
@@ -268,8 +287,9 @@ TextFormField(
                                     fkey.currentState!.save();
                                     Map<String, dynamic> userData = {
                                       'name': name,
+                                      'num':num,
                                       'lastname': lastname,   
-                                      'date': date,
+                                      'date': date, 
                                       'class': selected,  
                                       'parent1': parent1,
                                        'parent2': parent2,
