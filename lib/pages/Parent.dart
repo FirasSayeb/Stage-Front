@@ -6,6 +6,7 @@ import 'package:app/pages/Profile.dart';
 import 'package:app/pages/voir_exercices.dart';
 import 'package:app/pages/voir_notes.dart';
 import 'package:app/pages/voir_notifications.dart';
+import 'package:app/pages/voir_services.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -133,6 +134,13 @@ class _SignupState extends State<Parent> {
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirNotifications(widget.email)));},
+              ),
+               ListTile(
+                title: Text("Voir Services"),
+                leading: Icon(Icons.miscellaneous_services),
+                onTap: () { Navigator.push(
+      context,   
+      MaterialPageRoute(builder: (context) => VoirServices(widget.email)));},
               ),
               
                ListTile(
