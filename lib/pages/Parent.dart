@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app/model/Actualite.dart';
 import 'package:app/pages/Home.dart';
 import 'package:app/pages/Profile.dart';
+import 'package:app/pages/voir_event.dart';
 import 'package:app/pages/voir_exercices.dart';
 import 'package:app/pages/voir_notes.dart';
 import 'package:app/pages/voir_notifications.dart';
@@ -142,7 +143,13 @@ class _SignupState extends State<Parent> {
       context,   
       MaterialPageRoute(builder: (context) => VoirServices(widget.email)));},
               ),
-              
+              ListTile(
+                title: Text("Voir Events"),
+                leading: Icon(Icons.event),
+                onTap: () { Navigator.push(
+      context,   
+      MaterialPageRoute(builder: (context) => VoirEvent(widget.email)));},
+              ),
                ListTile(
                 title: Text("Deconnexion"),
                 leading: Icon(Icons.exit_to_app),

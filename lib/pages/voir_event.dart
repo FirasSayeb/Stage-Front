@@ -1,17 +1,18 @@
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
-class VoirServices extends StatefulWidget {
+class VoirEvent extends StatefulWidget {
   final String email;
-  VoirServices(this.email);
+  VoirEvent(this.email);
 
   @override
-  State<VoirServices> createState() => _VoirServicesState();
+  State<VoirEvent> createState() => _VoirEventState();
 }
 
-class _VoirServicesState extends State<VoirServices> {
+class _VoirEventState extends State<VoirEvent> {
   int? _selectedEleveId;
   List services = [];
 
@@ -31,9 +32,9 @@ class _VoirServicesState extends State<VoirServices> {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getServices() async {
+  Future<List<Map<String, dynamic>>> getEvents() async {
     try {
-      final response = await get(Uri.parse("http://10.0.2.2:8000/api/getServices"));
+      final response = await get(Uri.parse("http://10.0.2.2:8000/api/getEvents"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> services = List<Map<String, dynamic>>.from(responseData);
@@ -49,7 +50,7 @@ class _VoirServicesState extends State<VoirServices> {
 
   getServi(int id) async {
     try {
-      final response = await get(Uri.parse("http://10.0.2.2:8000/api/getSer/$id"));
+      final response = await get(Uri.parse("http://10.0.2.2:8000/api/getEvt/$id"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> services = List<Map<String, dynamic>>.from(responseData);
@@ -64,12 +65,11 @@ class _VoirServicesState extends State<VoirServices> {
       throw Exception('Failed to load services');
     } 
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List Services'),
+        title: Text('List Events'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -120,14 +120,14 @@ class _VoirServicesState extends State<VoirServices> {
             ),
             SizedBox(height: 20),
             Text(
-              'Services:',
+              'Events:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             if (_selectedEleveId != null)
             Container(
               height: 300,
               child: FutureBuilder<List<Map<String, dynamic>>>(
-                future: getServices(),
+                future: getEvents(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -137,36 +137,36 @@ class _VoirServicesState extends State<VoirServices> {
 return ListView.builder(
 itemCount: snapshot.data!.length,
 itemBuilder: (context, index) {
-final service = snapshot.data![index];
-final serviceName = service['name'] ?? 'Unknown';
-final serviceId = service['id']; 
+final event = snapshot.data![index];
+final eventName = event['name'] ?? 'Unknown';
+final eventId = event['id']; 
  print(services);          
-bool isSubscribed = services.any((element) => element['service_id'] == serviceId);
+bool isSubscribed = services.any((element) => element['event_id'] == eventId);
 print(isSubscribed);
                     return ListTile(
-                      title: Text(serviceName),
-                      subtitle: Text("${service["price"]}"),
+                      title: Text(eventName),
+                      subtitle: Text("${event["price"]}"),
                       leading: isSubscribed
     ? ElevatedButton(
         onPressed: () async {
           Response response = await delete(
-            Uri.parse("http://10.0.2.2:8000/api/delSer/$_selectedEleveId"),
+            Uri.parse("http://10.0.2.2:8000/api/delEvt/$_selectedEleveId"),
           );
           if (response.statusCode == 200) {
             getServi(_selectedEleveId!);
           }
         },
-        child: Text('Remove'), 
+        child: Text('Remove'),
       )
     : ElevatedButton(
         onPressed: () async {
           Response response = await post(
-            Uri.parse("http://10.0.2.2:8000/api/addSer"),
+            Uri.parse("http://10.0.2.2:8000/api/addEvt"),
             body: <String, dynamic>{
               'eleve': _selectedEleveId.toString(),
-              'service': serviceId.toString(), 
+              'event': eventId.toString(), 
             },
-          ); 
+          );
           if (response.statusCode == 200) {
            getServi(_selectedEleveId!);
           }
@@ -177,11 +177,12 @@ print(isSubscribed);
                   },
                 );
               }
-            },
+            }, 
           ),
         ), 
       ],
     ),
   ),
 );
-  }}
+  }
+}
