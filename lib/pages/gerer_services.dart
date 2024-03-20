@@ -28,7 +28,7 @@ class GererServices extends StatefulWidget {
 class _GererServicesState extends State<GererServices> {
   Future<List<Map<String, dynamic>>> getServices() async { 
   try {
-    final response = await get(Uri.parse("http://10.0.2.2:8000/api/getServices"));
+    final response = await get(Uri.parse("http://192.168.1.11:80/api/getServices"));
     if (response.statusCode == 200) {
      final List<dynamic> responseData = jsonDecode(response.body.toString())['list'];
       final List<Map<String, dynamic>> parentList = responseData.map((data) => data as Map<String, dynamic>).toList();
@@ -234,7 +234,7 @@ class _GererServicesState extends State<GererServices> {
   } 
  deleteService(String name) async {
   try {
-    final response = await delete(Uri.parse("http://10.0.2.2:8000/api/deleteService/$name"));
+    final response = await delete(Uri.parse("http://192.168.1.11:80/api/deleteService/$name"));
     if (response.statusCode == 200) {
       print('Success: Service deleted');
     } else { 

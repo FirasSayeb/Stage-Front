@@ -140,9 +140,9 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
                                 };  
                                  print(mtoken); 
                                 Response response = await post(
-                                  Uri.parse("http://10.0.2.2:8000/api/auth"),
+                                  Uri.parse("http://192.168.1.11:80/api/auth"),
                                   body: userData,
-                                );
+                                ); 
 
                                 if (response.statusCode == 200) {
                                   print("User authenticated successfully");

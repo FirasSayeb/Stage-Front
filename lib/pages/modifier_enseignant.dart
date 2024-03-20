@@ -46,7 +46,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
   Future<Map<String, dynamic>> getUser(String email) async {
     try {
       final response = await http.get(
-        Uri.parse('http://10.0.2.2:8000/api/getUser/${widget.email}'),
+        Uri.parse('http://192.168.1.11:80/api/getUser/${widget.email}'),
       );
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body)['user'];
@@ -194,7 +194,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
                             final response = await http.put(
-                              Uri.parse("http://10.0.2.2:8000/api/updateEnseignant/"),
+                              Uri.parse("http://192.168.1.11:80/api/updateEnseignant/"),
                               body: <String, dynamic>{
                                 'email': widget.email,
                                 'password': password,
@@ -240,7 +240,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
 
   Future<List<Map<String, dynamic>>> getClasses() async {
     try {
-      final response = await get(Uri.parse("http://10.0.2.2:8000/api/getClasses"));
+      final response = await get(Uri.parse("http://192.168.1.11:80/api/getClasses"));
       if (response.statusCode == 200) {
         List<dynamic> classesData = jsonDecode(response.body)['list'];
         List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);

@@ -204,7 +204,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
                                 _formKey.currentState!.save();
                                 print("classe $classe");
                                 final response = await http.put(
-                                  Uri.parse("http://10.0.2.2:8000/api/updateEleve/${widget.id}"),
+                                  Uri.parse("http://192.168.1.11:80/api/updateEleve/${widget.id}"),
                                   body: <String, dynamic>{
                                     'name': name,
                                     'lastname': lastname,
@@ -257,7 +257,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
 
   Future<Map<String, dynamic>> getEleve() async {
     try {
-      final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/getEleve/${widget.id}"));
+      final response = await http.get(Uri.parse("http://192.168.1.11:80/api/getEleve/${widget.id}"));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)['eleve'] as Map<String, dynamic>;
@@ -281,7 +281,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
 
   Future<List<Map<String, dynamic>>> getClasses() async {
     try {
-      final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/getClasses"));
+      final response = await http.get(Uri.parse("http://192.168.1.11:80/api/getClasses"));
 
       if (response.statusCode == 200) {
         List<dynamic> classesData = jsonDecode(response.body)['list'];

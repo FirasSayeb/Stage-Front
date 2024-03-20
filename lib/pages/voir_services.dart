@@ -17,7 +17,7 @@ class _VoirServicesState extends State<VoirServices> {
 
   Future<List<Map<String, dynamic>>> getEleves() async {
     try {
-      final response = await get(Uri.parse("http://10.0.2.2:8000/api/getFils/${widget.email}"));
+      final response = await get(Uri.parse("http://192.168.1.11:80/api/getFils/${widget.email}"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> eleves = List<Map<String, dynamic>>.from(responseData);
@@ -33,7 +33,7 @@ class _VoirServicesState extends State<VoirServices> {
 
   Future<List<Map<String, dynamic>>> getServices() async {
     try {
-      final response = await get(Uri.parse("http://10.0.2.2:8000/api/getServices"));
+      final response = await get(Uri.parse("http://192.168.1.11:80/api/getServices"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> services = List<Map<String, dynamic>>.from(responseData);
@@ -49,7 +49,7 @@ class _VoirServicesState extends State<VoirServices> {
 
   getServi(int id) async {
     try {
-      final response = await get(Uri.parse("http://10.0.2.2:8000/api/getSer/$id"));
+      final response = await get(Uri.parse("http://192.168.1.11:80/api/getSer/$id"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> services = List<Map<String, dynamic>>.from(responseData);
@@ -150,7 +150,7 @@ print(isSubscribed);
     ? ElevatedButton(
         onPressed: () async {
           Response response = await delete(
-            Uri.parse("http://10.0.2.2:8000/api/delSer/$_selectedEleveId"),
+            Uri.parse("http://192.168.1.11:80/api/delSer/$_selectedEleveId"),
           );
           if (response.statusCode == 200) {
             getServi(_selectedEleveId!);
@@ -158,10 +158,10 @@ print(isSubscribed);
         },
         child: Text('Remove'), 
       )
-    : ElevatedButton(
+    : ElevatedButton( 
         onPressed: () async {
           Response response = await post(
-            Uri.parse("http://10.0.2.2:8000/api/addSer"),
+            Uri.parse("http://192.168.1.11:80/api/addSer"),
             body: <String, dynamic>{
               'eleve': _selectedEleveId.toString(),
               'service': serviceId.toString(), 

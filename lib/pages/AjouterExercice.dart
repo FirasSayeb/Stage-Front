@@ -111,7 +111,7 @@ class _AjouterExerciceState extends State<AjouterExercice> {
               };
 
               Response response = await post(
-                Uri.parse("http://10.0.2.2:8000/api/addExercice"),
+                Uri.parse("http://192.168.1.11:80/api/addExercice"),
                 body: userData,
               );  
 
@@ -197,7 +197,7 @@ class _AjouterExerciceState extends State<AjouterExercice> {
   }
  Future<List<Map<String,dynamic>>> getUsers()async { 
    try{ 
-   final response =await get(Uri.parse("http://10.0.2.2:8000/api/getUsers/${widget.name}"));
+   final response =await get(Uri.parse("http://192.168.1.11:80/api/getUsers/${widget.name}"));
    if(response.statusCode==200){
      List<dynamic> classesData = jsonDecode(response.body)['list'];
       List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);

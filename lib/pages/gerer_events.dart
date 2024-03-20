@@ -29,7 +29,7 @@ class GererEvents extends StatefulWidget {
 class _GererServicesState extends State<GererEvents> {
  Future<List<Map<String, dynamic>>> getEvents() async {
   try {
-    final response = await get(Uri.parse("http://10.0.2.2:8000/api/getEvents"));
+    final response = await get(Uri.parse("http://192.168.1.11:80/api/getEvents"));
     if (response.statusCode == 200) {
       final dynamic responseData = jsonDecode(response.body.toString())['list'];
       if (responseData != null) {
@@ -243,7 +243,7 @@ Text(
   } 
  deleteEvent(String name) async {
   try {
-    final response = await delete(Uri.parse("http://10.0.2.2:8000/api/deleteEvent/$name"));
+    final response = await delete(Uri.parse("http://192.168.1.11:80/api/deleteEvent/$name"));
     if (response.statusCode == 200) {
       print('Success: Service deleted'); 
     } else { 

@@ -254,7 +254,7 @@ Center(
     fkey.currentState!.save();
     try {
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/api/addEnseignant'),
+        Uri.parse('http://192.168.1.11:80/api/addEnseignant'),
         body: <String, dynamic>{
           'name': nom, 
           'email': email, 
@@ -355,7 +355,7 @@ Center(
   }
   Future<List<Map<String,dynamic>>> getClasses() async {
   try {
-    final response = await get(Uri.parse("http://10.0.2.2:8000/api/getClasses"));
+    final response = await get(Uri.parse("http://192.168.1.11:80/api/getClasses"));
     if (response.statusCode == 200) {
       List<dynamic> classesData = jsonDecode(response.body)['list'];
       List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);

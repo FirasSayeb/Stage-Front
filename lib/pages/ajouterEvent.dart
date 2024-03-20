@@ -111,7 +111,7 @@ class _AjouterServiceState extends State<AjouterEvent> {
                                 };
                                 
                                 Response response = await post(
-                                  Uri.parse("http://10.0.2.2:8000/api/addEvent"),
+                                  Uri.parse("http://192.168.1.11:80/api/addEvent"),
                                   body: userData,   
                                 );
                                   

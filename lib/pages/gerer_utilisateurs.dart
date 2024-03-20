@@ -27,7 +27,7 @@ class _GererUtilisateursState extends State<GererUtilisateurs> {
 
    Future<List<Map<String, dynamic>>> getParents() async {
   try {
-    final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/getParents'));
+    final response = await http.get(Uri.parse('http://192.168.1.11:80/api/getParents'));
     if (response.statusCode == 200) {
       final List<dynamic> responseData = jsonDecode(response.body)['list'];
       final List<Map<String, dynamic>> parentList = responseData.map((data) => data as Map<String, dynamic>).toList();
@@ -43,7 +43,7 @@ class _GererUtilisateursState extends State<GererUtilisateurs> {
 
     deleteParent(String email)async{
       try{
-        final response=await http.delete(Uri.parse('http://10.0.2.2:8000/api/deleteParent/$email'));
+        final response=await http.delete(Uri.parse('http://192.168.1.11:80/api/deleteParent/$email'));
         if(response.statusCode == 200){
 print("success");
         }else{

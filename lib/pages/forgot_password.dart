@@ -72,7 +72,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             };  
 
                             http.Response response = await http.post(
-                              Uri.parse("http://10.0.2.2:8000/api/respass"),
+                              Uri.parse("http://192.168.1.11:80/api/respass"),
                               body: userData,
                             ); 
 

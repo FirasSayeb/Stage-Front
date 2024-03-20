@@ -16,7 +16,7 @@ class _VoirExcercicesState extends State<VoirExcercices> {
    int? _selectedEleveId;
   Future<List<Map<String, dynamic>>> getExercices(int id) async {
     try {
-      final response = await get(Uri.parse("http://10.0.2.2:8000/api/getExer/$id"));
+      final response = await get(Uri.parse("http://192.168.1.11:80/api/getExer/$id"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> notes = List<Map<String, dynamic>>.from(responseData);
@@ -32,7 +32,7 @@ class _VoirExcercicesState extends State<VoirExcercices> {
 
   Future<List<Map<String, dynamic>>> getEleves() async {
     try {
-      final response = await get(Uri.parse("http://10.0.2.2:8000/api/getFils/${widget.email}"));
+      final response = await get(Uri.parse("http://192.168.1.11:80/api/getFils/${widget.email}"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> eleves = List<Map<String, dynamic>>.from(responseData);
