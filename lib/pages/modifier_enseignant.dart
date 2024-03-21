@@ -201,7 +201,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
                                 'file': path,
                                 'phone': phone,
                                 'address': address,
-                                'list': selectedClasses.join(',')
+                                'list': selectedClasses.join(',') ?? ''
                               },
                             );
                             print(<String, dynamic>{

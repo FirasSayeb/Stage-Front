@@ -29,6 +29,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
   PlatformFile? file;
   String? path;
   String? select;
+  String num='';
   late String name = '';
   late String lastname = '';
   late String date = '';
@@ -70,7 +71,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
                       }
 
                       path ??= eleve['profil'];
-                      classe = eleve['class_name']; // Set initial value for classe
+                      classe = eleve['class_name']; 
 
                       return Column(
                         children: [
@@ -98,7 +99,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
                                       initialValue: eleve['num'],
                                       style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                       onChanged: (value) {
-                                        name = value;
+                                        num = value;
                                       },
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
@@ -205,18 +206,27 @@ class _ModifierEleveState extends State<ModifierEleve> {
                                 print("classe $classe");
                                 final response = await http.put(
                                   Uri.parse("http://192.168.1.11:80/api/updateEleve/${widget.id}"),
-                                  body: <String, dynamic>{
-                                    'name': name,
-                                    'num':num,
-                                    'lastname': lastname,
-                                    'date': select ?? eleve['date_of_birth'],
-                                    'class': classe,
-                                    'parent1': parent1,
-                                    'parent2': parent2,
-                                    'file': path,  
-                                  },
+                                   body: <String, dynamic>{
+        'name': name ?? '',
+        'num': num ?? '',
+        'lastname': lastname ?? '',
+        'date': select ?? eleve['date_of_birth'] ?? '',
+        'class': classe ?? '',
+        'parent1': parent1 ?? '',
+        'parent2': parent2 ?? '',
+        'file': path ?? '',  
+      },
                                 );
-
+                                   print({
+        'name': name ?? '',
+        'num': num ?? '',
+        'lastname': lastname ?? '',
+        'date': select ?? eleve['date_of_birth'] ?? '',
+        'class': classe ?? '',
+        'parent1': parent1 ?? '',
+        'parent2': parent2 ?? '',
+        'file': path ?? '',  
+      });
                                 if (response.statusCode == 200) {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));
                                 }
@@ -256,29 +266,30 @@ class _ModifierEleveState extends State<ModifierEleve> {
     }
   }
 
-  Future<Map<String, dynamic>> getEleve() async {
-    try {
-      final response = await http.get(Uri.parse("http://192.168.1.11:80/api/getEleve/${widget.id}"));
+ Future<Map<String, dynamic>> getEleve() async {
+  try {
+    final response = await http.get(Uri.parse("http://192.168.1.11:80/api/getEleve/${widget.id}"));
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body)['eleve'] as Map<String, dynamic>;
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body)['eleve'] as Map<String, dynamic>;
+      num =data['num'] ?? '';
+      name = data['name'] ?? '';
+      lastname = data['lastname'] ?? '';
+      date = data['date_of_birth'] ?? '';
+      classe = data['class_name'] ?? '';
+      parent1 = data['parent_names'] != null && data['parent_names'].isNotEmpty ? data['parent_names'][0] : '';
+      parent2 = data['parent_names'] != null && data['parent_names'].length > 1 ? data['parent_names'][1] : '';
 
-        name = data['name'];
-        lastname = data['lastname'];
-        date = data['date_of_birth'];
-        classe = data['class_name'];
-        parent1 = data['parent_names'].isNotEmpty ? data['parent_names'][0] : '';
-        parent2 = data['parent_names'].length > 1 ? data['parent_names'][1] : '';
-
-        return data;
-      } else {
-        throw Exception('Failed to load eleve');
-      }
-    } catch (e) {
-      print('Error: $e');
+      return data; 
+    } else {
       throw Exception('Failed to load eleve');
     }
+  } catch (e) {
+    print('Error: $e');
+    throw Exception('Failed to load eleve');
   }
+}
+
 
   Future<List<Map<String, dynamic>>> getClasses() async {
     try {
