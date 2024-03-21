@@ -207,6 +207,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
                                   Uri.parse("http://192.168.1.11:80/api/updateEleve/${widget.id}"),
                                   body: <String, dynamic>{
                                     'name': name,
+                                    'num':num,
                                     'lastname': lastname,
                                     'date': select ?? eleve['date_of_birth'],
                                     'class': classe,

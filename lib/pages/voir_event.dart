@@ -145,13 +145,13 @@ bool isSubscribed = services.any((element) => element['event_id'] == eventId);
 print(isSubscribed);
                     return ListTile(
                       title: Text(eventName),
-                      subtitle: Text("${event["price"]}"),
+                      subtitle: Text("${event["price"]} ${event["date"]}"),
                       leading: isSubscribed
     ? ElevatedButton(
         onPressed: () async {
           Response response = await delete(
             Uri.parse("http://192.168.1.11:80/api/delEvt/$_selectedEleveId"),
-          );
+          ); 
           if (response.statusCode == 200) {
             getServi(_selectedEleveId!);
           }

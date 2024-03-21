@@ -12,6 +12,8 @@ import 'package:app/pages/gerer_eleves.dart';
 import 'package:app/pages/gerer_emploi.dart';
 import 'package:app/pages/gerer_events.dart';
 import 'package:app/pages/gerer_services.dart';
+import 'package:app/pages/valider_event.dart';
+import 'package:app/pages/valider_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -232,6 +234,18 @@ Widget build(BuildContext context) {
                   leading: const Icon(Icons.notification_add),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterNotification(widget.email)));
+                  },
+                ),  ListTile(
+                  title: const Text("Valider  Services"), 
+                  leading: const Icon(Icons.check),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderService(widget.email)));
+                  },
+                ),ListTile(
+                  title: const Text("Valider  Events"), 
+                  leading: const Icon(Icons.check),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderEvent(widget.email)));
                   },
                 ),
                 ListTile(  
