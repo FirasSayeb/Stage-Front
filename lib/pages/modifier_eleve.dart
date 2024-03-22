@@ -30,6 +30,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
   String? path;
   String? select;
   String num='';
+  final selectedParents=[];
   late String name = '';
   late String lastname = '';
   late String date = '';
@@ -180,20 +181,47 @@ class _ModifierEleveState extends State<ModifierEleve> {
                                         }
                                       },
                                     ),
-                                    TextFormField(
-                                      initialValue: eleve['parent_names'][0],
-                                      style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                                      onChanged: (value) {
-                                        parent1 = value;
-                                      },
-                                    ),
-                                    TextFormField(
-                                      initialValue: eleve['parent_names'].length > 1 ? eleve['parent_names'][1] : '',
-                                      style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                                      onChanged: (value) {
-                                        parent2 = value;
-                                      },
-                                    ),
+                                     FutureBuilder<List<Map<String, dynamic>>>(
+  future: getParents(),
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return CircularProgressIndicator();
+    } else if (snapshot.hasError) { 
+      return Text('Error: ${snapshot.error}');
+    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+      return Text('No data available'); 
+    } else {
+      return DropdownButton(
+        value: selectedParents.isNotEmpty ? selectedParents[0] : null,
+        hint: Text("select parent"), 
+        items: snapshot.data!.map((e){
+          return DropdownMenuItem(
+            child: Text(e['email'].toString()),
+            value: e['email'].toString(), 
+          );
+        }).toList(),
+       onChanged: (value) {
+  setState(() {
+    
+    if (selectedParents.contains(value.toString())) {
+     
+      selectedParents.remove(value.toString());
+    } else {
+     
+      selectedParents.add(value.toString());
+    }
+   
+    if (selectedParents.length > 2) {
+      selectedParents.removeAt(0); 
+    }
+  });
+},
+
+
+      );
+    } 
+  },
+),
                                   ],
                                 ),
                               ),
@@ -212,8 +240,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
         'lastname': lastname ?? '',
         'date': select ?? eleve['date_of_birth'] ?? '',
         'class': classe ?? '',
-        'parent1': parent1 ?? '',
-        'parent2': parent2 ?? '',
+       'list':selectedParents.join(','), 
         'file': path ?? '',  
       },
                                 );
@@ -223,8 +250,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
         'lastname': lastname ?? '',
         'date': select ?? eleve['date_of_birth'] ?? '',
         'class': classe ?? '',
-        'parent1': parent1 ?? '',
-        'parent2': parent2 ?? '',
+'list':selectedParents.join(','), 
         'file': path ?? '',  
       });
                                 if (response.statusCode == 200) {
@@ -289,7 +315,21 @@ class _ModifierEleveState extends State<ModifierEleve> {
     throw Exception('Failed to load eleve');
   }
 }
-
+Future<List<Map<String, dynamic>>> getParents() async {
+  try {
+    final response = await http.get(Uri.parse('http://192.168.1.11:80/api/getParents'));
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = jsonDecode(response.body)['list'];
+      final List<Map<String, dynamic>> parentList = responseData.map((data) => data as Map<String, dynamic>).toList();
+      return parentList;
+    } else {
+      throw Exception('Failed to load parents');
+    }
+  } catch (e) {
+    print('Error: $e');  
+    throw Exception('Failed to load parents'); 
+  }
+}
 
   Future<List<Map<String, dynamic>>> getClasses() async {
     try {

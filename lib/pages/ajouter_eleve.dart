@@ -17,6 +17,7 @@ class _AjouterEleveState extends State<AjouterEleve> {
   late String date="";
   late String name;
   late String num;
+  final selectedParents=[];
   late String lastname;
   late String selectedClass; 
   final fkey = GlobalKey<FormState>();
@@ -145,24 +146,7 @@ PlatformFile? file;
                                   _selectDate();
                                 },
                               ),
-                              /*TextFormField(
-                                validator: (value) {
-                                  if (value!.isEmpty || value.length == 0) {
-                                    return "champs obligatoire";
-                                  } else if (value.length < 3) {
-                                    return "verifier votre champs";
-                                  }
-                                  return null;
-                                },
-                                onSaved: (newValue) {
-                                  selected = newValue!;
-                                },
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration( 
-                                  hintText: "Classe:",
-                                  icon: Icon(Icons.class_), 
-                                ),
-                              )*/Padding(padding: EdgeInsets.all(10)),
+                              Padding(padding: EdgeInsets.all(10)),
                               FutureBuilder<List<Map<String, dynamic>>>(
             future: getClasses(),
             builder: (context, snapshot) {
@@ -190,28 +174,7 @@ PlatformFile? file;
             );
               } 
             },
-          ),TextFormField(
-  
-  onSaved: (newValue) {
- parent1=newValue!;
-  },
-  keyboardType: TextInputType.emailAddress,
-  decoration: InputDecoration(
-    hintText: "Tuteur 1 email:",
-    icon: Icon(Icons.email),
-  ),
-),  
-TextFormField(
-  
-  onSaved: (newValue) { 
-    parent2=newValue!;
-  },
-  keyboardType: TextInputType.emailAddress,
-  decoration: InputDecoration(
-    hintText: "Tuteur 2 email:",
-    icon: Icon(Icons.email),
-  ),
-),ElevatedButton.icon(
+          ),ElevatedButton.icon(
   
                             onPressed: picksinglefile,
   
@@ -236,7 +199,7 @@ TextFormField(
                             )
   
                           ),
-      /* FutureBuilder<List<Map<String, dynamic>>>(
+       FutureBuilder<List<Map<String, dynamic>>>(
   future: getParents(),
   builder: (context, snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -276,7 +239,7 @@ TextFormField(
       );
     } 
   },
-),*/
+),
 
 
 
@@ -291,8 +254,7 @@ TextFormField(
                                       'lastname': lastname,   
                                       'date': date, 
                                       'class': selected,  
-                                      'parent1': parent1,
-                                       'parent2': parent2,
+                                      'list':selectedParents.join(','), 
                                        'file': path ?? '', 
                                     };
                                     Response response = await post( 
@@ -375,7 +337,7 @@ TextFormField(
 
 Future<List<Map<String, dynamic>>> getParents() async {
   try {
-    final response = await get(Uri.parse('http://10.0.2.2:8000/api/getParents'));
+    final response = await get(Uri.parse('http://192.168.1.11:80/api/getParents'));
     if (response.statusCode == 200) {
       final List<dynamic> responseData = jsonDecode(response.body)['list'];
       final List<Map<String, dynamic>> parentList = responseData.map((data) => data as Map<String, dynamic>).toList();
@@ -391,7 +353,7 @@ Future<List<Map<String, dynamic>>> getParents() async {
 
   Future<List<Map<String,dynamic>>> getClasses() async {
   try {
-    final response = await get(Uri.parse("http://10.0.2.2:8000/api/getClasses"));
+    final response = await get(Uri.parse("http://192.168.1.11:80/api/getClasses"));
     if (response.statusCode == 200) {
       List<dynamic> classesData = jsonDecode(response.body)['list'];
       List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);
