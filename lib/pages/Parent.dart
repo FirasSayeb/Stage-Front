@@ -22,7 +22,7 @@ class Parent extends StatefulWidget {
 class _SignupState extends State<Parent> { 
    Future<List<Actualite>> getActualites() async {
     try { 
-      final response = await get(Uri.parse("http://192.168.1.11:80/api/getActualites"));
+      final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getActualites"));
       if (response.statusCode == 200) {
         final List responseData = jsonDecode(response.body)['list']; 
         return responseData.map((data) => Actualite.fromJson(data)).toList();

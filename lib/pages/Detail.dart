@@ -16,7 +16,7 @@ class Detail extends StatefulWidget {
 class _DetailState extends State<Detail> {
   Future<List<Actualite>> getActualite() async {
   try {
-    final response = await http.get(Uri.parse("http://192.168.1.11:80/api/getActualite/${widget.id}"));
+    final response = await http.get(Uri.parse("https://firas.alwaysdata.net/api/getActualite/${widget.id}"));
     if (response.statusCode == 200) {
       final List responseData = jsonDecode(response.body)['actualite'];
       return responseData.map((data) => Actualite.fromJson(data)).toList();

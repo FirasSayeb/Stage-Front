@@ -26,7 +26,7 @@ class _ModifierClasseState extends State<ModifierClasse> {
   Future<Map<String, dynamic>> getClasse() async {
     try {
       final response =
-          await http.get(Uri.parse("http://192.168.1.11:80/api/getClasse/${widget.id}"));
+          await http.get(Uri.parse("https://firas.alwaysdata.net/api/getClasse/${widget.id}"));
       if (response.statusCode == 200) {
         return jsonDecode(response.body)['classe']; 
       } else {
@@ -154,7 +154,7 @@ class _ModifierClasseState extends State<ModifierClasse> {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
                                 final response = await http.put(
-                                  Uri.parse("http://192.168.1.11:80/api/updateClasse/${widget.id}"),
+                                  Uri.parse("https://firas.alwaysdata.net/api/updateClasse/${widget.id}"),
                                   body: <String, dynamic>{
                                     'body': body,
                                     'file': path,   

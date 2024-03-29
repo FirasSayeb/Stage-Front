@@ -100,7 +100,7 @@ class _ModExerciceState extends State<ModExercice> {
                             if (fkey.currentState!.validate()) {
                               fkey.currentState!.save();
                               final response = await put(
-                                Uri.parse("http://192.168.1.11:80/api/updateExercice/${widget.name}"),
+                                Uri.parse("https://firas.alwaysdata.net/api/updateExercice/${widget.name}"),
                                 body: <String, dynamic>{
                                   'name': name.isNotEmpty ? name : exercice['name'],
                                   'description': description.isNotEmpty ? description : exercice['description'],
@@ -128,7 +128,7 @@ class _ModExerciceState extends State<ModExercice> {
 
   Future<Map<String, dynamic>> getExercice() async { 
     try {
-      final response = await get(Uri.parse("http://192.168.1.11:80/api/getExercice/${widget.name}"));
+      final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getExercice/${widget.name}"));
       if (response.statusCode == 200) {
         return jsonDecode(response.body)['exercice'];
       } else {

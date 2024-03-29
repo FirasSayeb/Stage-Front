@@ -15,7 +15,7 @@ class ValiderService extends StatefulWidget {
 class _ValiderServiceState extends State<ValiderService> {
   Future<List<Map<String, dynamic>>>getServi() async {
     try {
-      final response = await get(Uri.parse("http://192.168.1.11:80/api/getSer"));
+      final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getSer"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> services = List<Map<String, dynamic>>.from(responseData);
@@ -112,7 +112,7 @@ class _ValiderServiceState extends State<ValiderService> {
   }
   deleteService(int id) async {
   try {
-    final response = await delete(Uri.parse("http://192.168.1.11:80/api/delSe/$id"));
+    final response = await delete(Uri.parse("https://firas.alwaysdata.net/api/delSe/$id"));
     if (response.statusCode == 200) {
       print('Success: Service deleted');
     } else { 

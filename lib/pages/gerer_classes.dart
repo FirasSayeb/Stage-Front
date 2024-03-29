@@ -29,7 +29,7 @@ class _GererClassesState extends State<GererClasses> {
 
  Future<List<Map<String, dynamic>>> getClasses() async { 
   try {
-    final response = await http.get(Uri.parse("http://192.168.1.11:80/api/getClasses"));
+    final response = await http.get(Uri.parse("https://firas.alwaysdata.net/api/getClasses"));
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body)['list'];
       return data.cast<Map<String, dynamic>>(); 
@@ -236,7 +236,7 @@ String fileName2WithExtension = pathPart.last;
 }
 deleteClasse(String name)async{
   try{
-     final response=await http.delete(Uri.parse("http://192.168.1.11:80/api/deleteClasse/$name"));
+     final response=await http.delete(Uri.parse("https://firas.alwaysdata.net/api/deleteClasse/$name"));
      if(response.statusCode==200){
       print('success');
      }else{

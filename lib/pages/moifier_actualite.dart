@@ -24,7 +24,7 @@ class _ModierActualiteState extends State<ModierActualite> {
   Future<List<Actualite>> getActualite() async {
     try {
       final response =
-          await http.get(Uri.parse("http://192.168.1.11:80/api/getActualite/${widget.id}"));
+          await http.get(Uri.parse("https://firas.alwaysdata.net/api/getActualite/${widget.id}"));
       if (response.statusCode == 200) {
         final List responseData = jsonDecode(response.body)['actualite'];
         return responseData.map((data) => Actualite.fromJson(data)).toList();
@@ -129,7 +129,7 @@ class _ModierActualiteState extends State<ModierActualite> {
                                   });
                                 }
                                 final response = await http.put(
-                                  Uri.parse("http://192.168.1.11:80/api/updateActualite/${widget.id}"),
+                                  Uri.parse("https://firas.alwaysdata.net/api/updateActualite/${widget.id}"),
                                   body: <String, dynamic>{
                                     'body': body!,
                                     'file': path!,

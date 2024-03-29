@@ -106,7 +106,7 @@ class _NotifierParentState extends State<NotifierParent> {
                                           
                                       Response response = await post( 
                                         Uri.parse( 
-                                            "http://192.168.1.11:80/api/addNotification"),
+                                            "https://firas.alwaysdata.net/api/addNotification"),
                                         body: userData,
                                       );  
                                       print(userData);
@@ -179,7 +179,7 @@ class _NotifierParentState extends State<NotifierParent> {
   }
   Future<List<Map<String,dynamic>>> getUsers()async { 
    try{ 
-   final response =await get(Uri.parse("http://192.168.1.11:80/api/getParents/${widget.name}"));
+   final response =await get(Uri.parse("https://firas.alwaysdata.net/api/getParents/${widget.name}"));
    if(response.statusCode==200){
      List<dynamic> classesData = jsonDecode(response.body)['list'];
       List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);

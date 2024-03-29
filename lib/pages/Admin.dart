@@ -30,7 +30,7 @@ class Admin extends StatefulWidget {
 class _AdminState extends State<Admin> {
   Future<List<Actualite>> getActualites() async {
     try {
-      final response = await http.get(Uri.parse("http://192.168.1.11:80/api/getActualites"));
+      final response = await http.get(Uri.parse("https://firas.alwaysdata.net/api/getActualites"));
       if (response.statusCode == 200) {
         final List responseData = jsonDecode(response.body)['list']; 
         return responseData.map((data) => Actualite.fromJson(data)).toList();
@@ -229,7 +229,7 @@ class _AdminState extends State<Admin> {
   }
 }
 void deleteActualite(int actualiteId) async {
-  final url = Uri.parse("http://10.0.2.2:8000/api/deleteActualite/$actualiteId");
+  final url = Uri.parse("https://firas.alwaysdata.net/api/deleteActualite/$actualiteId");
   
   try {  
     final response = await http.delete(url);

@@ -18,7 +18,7 @@ class _VoirEventState extends State<VoirEvent> {
 
   Future<List<Map<String, dynamic>>> getEleves() async {
     try {
-      final response = await get(Uri.parse("http://192.168.1.11:80/api/getFils/${widget.email}"));
+      final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getFils/${widget.email}"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> eleves = List<Map<String, dynamic>>.from(responseData);
@@ -34,7 +34,7 @@ class _VoirEventState extends State<VoirEvent> {
 
   Future<List<Map<String, dynamic>>> getEvents() async {
     try {
-      final response = await get(Uri.parse("http://192.168.1.11:80/api/getEvents"));
+      final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getEvents"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> services = List<Map<String, dynamic>>.from(responseData);
@@ -50,7 +50,7 @@ class _VoirEventState extends State<VoirEvent> {
 
   getServi(int id) async {
     try {
-      final response = await get(Uri.parse("http://192.168.1.11:80/api/getEvt/$id"));
+      final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getEvt/$id"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> services = List<Map<String, dynamic>>.from(responseData);
@@ -150,7 +150,7 @@ print(isSubscribed);
     ? ElevatedButton(
         onPressed: () async {
           Response response = await delete(
-            Uri.parse("http://192.168.1.11:80/api/delEvt/$_selectedEleveId"),
+            Uri.parse("https://firas.alwaysdata.net/api/delEvt/$_selectedEleveId"),
           ); 
           if (response.statusCode == 200) {
             getServi(_selectedEleveId!);
@@ -161,7 +161,7 @@ print(isSubscribed);
     : ElevatedButton(
         onPressed: () async {
           Response response = await post(
-            Uri.parse("http://192.168.1.11:80/api/addEvt"),
+            Uri.parse("https://firas.alwaysdata.net/api/addEvt"),
             body: <String, dynamic>{
               'eleve': _selectedEleveId.toString(),
               'event': eventId.toString(), 

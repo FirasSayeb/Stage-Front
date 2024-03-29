@@ -90,7 +90,7 @@ class _ModServiceState extends State<ModService> {
                               if (fkey.currentState!.validate()) {
                                 fkey.currentState!.save();
                                 final response = await put(
-                                  Uri.parse("http://192.168.1.11:80/api/updateService/${widget.name}"),
+                                  Uri.parse("https://firas.alwaysdata.net/api/updateService/${widget.name}"),
                                   body: <String, dynamic>{
                                      'name': name.isNotEmpty ? name : classe['name'], 
         'price': price != null ? price.toString() : classe['price'].toString(),
@@ -117,7 +117,7 @@ class _ModServiceState extends State<ModService> {
   Future<Map<String, dynamic>> getService() async {
     try {
       final response = 
-          await get(Uri.parse("http://192.168.1.11:80/api/getService/${widget.name}"));
+          await get(Uri.parse("https://firas.alwaysdata.net/api/getService/${widget.name}"));
       if (response.statusCode == 200) {
         return jsonDecode(response.body)['service']; 
       } else {

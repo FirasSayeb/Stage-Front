@@ -121,14 +121,15 @@ class _ForgotPasswordState extends State<ResetPassword> {
                         onTap: () async {
                           if (fkey.currentState!.validate()) {
                             fkey.currentState!.save();
+                            print(widget.email+user.password+valide);
                                if(code ==widget.value && user.password==valide){
                                  Map<String, String> userData = {
                                   'email':widget.email,
                               'password': user.password,
                             };  
-
+                               print(widget.email+user.password+valide);
                             http.Response response = await http.post(
-                              Uri.parse("http://192.168.1.11:80/api/newpass"),
+                              Uri.parse("https://firas.alwaysdata.net/api/newpass"),
                               body: userData,
                             );
 

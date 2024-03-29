@@ -15,7 +15,7 @@ class VoirNotifications extends StatefulWidget {
 class _VoirNotificationsState extends State<VoirNotifications> {
    Future<List<Map<String, dynamic>>> getNotifications() async {
     try {
-      final response = await get(Uri.parse("http://192.168.1.11:80/api/getNoti/${widget.email}"));
+      final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getNoti/${widget.email}"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> eleves = List<Map<String, dynamic>>.from(responseData);

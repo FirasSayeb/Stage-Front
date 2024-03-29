@@ -111,7 +111,7 @@ class _AjouterServiceState extends State<AjouterEvent> {
                                 };
                                 
                                 Response response = await post(
-                                  Uri.parse("http://192.168.1.11:80/api/addEvent"),
+                                  Uri.parse("https://firas.alwaysdata.net/api/addEvent"),
                                   body: userData,   
                                 );
                                   

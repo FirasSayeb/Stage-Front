@@ -198,7 +198,7 @@ TextFormField(validator: (value) {
     fkey.currentState!.save();
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.11:80/api/addParent'),
+        Uri.parse('https://firas.alwaysdata.net/api/addParent'),
         body: <String, dynamic>{
           'name': nom, 
           'email': email, 

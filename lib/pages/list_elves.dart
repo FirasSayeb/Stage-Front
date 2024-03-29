@@ -104,7 +104,7 @@ class _ListElevesState extends State<ListEleves> {
 
   Future<List<Map<String, dynamic>>> getEleves() async {
     try {
-      final response = await get(Uri.parse("http://192.168.1.11:80/api/getEleves/${widget.name}"));
+      final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getEleves/${widget.name}"));
       if (response.statusCode == 200) {
         List<dynamic> classesData = jsonDecode(response.body)['eleves'];
         List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);

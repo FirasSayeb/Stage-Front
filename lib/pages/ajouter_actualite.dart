@@ -112,7 +112,7 @@ class _HomeState extends State<AjouterActualite> {
                                 };
                                 print(userData['file']);
                                 Response response = await post(
-                                  Uri.parse("http://192.168.1.11:80/api/addActualite"),
+                                  Uri.parse("https://firas.alwaysdata.net/api/addActualite"),
                                   body: userData,  
                                 );
 

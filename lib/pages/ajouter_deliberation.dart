@@ -47,7 +47,7 @@ class _AjouterDelState extends State<AjouterDel> {
    
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse("http://192.168.1.11:80/api/addNote"),
+      Uri.parse("https://firas.alwaysdata.net/api/addNote"),
     ); 
     request.fields['email'] = widget.email;
     request.files.add(http.MultipartFile.fromBytes( 
@@ -181,7 +181,7 @@ class _AjouterDelState extends State<AjouterDel> {
   }
   Future<List<Map<String,dynamic>>> getParents()async { 
    try{ 
-   final response =await get(Uri.parse("http://192.168.1.11:80/api/getParents"));
+   final response =await get(Uri.parse("https://firas.alwaysdata.net/api/getParents"));
    if(response.statusCode==200){
      List<dynamic> classesData = jsonDecode(response.body)['list'];
       List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);

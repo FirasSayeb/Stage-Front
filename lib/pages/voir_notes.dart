@@ -16,7 +16,7 @@ class _VoirNotesState extends State<VoirNotes> {
 
   Future<List<Map<String, dynamic>>> getNotes(int id) async {
     try {
-      final response = await get(Uri.parse("http://192.168.1.11:80/api/getNotes/$id"));
+      final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getNotes/$id"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> notes = List<Map<String, dynamic>>.from(responseData);
@@ -32,7 +32,7 @@ class _VoirNotesState extends State<VoirNotes> {
 
   Future<List<Map<String, dynamic>>> getEleves() async {
     try {
-      final response = await get(Uri.parse("http://192.168.1.11:80/api/getFils/${widget.email}"));
+      final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getFils/${widget.email}"));
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['list'];
         final List<Map<String, dynamic>> eleves = List<Map<String, dynamic>>.from(responseData);

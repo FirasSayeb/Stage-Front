@@ -43,7 +43,7 @@ Future<void> pickSingleFile() async {
   Future<Map<String, dynamic>> getUser(String email) async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.11:80/api/getUser/${widget.email}'),
+        Uri.parse('https://firas.alwaysdata.net/api/getUser/${widget.email}'),
       );
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body)['user'];
@@ -161,7 +161,7 @@ Future<void> pickSingleFile() async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
                             final response = await http.put(
-                              Uri.parse("http://192.168.1.11:80/api/updateUser/"),
+                              Uri.parse("https://firas.alwaysdata.net/api/updateUser/"),
                               body: <String, dynamic>{
                                 'email': widget.email,
                                 'password':password,

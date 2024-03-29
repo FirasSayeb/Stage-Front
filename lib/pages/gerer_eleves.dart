@@ -245,7 +245,7 @@ class _GererClassesState extends State<GererEleves> {
   
   Future<List<Map<String, dynamic>>> getEleves() async {
  try {
-    final response = await http.get(Uri.parse("http://192.168.1.11:80/api/getEleves"));
+    final response = await http.get(Uri.parse("https://firas.alwaysdata.net/api/getEleves"));
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body)['list'];
       return data.cast<Map<String, dynamic>>(); 
@@ -259,7 +259,7 @@ class _GererClassesState extends State<GererEleves> {
   }
   deleteEleve(String name)async{
   try{
-     final response=await http.delete(Uri.parse("http://192.168.1.11:80/api/deleteEleve/$name"));
+     final response=await http.delete(Uri.parse("https://firas.alwaysdata.net/api/deleteEleve/$name"));
      if(response.statusCode==200){
       print('success');
      }else{

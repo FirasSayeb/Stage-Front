@@ -134,7 +134,7 @@ class _HomeState extends State<AjouterClasse> {
                                 };
                                 print(userData['file']); 
                                 Response response = await post(
-                                  Uri.parse("http://192.168.1.11:80/api/addClasse"),
+                                  Uri.parse("https://firas.alwaysdata.net/api/addClasse"),
                                   body: userData,   
                                 );
                                    

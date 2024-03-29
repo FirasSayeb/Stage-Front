@@ -233,7 +233,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
                                 _formKey.currentState!.save();
                                 print("classe $classe");
                                 final response = await http.put(
-                                  Uri.parse("http://192.168.1.11:80/api/updateEleve/${widget.id}"),
+                                  Uri.parse("https://firas.alwaysdata.net/api/updateEleve/${widget.id}"),
                                    body: <String, dynamic>{
         'name': name ?? '',
         'num': num ?? '',
@@ -294,7 +294,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
 
  Future<Map<String, dynamic>> getEleve() async {
   try {
-    final response = await http.get(Uri.parse("http://192.168.1.11:80/api/getEleve/${widget.id}"));
+    final response = await http.get(Uri.parse("https://firas.alwaysdata.net/api/getEleve/${widget.id}"));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body)['eleve'] as Map<String, dynamic>;
@@ -317,7 +317,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
 }
 Future<List<Map<String, dynamic>>> getParents() async {
   try {
-    final response = await http.get(Uri.parse('http://192.168.1.11:80/api/getParents'));
+    final response = await http.get(Uri.parse('https://firas.alwaysdata.net/api/getParents'));
     if (response.statusCode == 200) {
       final List<dynamic> responseData = jsonDecode(response.body)['list'];
       final List<Map<String, dynamic>> parentList = responseData.map((data) => data as Map<String, dynamic>).toList();
@@ -333,7 +333,7 @@ Future<List<Map<String, dynamic>>> getParents() async {
 
   Future<List<Map<String, dynamic>>> getClasses() async {
     try {
-      final response = await http.get(Uri.parse("http://192.168.1.11:80/api/getClasses"));
+      final response = await http.get(Uri.parse("https://firas.alwaysdata.net/api/getClasses"));
 
       if (response.statusCode == 200) {
         List<dynamic> classesData = jsonDecode(response.body)['list'];
