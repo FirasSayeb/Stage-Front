@@ -14,7 +14,7 @@ class NotifierParent extends StatefulWidget {
 
   @override
   State<NotifierParent> createState() => _NotifierParentState();
-}
+} 
 
 class _NotifierParentState extends State<NotifierParent> {
   final fkey=GlobalKey<FormState>();
@@ -52,7 +52,11 @@ class _NotifierParentState extends State<NotifierParent> {
                               return Center(child: Text('Failed to get parents'));
    
                             } else {
-  
+  if (selectedClasses.isEmpty) {
+                      for (final eleve in snapshot.data!) {
+                        final email = eleve['email'].toString();
+                        selectedClasses.add(email);
+                      }}
                               return ListView.builder(
   shrinkWrap: true,  
   itemCount: snapshot.data!.length,   
