@@ -256,6 +256,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
                                 if (response.statusCode == 200) {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));
                                 }
+                                print(response.statusCode);
                               }
                             },  
                             child: Text('Valider'),

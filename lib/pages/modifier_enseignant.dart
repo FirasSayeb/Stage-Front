@@ -194,7 +194,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
                             final response = await http.put(
-                              Uri.parse("https://firas.alwaysdata.net/api/updateEnseignant/"),
+                              Uri.parse("https://firas.alwaysdata.net/api/updateEnseignant"),
                               body: <String, dynamic>{
                                 'email': widget.email,
                                 'password': password,

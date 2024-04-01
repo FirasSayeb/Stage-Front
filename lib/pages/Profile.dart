@@ -14,6 +14,7 @@ class Profil extends StatefulWidget {
 
 class _ProfilState extends State<Profil> {
   bool hide = true; 
+  String errorMessage = '';
   late String password;
   late String? phone;
   late String? address;
@@ -161,7 +162,7 @@ Future<void> pickSingleFile() async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
                             final response = await http.put(
-                              Uri.parse("https://firas.alwaysdata.net/api/updateUser/"),
+                              Uri.parse("https://firas.alwaysdata.net/api/updateUser"),
                               body: <String, dynamic>{
                                 'email': widget.email,
                                 'password':password,
@@ -186,11 +187,16 @@ Future<void> pickSingleFile() async {
                               },);
                              Navigator.pop(context);
                             }
+                            print(response.statusCode);
                           }
                         },
                         child: Text('Valider'),
                       ),
                     ),
+                     Text(
+                          errorMessage,
+                          style: TextStyle(color: Colors.red),
+                        ),
                   ],
                 ),
               );
