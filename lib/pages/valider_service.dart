@@ -86,7 +86,7 @@ class _ValiderServiceState extends State<ValiderService> {
                                             MaterialPageRoute(
                                               builder: (context) => ValiderService(widget.email),
                                             ),
-                                          ); 
+                                          ).then((_) => setState(() {}));
                                         },
                                         child: Text('Supprimer'),
                                         style: ButtonStyle(
