@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'package:app/pages/Enseignant.dart';
 import 'package:collection/collection.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class _NotifierParentState extends State<NotifierParent> {
   
                             } else if (snapshot.hasError) {
   
-                              return Center(child: Text('Failed to get classes'));
+                              return Center(child: Text('Failed to get parents'));
    
                             } else {
   
@@ -59,6 +60,8 @@ class _NotifierParentState extends State<NotifierParent> {
     final eleve = snapshot.data![index];
     final email = eleve['email'].toString();
     final isChecked = selectedClasses.contains(email);
+    print(selectedClasses);
+    print(isChecked);
     return CheckboxListTile(
       title: Text(email),
       value: isChecked, 
@@ -136,10 +139,10 @@ class _NotifierParentState extends State<NotifierParent> {
                                         
         
         if (response2.statusCode == 200) { 
-         /* Navigator.push( 
+          Navigator.push( 
             context,
-            MaterialPageRoute(builder: (context) => Admin(widget.email)),
-          ); */
+            MaterialPageRoute(builder: (context) => Enseignant(widget.email)),
+          ); 
         }  
         
                                        /* NotificationService().showNotification(
