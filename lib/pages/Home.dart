@@ -59,13 +59,6 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
               children: [
                 const Padding(padding: EdgeInsets.all(10)),
                 Container(
-                  alignment: Alignment.topCenter,
-                  child: const Text(
-                    "welcome ",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                Container(
                   alignment: FractionalOffset.center,
                   height: MediaQuery.of(context).size.height*0.4,
                   child: Lottie.asset("assets/Animation.json"),
@@ -74,7 +67,7 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
                 Container(
                   alignment: Alignment.topCenter,
                   child: const Text(
-                    "Sign In ",
+                    "Se connecter ",
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
@@ -83,41 +76,47 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
                     key: fkey,
                     child: Column(
                       children: [
-                        TextFormField(
-                          validator: validateEmail,
-                          onSaved: (newValue) {
-                            user.email = newValue!;
-                          },
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                            hintText: "Email:",
-                            icon: Icon(Icons.email),
+                        Container(
+                           padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                            validator: validateEmail,
+                            onSaved: (newValue) {
+                              user.email = newValue!;
+                            },
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                              hintText: "Email:",
+                              icon: Icon(Icons.email),
+                            ),
                           ),
                         ),
-                        TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty || value.length == 0) {
-                              return "champs obligatoire";
-                            } else if (value.length < 3) {
-                              return "verifier votre champs";
-                            }
-                            return null;
-                          },
-                          onSaved: (newValue) {
-                            user.password = newValue!;
-                          },
-                          keyboardType: TextInputType.text,
-                          obscureText: hide,
-                          decoration: InputDecoration(
-                            hintText: "Password:",
-                            icon: Icon(Icons.password),
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.remove_red_eye),
-                              onPressed: () {
-                                setState(() {
-                                  hide = !hide;
-                                });
-                              },
+                        Container(
+                           padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical: MediaQuery.of(context).size.height*0.02),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } else if (value.length < 3) {
+                                return "verifier votre champs";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              user.password = newValue!;
+                            },
+                            keyboardType: TextInputType.text,
+                            obscureText: hide,
+                            decoration: InputDecoration(
+                              hintText: "Mot de passe:",
+                              icon: Icon(Icons.password),
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.remove_red_eye),
+                                onPressed: () {
+                                  setState(() {
+                                    hide = !hide;
+                                  });
+                                },
+                              ),
                             ),
                           ),
                         ),
@@ -131,7 +130,7 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
                             );
                           },
                           child: Container(
-                            child: Text('Forget Password '),
+                            child: Text('Mot de passe oublier '),
                             padding: EdgeInsets.all(10),
                           ),
                         ), 
@@ -180,7 +179,7 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
                                   }
                                 } else {
                                   setState(() {
-                                    errorMessage = "Authentication failed: ${response.body}";
+                                    errorMessage = "Authentification échouée: ${response.body}";
                                   });
                                 }
                               }
@@ -192,7 +191,7 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
                                 color: Colors.lightBlueAccent,
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: const Text("Sign in "),
+                              child: const Text("Se connecter"),
                             ),
                           ),
                         ),

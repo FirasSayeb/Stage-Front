@@ -56,6 +56,12 @@ void initState() {
   @override
   Widget build(BuildContext context) { 
     return Scaffold(
+      appBar: AppBar(
+          title: Text('Ajouter Enseignant') ,
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: const Color.fromARGB(160, 0, 54, 99),
+        ),
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -157,7 +163,7 @@ TextFormField(validator: (value) {
 ),TextFormField( validator: (value) {
                             if (value!.isEmpty || value.length == 0) {
                               return "champs obligatoire";
-                            } else if (value.length < 3) {
+                            } else if (value.length < 8 || value.length > 8) {
                               return "verifier votre champs";
                             }
                             return null;
@@ -189,7 +195,7 @@ TextFormField(validator: (value) {
   
                             label: Text(
   
-                              'Pick Image',
+                              'Choisir une image',
   
                               style: TextStyle(fontSize: 25),
   
@@ -215,7 +221,7 @@ TextFormField(validator: (value) {
   
                               return DropdownButton(
   
-    value: selectedClasses.isNotEmpty ? selectedClasses.first : null, 
+    value: selectedClasses.isNotEmpty ? selectedClasses.last : null, 
   
     hint: Text("select classe(s)"), 
   
@@ -322,22 +328,7 @@ Center(
   
                             ),
 ), Padding(padding: EdgeInsets.all(5)),
-                        Center(
-                          child: GestureDetector( 
-                            onTap: () {
-                              Navigator.pop(context);
-                            }, 
-                            child: Container(
-                              padding: const EdgeInsets.all(20),
-                              margin: const EdgeInsets.symmetric(horizontal: 40),
-                              decoration: BoxDecoration(
-                                color: Colors.lightBlueAccent,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: const Text("Go Back  "),
-                            ),
-                          ),
-                        ),
+                       
                         Text(
                           errorMessage,
                           style: TextStyle(color: Colors.red),
@@ -361,7 +352,7 @@ Center(
       List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);
       return classes; 
     } else {
-      throw Exception('Failed to load classes');
+      throw Exception('Failed to load classes ${response.statusCode}');
     }
   } catch (e) { 
     print('Error: $e');

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:app/pages/Detail.dart';
+import 'dart:io';
 import 'package:app/pages/Profile.dart';
 import 'package:app/pages/ajouter_actualite.dart';
 import 'package:app/pages/ajouter_deliberation.dart';
@@ -56,15 +56,20 @@ class _AdminState extends State<Admin> {
         ),
         body: Column(
           children: [
-            Container(
-                padding: EdgeInsets.all(20),
-                child: GestureDetector(
-                  child: Text("Ajouter Actualite"),
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterActualite(widget.email))) ,
-                ),
-              )  
-              ,
-               
+           
+                TextField(
+            
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              hintText: 'Rechercher...',
+              suffixIcon: IconButton(
+                icon: Icon(Icons.clear), onPressed: () {  },
+                
+              ),
+            ),
+           
+          ),
+          Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.01)),
             Expanded(
               child: FutureBuilder<List<Actualite>>(
                 future: getActualites(),
@@ -84,9 +89,78 @@ class _AdminState extends State<Admin> {
                         margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                         child: ListTile(
                           contentPadding: EdgeInsets.all(16.0),
-                          title: Text( 
-                            snapshot.data![index].body,
-                            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                          title: Row(
+                            children: [
+                              Text( 
+                                "Nom : ${snapshot.data![index].body}",
+                                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                              ),Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width*0.45)),
+                               Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+  children: [
+    PopupMenuButton<String>(
+  itemBuilder: (BuildContext context) => [
+    PopupMenuItem<String>(
+      value: 'modify',
+      child: Text('Modifier'),
+    ),
+    PopupMenuItem<String>(
+      value: 'delete',
+      child: Text('Supprimer', style: TextStyle(color: Colors.red)),
+    ),
+  ],
+  onSelected: (String value) async {
+    if (value == 'modify') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ModierActualite(
+            snapshot.data![index].id,
+            widget.email,
+          ),
+        ),
+      );
+    } else if (value == 'delete') {
+      bool confirmDelete = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Confirmation"),
+            content: Text("Etes-vous sûr que vous voulez supprimer?"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); 
+                },
+                child: Text("Non"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true); 
+                },
+                child: Text("Oui"),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (confirmDelete == true) {
+        print(snapshot.data![index].id);
+        deleteActualite(snapshot.data![index].id);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Admin(widget.email)),
+        );
+      }
+    }
+  },
+  icon: Icon(Icons.more_vert),
+),
+
+  ],
+)
+                            ],
                           ),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,23 +175,21 @@ class _AdminState extends State<Admin> {
                                 'Created By: ${snapshot.data![index].userName}',
                                 style: TextStyle(fontSize: 14.0),
                               ),SizedBox(height: 8.0), 
-                              Text(
-                                'File: $fileName',
-                                style: TextStyle(fontSize: 14.0),
-                              ),SizedBox(height: 8.0),
-                              Row(children: [ElevatedButton(onPressed: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ModierActualite(snapshot.data![index].id,widget.email)));
-                              }, child: Text("modifier")),Padding(padding: EdgeInsets.only(right: 20)),ElevatedButton(onPressed: (){
-                                print(snapshot.data![index].id); 
-                             deleteActualite(snapshot.data![index].id);
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email)));
-                              }, child: Text("supprimer"),style:ButtonStyle(
-                                backgroundColor:MaterialStatePropertyAll(Colors.red)) ,)],)
+                               Image.file(
+  File(filePath ?? ''),
+  width: MediaQuery.of(context).size.width, 
+  height: MediaQuery.of(context).size.height*0.3, 
+  fit: BoxFit.cover, 
+),
+
+                              SizedBox(height: 8.0),
+                             
+
                             ],
                           ), 
-                          onTap: () {
+                          /*onTap: () {
                              Navigator.push(context, MaterialPageRoute(builder: (context) =>Detail(snapshot.data![index].id)));
-                          },
+                          },*/
                         ),
                       );   
                       },   
@@ -126,11 +198,16 @@ class _AdminState extends State<Admin> {
                 },
               ),
             ),
+            
           ],
         ),
+        floatingActionButton:  FloatingActionButton(
+                  child: Icon(Icons.add),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterActualite(widget.email))) ,
+                ),
          drawer: Drawer(
           child: Container(
-            color: const Color.fromARGB(160, 0, 54, 99),
+            color: Colors.white,
             child: ListView(
               children: [const Padding(padding: EdgeInsets.only(top: 30)),ListTile( 
                   title:  Text(" ${widget.email}"),

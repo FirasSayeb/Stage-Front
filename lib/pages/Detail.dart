@@ -114,13 +114,16 @@ _launchURL(String? filePath) async {
   if (filePath != null) {
     try { 
       await OpenFile.open(filePath);
+      print(filePath); 
     } catch (e) {
+      
       print('Error opening file: $e');
     }
   } else {
     print('File path is null'); 
   }
 }
+
 
 
 

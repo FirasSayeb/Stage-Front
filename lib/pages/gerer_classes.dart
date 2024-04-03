@@ -138,7 +138,7 @@ String fileName2WithExtension = pathPart.last;
       ))  
       ,drawer: Drawer(
           child: Container(  
-            color: const Color.fromARGB(160, 0, 54, 99),
+            color: Colors.white,
             child: ListView(
               children: [const Padding(padding: EdgeInsets.only(top: 30)),ListTile( 
                   title:  Text(" ${widget.email}"),

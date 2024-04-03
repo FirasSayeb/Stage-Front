@@ -41,6 +41,12 @@ class _HomeState extends State<AjouterActualite> {
   @override
   Widget build(BuildContext context) { 
     return Scaffold(
+       appBar: AppBar(
+          title: Text('Ajouter Actualite') ,
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: const Color.fromARGB(160, 0, 54, 99),
+        ),
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -66,23 +72,26 @@ class _HomeState extends State<AjouterActualite> {
                     key: fkey,
                     child: Column(
                       children: [
-                        TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty || value.length == 0) {
-                              return "champs obligatoire";
-                            } else if (value.length < 3) {
-                              return "verifier votre champs";
-                            }
-                            return null;
-                          },
-                          onSaved: (newValue) {
-                            body = newValue!;
-                          },
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            hintText: "Body:", 
-                            icon: Icon(Icons.text_fields_sharp),
-                          ),  
+                        Container(
+                           padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } else if (value.length < 3) {
+                                return "verifier votre champs";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              body = newValue!;
+                            },
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              hintText: "Nom:", 
+                              icon: Icon(Icons.text_fields_sharp),
+                            ),  
+                          ),
                         ),
                         ElevatedButton.icon(
                           onPressed: picksinglefile,
@@ -93,7 +102,7 @@ class _HomeState extends State<AjouterActualite> {
                           ),
                           icon: Icon(Icons.insert_drive_file_sharp),
                           label: Text(
-                            'Pick File',
+                            'Choisir une image',
                             style: TextStyle(fontSize: 25),
                           )
                         ),
@@ -136,21 +145,7 @@ class _HomeState extends State<AjouterActualite> {
                             ),
                           ), 
                         ),
-                        Padding(padding: EdgeInsets.all(5)),
-                        GestureDetector( 
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(20),
-                            margin: const EdgeInsets.symmetric(horizontal: 40),
-                            decoration: BoxDecoration(
-                              color: Colors.lightBlueAccent,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Text("Go Back  "),
-                          ),
-                        ),
+                       
                         Text(
                           errorMessage,
                           style: TextStyle(color: Colors.red),
