@@ -63,7 +63,7 @@ Widget build(BuildContext context) {
     debugShowCheckedModeBanner: false,
     home: Scaffold(
       appBar: AppBar(
-        title: const Text("Gerer Parents "),
+        title: const Text("Gerer Tuteurss "),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Color.fromARGB(160, 0, 54, 99),
@@ -73,19 +73,18 @@ Widget build(BuildContext context) {
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
-              Padding(padding: EdgeInsets.all(10)),
-              GestureDetector(
-                child: Text('ajouter parent'),
-                onTap: () {
-                  print('ajouter parent');
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AjouterParent(widget.email),
-                    ),
-                  );
-                },
+              TextField(
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              hintText: 'Rechercher...',
+              suffixIcon: IconButton(
+                icon: Icon(Icons.clear), onPressed: () {  },
+                
               ),
+            ),
+           
+          ),
+          Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.01)),
               FutureBuilder<List<Map<String, dynamic>>>(
                 future: getParents(),
                 builder: (context, snapshot) {
@@ -107,9 +106,80 @@ Widget build(BuildContext context) {
                                 backgroundImage: FileImage(File(snapshot.data![index]['avatar'])),
                                 radius: 30,
                               ),
-                              title: Text(
-                                snapshot.data![index]['name'],
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [                                 
+                                  Text("Name : "+
+                                    snapshot.data![index]['name'] 
+                                    ,
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                    Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+  children: [
+    PopupMenuButton<String>(
+  itemBuilder: (BuildContext context) => [
+    PopupMenuItem<String>(
+      value: 'modify',
+      child: Text('Modifier'),
+    ),
+    PopupMenuItem<String>(
+      value: 'delete',
+      child: Text('Supprimer', style: TextStyle(color: Colors.red)),
+    ),
+  ],
+  onSelected: (String value) async {
+    if (value == 'modify') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Profil(
+            snapshot.data![index]["email"],
+            
+          ),
+        ),
+      );
+    } else if (value == 'delete') {
+      bool confirmDelete = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Confirmation"),
+            content: Text("Etes-vous sûr que vous voulez supprimer?"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); 
+                },
+                child: Text("Non"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true); 
+                },
+                child: Text("Oui"),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (confirmDelete == true) {
+        print(snapshot.data![index]["email"]);
+        deleteParent(snapshot.data![index]["email"]);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => GererServices(widget.email)),
+        );
+      }
+    }
+  },
+  icon: Icon(Icons.more_vert),
+),
+
+  ],
+)
+                                ],
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,38 +189,7 @@ Widget build(BuildContext context) {
                                     snapshot.data![index]['email'],
                                     style: TextStyle(color: Colors.grey),
                                   ),
-                                  SizedBox(height: 8),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.push(  
-                                            context, 
-                                            MaterialPageRoute(
-                                              builder: (context) => Profil(snapshot.data![index]['email']),
-                                            ),
-                                          );
-                                        },  
-                                        child: Text('Modifier'),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          deleteParent(snapshot.data![index]['email']);
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => GererUtilisateurs(widget.email),
-                                            ),
-                                          );
-                                        },
-                                        child: Text('Supprimer'),
-                                        style: ButtonStyle(
-                                          backgroundColor: MaterialStatePropertyAll(Colors.red),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                 
                                 ], 
                               ),
                             ),
@@ -259,6 +298,17 @@ Widget build(BuildContext context) {
             ),
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: 
+        () {
+           Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (context) => AjouterParent(widget.email),
+                    ),
+                  );
+        },),
     ),
   );
 }

@@ -64,19 +64,18 @@ class _GererServicesState extends State<GererEvents> {
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
-              Padding(padding: EdgeInsets.all(10)),
-              GestureDetector(
-                child: Text('Ajouter Event'),
-                onTap: () { 
-                  print('ajouter Event'); 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AjouterEvent(widget.email),
-                    ),
-                  );
-                },
+               TextField(
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              hintText: 'Rechercher...',
+              suffixIcon: IconButton(
+                icon: Icon(Icons.clear), onPressed: () {  },
+                
               ),
+            ),
+           
+          ),
+          Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.01)),
               FutureBuilder<List<Map<String, dynamic>>>(
                 future: getEvents(),
                 builder: (context, snapshot) {
@@ -94,10 +93,80 @@ class _GererServicesState extends State<GererEvents> {
                             elevation: 4,
                             margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                             child: ListTile(
-                              title: Text("Name : "+
-                                snapshot.data![index]['name'] 
-                                ,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              title:Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [                                 
+                                  Text("Name : "+
+                                    snapshot.data![index]['name'] 
+                                    ,
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                    Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+  children: [
+    PopupMenuButton<String>(
+  itemBuilder: (BuildContext context) => [
+    PopupMenuItem<String>(
+      value: 'modify',
+      child: Text('Modifier'),
+    ),
+    PopupMenuItem<String>(
+      value: 'delete',
+      child: Text('Supprimer', style: TextStyle(color: Colors.red)),
+    ),
+  ],
+  onSelected: (String value) async {
+    if (value == 'modify') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ModEvent(
+            snapshot.data![index]["name"],
+            
+          ),
+        ),
+      );
+    } else if (value == 'delete') {
+      bool confirmDelete = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Confirmation"),
+            content: Text("Etes-vous sûr que vous voulez supprimer?"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); 
+                },
+                child: Text("Non"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true); 
+                },
+                child: Text("Oui"),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (confirmDelete == true) {
+        print(snapshot.data![index]["email"]);
+        deleteEvent(snapshot.data![index]["name"]);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => GererEvents(widget.email)),
+        );
+      }
+    }
+  },
+  icon: Icon(Icons.more_vert),
+),
+
+  ],
+)
+                                ],
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,38 +180,7 @@ Text(
   "Date: ${snapshot.data![index]['date']}",
   style: TextStyle(color: Colors.grey),
 ), 
-                                  SizedBox(height: 8),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      ElevatedButton( 
-                                        onPressed: () {
-                                          Navigator.push(  
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => ModEvent(snapshot.data![index]['name']),
-                                            ),
-                                          ).then((_) => setState(() {}));
-                                        },
-                                        child: Text('Modifier'),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          deleteEvent(snapshot.data![index]['name']);
-                                          Navigator.push(
-                                            context, 
-                                            MaterialPageRoute(
-                                              builder: (context) => GererEvents(widget.email),
-                                            ),
-                                          ); 
-                                        },
-                                        child: Text('Supprimer'),
-                                        style: ButtonStyle(
-                                          backgroundColor: MaterialStatePropertyAll(Colors.red),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                 
                                 ],
                               ),
                             ),
@@ -253,6 +291,16 @@ Text(
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+         Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AjouterEvent(widget.email),
+                    ),
+                  );
+      },),
     );
   } 
  deleteEvent(String name) async {

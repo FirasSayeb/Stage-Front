@@ -20,6 +20,12 @@ class _AjouterServiceState extends State<AjouterService> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+       appBar: AppBar(
+          title: Text('Ajouter Service') ,
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: const Color.fromARGB(160, 0, 54, 99),
+        ),
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -117,21 +123,7 @@ class _AjouterServiceState extends State<AjouterService> {
                             ),
                           ), 
                         ),
-                        Padding(padding: EdgeInsets.all(5)),
-                        GestureDetector( 
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(20),
-                            margin: const EdgeInsets.symmetric(horizontal: 40),
-                            decoration: BoxDecoration(
-                              color: Colors.lightBlueAccent,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Text("Go Back  "),
-                          ),
-                        ),
+                       
                         Text(
                           errorMessage,
                           style: TextStyle(color: Colors.red),

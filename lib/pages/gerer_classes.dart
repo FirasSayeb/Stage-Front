@@ -49,9 +49,20 @@ class _GererClassesState extends State<GererClasses> {
      home:Scaffold( 
       appBar: AppBar(title: const Text("Gerer Classes "),centerTitle: true,elevation: 0,backgroundColor: Color.fromARGB(160,0,54,99)), 
       body: SingleChildScrollView(child: Column(
-        children: [ Padding(padding: EdgeInsets.all(5)), GestureDetector(child: Center(child: Text("Ajouter Classe ")),onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterClasse(widget.email)));
-          },),Padding(padding: EdgeInsets.all(10)),
+        children: [ 
+           TextField(
+            
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              hintText: 'Rechercher...',
+              suffixIcon: IconButton(
+                icon: Icon(Icons.clear), onPressed: () {  },
+                
+              ),
+            ),
+           
+          ),
+          Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.01)),
           FutureBuilder<List<Map<String, dynamic>>>(
                 future: getClasses(),
                 builder: (context, snapshot) {
@@ -81,8 +92,7 @@ String fileName2WithExtension = pathPart.last;
 },
     child: ListTile(
       title: Text(
-        "Name: ${snapshot.data![index]['name']}\nEmploi : $fileNameWithExtension \nExamens : $fileName2WithExtension",
-       
+        "Name: ${snapshot.data![index]['name']}\nEmploi : $fileNameWithExtension \nExamens : $fileName2WithExtension",   
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,6 +240,11 @@ String fileName2WithExtension = pathPart.last;
             ),
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed:() {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterClasse(widget.email)));
+        }, ),
      )  
     );
   }
