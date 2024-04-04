@@ -33,6 +33,7 @@ class _AdminState extends State<Admin> {
       final response = await http.get(Uri.parse("https://firas.alwaysdata.net/api/getActualites"));
       if (response.statusCode == 200) {
         final List responseData = jsonDecode(response.body)['list']; 
+        print(responseData[0]['file_path']);
         return responseData.map((data) => Actualite.fromJson(data)).toList();
       } else {
         throw Exception('Failed to load actualites');
@@ -174,16 +175,14 @@ class _AdminState extends State<Admin> {
                               Text( 
                                 'Created By: ${snapshot.data![index].userName}',
                                 style: TextStyle(fontSize: 14.0),
-                              ),SizedBox(height: 8.0), 
-                               Image.file(
-  File(filePath ?? ''),
-  width: MediaQuery.of(context).size.width, 
-  height: MediaQuery.of(context).size.height*0.3, 
-  fit: BoxFit.cover, 
-),
+                              ),
+                              Image.network(
+  "https://firas.alwaysdata.net/storage/$fileName",
+  width: MediaQuery.of(context).size.width,
+  height: MediaQuery.of(context).size.height * 0.3,
+  fit: BoxFit.cover,
+)
 
-                              SizedBox(height: 8.0),
-                             
 
                             ],
                           ), 

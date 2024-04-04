@@ -114,22 +114,25 @@ class _HomeState extends State<AjouterActualite> {
                                 fkey.currentState!.save();
                                 print(body);
 
-                                Map<String, dynamic> userData = {
-                                  'body': body,
-                                  'email': widget.email,
-                                  'file': path ?? ''  
-                                };
-                                print(userData['file']);
-                                Response response = await post(
-                                  Uri.parse("https://firas.alwaysdata.net/api/addActualite"),
-                                  body: userData,  
-                                );
+                                 var request = MultipartRequest(
+        'POST',
+        Uri.parse("https://firas.alwaysdata.net/api/addActualite"),
+      );
+
+      request.fields['body'] = body;
+      request.fields['email'] = widget.email;
+      
+      if (path != null && path!.isNotEmpty) {
+        var file = await MultipartFile.fromPath('file', path!);
+        request.files.add(file);
+      }
+             var response = await request.send();                  
 
                                 if (response.statusCode == 200) {  
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email)));
                                 } else {
                                   setState(() {
-                                    errorMessage = "Error: ${response.statusCode}, ${response.body}";
+                                    errorMessage = "Error: ${response.statusCode}";
                                   });
                                 }  
                               }

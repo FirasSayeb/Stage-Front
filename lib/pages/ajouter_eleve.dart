@@ -246,20 +246,27 @@ PlatformFile? file;
                                 onTap: () async { 
                                   if (fkey.currentState!.validate()) {
                                     fkey.currentState!.save();
-                                    Map<String, dynamic> userData = {
-                                      'name': name,
-                                      'num':num,
-                                      'lastname': lastname,   
-                                      'date': date, 
-                                      'class': selected,  
-                                      'list':selectedParents.join(','), 
-                                       'file': path ?? '', 
-                                    };
-                                    Response response = await post( 
-                                      Uri.parse( 
-                                          "https://firas.alwaysdata.net/api/addEleve"),
-                                      body: userData,
-                                    );
+                                    var request = MultipartRequest(
+    'POST',
+    Uri.parse("https://firas.alwaysdata.net/api/addEleve"),
+  );
+
+  // Add form data
+  request.fields['name'] = name;
+  request.fields['num'] = num;
+  request.fields['lastname'] = lastname;
+  request.fields['date'] = date;
+  request.fields['class'] = selected;
+  request.fields['list'] = selectedParents.join(',');
+
+  // Add file (if available)
+  if (path != null && path!.isNotEmpty) {
+    var file = await MultipartFile.fromPath('file', path!);
+    request.files.add(file);
+  }
+
+  // Send request
+  var response = await request.send();
                                     if (response.statusCode == 200) {
                                       Navigator.push(
                                           context,
@@ -269,7 +276,7 @@ PlatformFile? file;
                                     } else {
                                       setState(() {
                                         errorMessage =
-                                            "Error: ${response.statusCode}, ${response.body}";
+                                            "Error: ${response.statusCode}";
                                       });
                                     }
                                   }
