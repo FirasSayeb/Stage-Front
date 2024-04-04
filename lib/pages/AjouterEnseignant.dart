@@ -259,37 +259,26 @@ Center(
   if (fkey.currentState!.validate()) { 
     fkey.currentState!.save();
     try {
-      final response = await http.post(
-        Uri.parse('https://firas.alwaysdata.net/api/addEnseignant'),
-        body: <String, dynamic>{
-          'name': nom, 
-          'email': email, 
-          'password': password, 
-          'address': address,     
-          'file': path ?? '',  
-          'phone': phone,
-          'list':selectedClasses.join(','),
-          'token':deviceToken
-        }, 
-      );print(<String, dynamic>{ 
-          'name': nom,   
-          'email': email, 
-          'password': password,
-          'address': address,
-          'file': path ?? '',   
-          'phone': phone,
-          'list':selectedClasses.join(',')
-        });
+      var request = MultipartRequest(
+        'POST',
+        Uri.parse("https://firas.alwaysdata.net/api/addEnseignant"),
+      );
+
+      request.fields['name'] = nom;
+      request.fields['email'] = email;
+      request.fields['password'] = password;
+       request.fields['address'] = address;
+       request.fields['phone'] = phone;
+       request.fields['list'] = selectedClasses.join(',');
+       request.fields['token'] = deviceToken!;
+      if (path != null && path!.isNotEmpty) {
+        var file = await MultipartFile.fromPath('file', path!);
+        request.files.add(file);
+      }
+             var response = await request.send();
+      print(request.fields);
       if (response.statusCode == 200) {
-        print(<String, dynamic>{    
-          'name': nom,
-          'email': email,      
-          'password': password, 
-          'address': address,  
-          'file': path ?? '',  
-          'phone': phone,  
-          'list':selectedClasses.join(',')  
-        });
+       print(request.fields);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => GererEmploi(widget.email)),

@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:app/model/Actualite.dart';
+import 'package:http/http.dart';
 
 class ModierActualite extends StatefulWidget {
   final int id;
@@ -128,13 +129,20 @@ class _ModierActualiteState extends State<ModierActualite> {
                                     path = file!.path!;
                                   });
                                 }
-                                final response = await http.put(
-                                  Uri.parse("https://firas.alwaysdata.net/api/updateActualite/${widget.id}"),
-                                  body: <String, dynamic>{
-                                    'body': body!,
-                                    'file': path!,
-                                  },
-                                );
+                                 var request = MultipartRequest(
+        'PUT',
+        Uri.parse("https://firas.alwaysdata.net/api/updateActualite/${widget.id}"),
+      );
+
+      request.fields['body'] = body!;
+      request.fields['email'] = widget.email;
+      
+      if (path != null && path!.isNotEmpty) {
+        var file = await MultipartFile.fromPath('file', path!);
+        request.files.add(file);
+      }
+             var response = await request.send(); 
+                               
                                 if (response.statusCode == 200) {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email)));
                                 }

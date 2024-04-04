@@ -193,35 +193,33 @@ class _ModEnsignantState extends State<ModEnsignant> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            final response = await http.put(
-                              Uri.parse("https://firas.alwaysdata.net/api/updateEnseignant"),
-                              body: <String, dynamic>{
-                                'email': widget.email,
-                                'password': password,
-                                'file': path,
-                                'phone': phone,
-                                'address': address,
-                                'list': selectedClasses.join(',') ?? ''
-                              },
-                            );
-                            print(<String, dynamic>{
-                              'email': widget.email,
-                              'password': password,
-                              'file': path,
-                              'phone': phone,
-                              'address': address,
-                              'list': selectedClasses.join(',')
-                            });
+                            
+                            var request = MultipartRequest(
+        'PUT',
+        Uri.parse("https://firas.alwaysdata.net/api/updateEnseignant"),
+      );
+
+      
+      request.fields['email'] = widget.email;
+      request.fields['password'] = password;
+       request.fields['address'] = address!;
+       request.fields['phone'] = phone!;
+       request.fields['list'] = selectedClasses.join(',');
+      if (path != null && path!.isNotEmpty) {
+        print(path);
+        var file = await MultipartFile.fromPath('file', path!);
+        request.files.add(file);
+      } 
+             var response = await request.send();
+                          
+                            print(request.fields);
+                            print(request.files.first.filename);
                             if (response.statusCode == 200) {
-                              print(<String, dynamic>{
-                                'email': widget.email,
-                                'password': password,
-                                'file': path,
-                                'phone': phone,
-                                'address': address,
-                                'list': selectedClasses.join(',')
-                              });
+                               print(request.fields);
+                            print(request.files);
                               Navigator.pop(context);
+                            }else{
+                              print(response.statusCode);
                             }
                           }
                         },

@@ -152,7 +152,7 @@ class _AdminState extends State<Admin> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Admin(widget.email)),
-        );
+        ).then((_) => setState(() {}));
       }
     }
   },

@@ -76,6 +76,8 @@ Future<void> pickSingleFile() async {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}')); 
             } else {
+                String? filePath = snapshot.data!['avatar'].filePath;
+                          String fileName = filePath != null ? filePath.split('/').last : '';
               path= file==null ? snapshot.data!['avatar'] : path;
               return Form(
                 key: _formKey,
@@ -87,10 +89,12 @@ Future<void> pickSingleFile() async {
     pickSingleFile(); 
   }, 
   child: ListTile( 
-    title: CircleAvatar(
-      backgroundImage:  FileImage(File(path!)) ,
-      radius: 30, 
+    title: CircleAvatar( 
+    backgroundImage: NetworkImage(
+      "https://firas.alwaysdata.net/storage/$fileName",
     ),
+    radius: 30,
+  ),
   ),
 ),
 
