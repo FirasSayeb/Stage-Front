@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:app/pages/Admin.dart';
 import 'package:app/pages/AjouterClasse.dart';
 import 'package:app/pages/Home.dart';
@@ -91,44 +92,92 @@ String fileName2WithExtension = pathPart.last;
   OpenFile.open(filePath);
 },
     child: ListTile(
-      title: Text(
-        "Name: ${snapshot.data![index]['name']}\nEmploi : $fileNameWithExtension \nExamens : $fileName2WithExtension",   
-      ),
+      title: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    snapshot.data![index]['name'],
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+  children: [
+    PopupMenuButton<String>(
+  itemBuilder: (BuildContext context) => [
+    PopupMenuItem<String>(
+      value: 'modify',
+      child: Text('Modifier'),
+    ),
+    PopupMenuItem<String>(
+      value: 'delete',
+      child: Text('Supprimer', style: TextStyle(color: Colors.red)),
+    ),
+  ],
+  onSelected: (String value) async {
+    if (value == 'modify') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>  ModifierClasse(widget.email,snapshot.data![index]['id'])
+        ),
+      );
+    } else if (value == 'delete') {
+      bool confirmDelete = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Confirmation"),
+            content: Text("Etes-vous sûr que vous voulez supprimer?"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); 
+                },
+                child: Text("Non"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true); 
+                },
+                child: Text("Oui"),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (confirmDelete == true) {
+        
+         deleteClasse(snapshot.data![index]['name']);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => GererClasses(widget.email)),
+        ).then((_) => setState(() {}));
+      }
+    }
+  },
+  icon: Icon(Icons.more_vert),
+),
+
+  ],
+)
+                                ],
+                              ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(
-                      builder: (context) => ModifierClasse(widget.email,snapshot.data![index]['id']),
-                    ),
-                  );
-                },
-                child: Text('Modifier'), 
-              ), 
-              ElevatedButton(
-                onPressed: () {
-                  deleteClasse(snapshot.data![index]['name']);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GererClasses(widget.email),
-                    ),
-                  );
-                },
-                child: Text('Supprimer'),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.red),
-                ),
-              ),
-            ],
-          ),
+         Image.file(
+  File(fileNameWithExtension ?? ''),
+  width: MediaQuery.of(context).size.width, 
+  height: MediaQuery.of(context).size.height*0.3, 
+  fit: BoxFit.cover, 
+),
+Image.file(
+  File(fileName2WithExtension ?? ''),
+  width: MediaQuery.of(context).size.width, 
+  height: MediaQuery.of(context).size.height*0.3, 
+  fit: BoxFit.cover, 
+),
         ],
       ),
     ),

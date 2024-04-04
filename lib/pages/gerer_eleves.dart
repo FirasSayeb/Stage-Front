@@ -33,9 +33,20 @@ class _GererClassesState extends State<GererEleves> {
      home:Scaffold(
       appBar: AppBar(title: const Text("Gerer Eleves "),centerTitle: true,elevation: 0,backgroundColor: Color.fromARGB(160,0,54,99)), 
       body: SingleChildScrollView(child: Column(
-        children: [ Padding(padding: EdgeInsets.all(5)), GestureDetector(child: Center(child: Text("Ajouter eleve ")),onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterEleve(widget.email)));
-          },),Padding(padding: EdgeInsets.all(10)),
+        children: [
+          TextField(
+            
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              hintText: 'Rechercher...',
+              suffixIcon: IconButton(
+                icon: Icon(Icons.clear), onPressed: () {  },
+                
+              ),
+            ),
+           
+          ),
+          Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.01)),
           FutureBuilder<List<Map<String, dynamic>>>(
                 future: getEleves(),
                 builder: (context, snapshot) {
@@ -64,6 +75,68 @@ class _GererClassesState extends State<GererEleves> {
     child: ListTile(
       title: Column(
         children: [
+           Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+  children: [
+    PopupMenuButton<String>(
+  itemBuilder: (BuildContext context) => [
+    PopupMenuItem<String>(
+      value: 'modify',
+      child: Text('Modifier'),
+    ),
+    PopupMenuItem<String>(
+      value: 'delete',
+      child: Text('Supprimer', style: TextStyle(color: Colors.red)),
+    ),
+  ],
+  onSelected: (String value) async {
+    if (value == 'modify') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ModifierEleve(widget.email,snapshot.data![index]['id']),
+        ),
+      );
+    } else if (value == 'delete') {
+      bool confirmDelete = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Confirmation"),
+            content: Text("Etes-vous sûr que vous voulez supprimer?"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); 
+                },
+                child: Text("Non"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true); 
+                },
+                child: Text("Oui"),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (confirmDelete == true) {
+        
+          deleteEleve(snapshot.data![index]['name']);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => GererEleves(widget.email)),
+        ).then((_) => setState(() {}));
+      }
+    }
+  },
+  icon: Icon(Icons.more_vert),
+),
+
+  ],
+),
            CircleAvatar(
                                 backgroundImage: FileImage(File(snapshot.data![index]['profil'] ?? '')),
                                 radius: 30,
@@ -97,38 +170,7 @@ class _GererClassesState extends State<GererEleves> {
       subtitle: Column(  
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 8),  
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [  
-              ElevatedButton(  
-                onPressed: () {
-                  Navigator.push( 
-                    context,   
-                    MaterialPageRoute(
-                      builder: (context) => ModifierEleve(widget.email,snapshot.data![index]['id']),
-                    ),
-                  ); 
-                },
-                child: Text('Modifier'),  
-              ), 
-              ElevatedButton(
-                onPressed: () {
-                  deleteEleve(snapshot.data![index]['name']);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GererEleves(widget.email),
-                    ),
-                  );
-                },
-                child: Text('Supprimer'),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.red),
-                ),
-              ),
-            ],
-          ),
+
         ],
       ),
     ),
@@ -239,6 +281,11 @@ class _GererClassesState extends State<GererEleves> {
             ),
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+           child: Icon(Icons.add),
+          onPressed: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterEleve(widget.email)));
+        }),
      )  
     );
   }

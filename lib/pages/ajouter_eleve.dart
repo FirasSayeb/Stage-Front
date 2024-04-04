@@ -50,6 +50,12 @@ PlatformFile? file;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Text('Ajouter Eleve') ,
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: const Color.fromARGB(160, 0, 54, 99),
+        ),
       body: Column(
         children: [
           Expanded(
@@ -58,15 +64,7 @@ PlatformFile? file;
                 children: [
                   Column(
                     children: [
-                      const Padding(padding: EdgeInsets.all(10)),
-                      Container(
-                        alignment: Alignment.topCenter,
-                        child: const Text(
-                          "Ajouter Eleve ",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ), 
-                      const Padding(padding: EdgeInsets.all(5)),
+                      
                       Center(  
                         child: Form(
                           key: fkey,  
@@ -159,7 +157,7 @@ PlatformFile? file;
               } else {
             return DropdownButton(
               value: selected.isNotEmpty ? selected : null,
-              hint: Text("select classe"), 
+              hint: Text("sélectionner  classe"), 
               items: snapshot.data!.map((e){
                 return DropdownMenuItem(
                   child: Text(e['name'].toString()),
@@ -192,7 +190,7 @@ PlatformFile? file;
   
                             label: Text(
   
-                              'Pick Image',
+                              'Choisir une image',
   
                               style: TextStyle(fontSize: 25),
   
@@ -211,7 +209,7 @@ PlatformFile? file;
     } else {
       return DropdownButton(
         value: selectedParents.isNotEmpty ? selectedParents[0] : null,
-        hint: Text("select parent"), 
+        hint: Text("sélectionner tuteurs"), 
         items: snapshot.data!.map((e){
           return DropdownMenuItem(
             child: Text(e['email'].toString()),
@@ -286,21 +284,7 @@ PlatformFile? file;
                                   child: const Text("Ajouter "),
                                 ),
                               ),
-                              Padding(padding: EdgeInsets.all(5)),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(20),
-                                  margin: const EdgeInsets.symmetric(horizontal: 40),
-                                  decoration: BoxDecoration(
-                                    color: Colors.lightBlueAccent,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: const Text("Go Back  "),
-                                ),
-                              ),
+                             
                               Text(
                                 errorMessage,
                                 style: TextStyle(color: Colors.red),
