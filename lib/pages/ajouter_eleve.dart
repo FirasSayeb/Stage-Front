@@ -270,7 +270,7 @@ PlatformFile? file;
                                     if (response.statusCode == 200) {
                                       Navigator.push(
                                           context,   
-                                          MaterialPageRoute(
+                                          MaterialPageRoute( 
                                               builder: (context) =>
                                                   GererEleves(widget.email)));
                                     } else {

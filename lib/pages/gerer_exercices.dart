@@ -120,7 +120,7 @@ class _GererExercicesState extends State<GererExercices> {
                                             MaterialPageRoute(
                                               builder: (context) => GererExercices(widget.email,widget.name),
                                             ),
-                                          ); 
+                                          ).then((_) => setState(() {}));
                                         }, 
                                         child: Text('Supprimer'),
                                         style: ButtonStyle(

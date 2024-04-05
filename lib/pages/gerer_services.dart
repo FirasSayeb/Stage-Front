@@ -152,7 +152,7 @@ class _GererServicesState extends State<GererServices> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => GererServices(widget.email)),
-        );
+        ).then((_) => setState(() {}));
       }
     }
   },

@@ -98,14 +98,18 @@ Widget build(BuildContext context) {
                       child: ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
+                           String? filePath = snapshot.data![index]['avatar'];
+                          String fileName = filePath != null ? filePath.split('/').last : '';
                           return Card(
                             elevation: 4,
                             margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                             child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: FileImage(File(snapshot.data![index]['avatar'])),
-                                radius: 30,
-                              ),
+                              leading: CircleAvatar( 
+    backgroundImage: NetworkImage( 
+      "https://firas.alwaysdata.net/storage/$fileName",
+    ),
+    radius: 30,
+  ),
                               title: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [                                 
@@ -169,8 +173,8 @@ Widget build(BuildContext context) {
         deleteParent(snapshot.data![index]["email"]);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => GererServices(widget.email)),
-        );
+          MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)),
+        ).then((_) => setState(() {}));
       }
     }
   },
