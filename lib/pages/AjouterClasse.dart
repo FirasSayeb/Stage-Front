@@ -1,5 +1,6 @@
 import 'package:app/pages/gerer_classes.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:http/http.dart' as http; // Alias http package to avoid conflicts
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart';
@@ -27,16 +28,19 @@ class _HomeState extends State<AjouterClasse> {
       print(file!.name);
       print(file!.path);
     }
-  }Future<void> pickSecondFile() async {
-  FilePickerResult? result = await FilePicker.platform.pickFiles();
-  if (result != null) {
-    PlatformFile file = result.files.first;
-     secondFilePath = file.path!;
-    print(secondFilePath); 
-    
-   
   }
-}
+
+  Future<void> pickSecondFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      file = result.files.first;
+      setState(() {
+        secondFilePath = file!.path;
+      });
+      print(secondFilePath); 
+    }
+  }
+
   late String name;
   final fkey = GlobalKey<FormState>(); 
   String errorMessage = '';
@@ -113,7 +117,8 @@ class _HomeState extends State<AjouterClasse> {
                             style: TextStyle(fontSize: 25),
                           )
                         ),
-                        const Padding(padding: EdgeInsets.all(2)),ElevatedButton.icon(
+                        const Padding(padding: EdgeInsets.all(2)),
+                        ElevatedButton.icon(
                           onPressed: pickSecondFile,
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
@@ -133,24 +138,44 @@ class _HomeState extends State<AjouterClasse> {
                                 fkey.currentState!.save();
                                 print(name);
 
-                                Map<String, dynamic> userData = {
-                                  'body': name,
-                                  'file': path ?? ''  ,
-                                  'examen':secondFilePath  
-                                };
-                                print(userData['file']); 
-                                Response response = await post(
-                                  Uri.parse("https://firas.alwaysdata.net/api/addClasse"),
-                                  body: userData,   
+                                var request = http.MultipartRequest(
+                                  'POST', 
+                                  Uri.parse("https://firas.alwaysdata.net/api/addClasse")
                                 );
-                                   
-                                if (response.statusCode == 200) {  
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => GererClasses(widget.email)));
-                                } else { 
+
+                                request.fields['name'] = name;
+                                
+
+                                if (path != null && path!.isNotEmpty) {
+                                   var file = await MultipartFile.fromPath('file', path!);
+        request.files.add(file);
+                                 
+                                }
+
+                                if (secondFilePath != null && secondFilePath!.isNotEmpty) {
+                                 
+var file2 = await MultipartFile.fromPath('examens', secondFilePath!);
+        request.files.add(file2);}
+                                try {
+                                  final streamedResponse = await request.send();
+                                  final response = await http.Response.fromStream(streamedResponse);
+
+                                  if (response.statusCode == 200) {  
+                                    Navigator.push(
+                                      context, 
+                                      MaterialPageRoute(builder: (context) => GererClasses(widget.email))
+                                    );
+                                  } else { 
+                                    setState(() {
+                                      errorMessage = "Error: ${response.statusCode}, ${response.body}";
+                                    });
+                                  }
+                                } catch (e) {
+                                  print('Error: $e');
                                   setState(() {
-                                    errorMessage = "Error: ${response.statusCode}, ${response.body}";
+                                    errorMessage = 'Error occurred while sending the request';
                                   });
-                                }  
+                                }
                               }
                             },
                             child: Container(
@@ -164,7 +189,6 @@ class _HomeState extends State<AjouterClasse> {
                             ),
                           ), 
                         ),
-                        
                         Text(
                           errorMessage,
                           style: TextStyle(color: Colors.red),

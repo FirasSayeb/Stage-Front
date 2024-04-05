@@ -121,35 +121,42 @@ class _ModierActualiteState extends State<ModierActualite> {
                             ),
                           ),
                           ElevatedButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
-                                if (file != null) {
-                                  setState(() {
-                                    path = file!.path!;
-                                  });
-                                }
-                                 var request = MultipartRequest(
+  onPressed: () async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      // Remove this block so that path remains the selected file path
+      // if (file != null) {
+      //   setState(() {
+      //     path = file!.path!;
+      //   });
+      // }
+      var request = MultipartRequest(
         'PUT',
         Uri.parse("https://firas.alwaysdata.net/api/updateActualite/${widget.id}"),
       );
 
       request.fields['body'] = body!;
       request.fields['email'] = widget.email;
-      
+
       if (path != null && path!.isNotEmpty) {
+       // print(path);
         var file = await MultipartFile.fromPath('file', path!);
+         print(file.filename);
         request.files.add(file);
       }
-             var response = await request.send(); 
-                               
-                                if (response.statusCode == 200) {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email)));
-                                }
-                              }
-                            },
-                            child: Text('Valider'),
-                          ),
+
+      var response = await request.send();
+   
+
+      if (response.statusCode == 200) {
+       
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email)));
+      }
+    }
+  },
+  child: Text('Valider'),
+),
+
                         ],
                       );
                     }

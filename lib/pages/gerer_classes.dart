@@ -166,18 +166,19 @@ String fileName2WithExtension = pathPart.last;
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-         Image.file(
-  File(fileNameWithExtension ?? ''),
-  width: MediaQuery.of(context).size.width, 
-  height: MediaQuery.of(context).size.height*0.3, 
-  fit: BoxFit.cover, 
+           Image.network(
+  "https://firas.alwaysdata.net/storage/$fileNameWithExtension",
+  width: MediaQuery.of(context).size.width,
+  height: MediaQuery.of(context).size.height * 0.3,
+  fit: BoxFit.cover,
 ),
-Image.file(
-  File(fileName2WithExtension ?? ''),
-  width: MediaQuery.of(context).size.width, 
-  height: MediaQuery.of(context).size.height*0.3, 
-  fit: BoxFit.cover, 
-),
+   Image.network(
+  "https://firas.alwaysdata.net/storage/$fileNameWithExtension",
+  width: MediaQuery.of(context).size.width,
+  height: MediaQuery.of(context).size.height * 0.3,
+  fit: BoxFit.cover,
+)      
+
         ],
       ),
     ),

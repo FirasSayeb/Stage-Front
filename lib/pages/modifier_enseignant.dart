@@ -193,7 +193,11 @@ class _ModEnsignantState extends State<ModEnsignant> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            
+                             if (file != null) {
+                                  setState(() {
+                                    path = file!.path!;
+                                  });
+                                }
                             var request = MultipartRequest(
         'PUT',
         Uri.parse("https://firas.alwaysdata.net/api/updateEnseignant"),
@@ -210,16 +214,20 @@ class _ModEnsignantState extends State<ModEnsignant> {
         var file = await MultipartFile.fromPath('file', path!);
         request.files.add(file);
       } 
+      print(file);
              var response = await request.send();
                           
                             print(request.fields);
-                            print(request.files.first.filename);
+                            
                             if (response.statusCode == 200) {
                                print(request.fields);
-                            print(request.files);
+                            
                               Navigator.pop(context);
                             }else{
-                              print(response.statusCode);
+                            var response2 = await http.Response.fromStream(response);
+  final result = json.decode(json.encode(response2.body));
+    print(response.statusCode);
+    print(result);
                             }
                           }
                         },
