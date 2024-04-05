@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class Profil extends StatefulWidget {
   final String email;
@@ -76,7 +77,7 @@ Future<void> pickSingleFile() async {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}')); 
             } else {
-                String? filePath = snapshot.data!['avatar'].filePath;
+                String? filePath = snapshot.data!['avatar'];
                           String fileName = filePath != null ? filePath.split('/').last : '';
               path= file==null ? snapshot.data!['avatar'] : path;
               return Form(
@@ -165,22 +166,20 @@ Future<void> pickSingleFile() async {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            final response = await http.put(
-                              Uri.parse("https://firas.alwaysdata.net/api/updateUser"),
-                              body: <String, dynamic>{
-                                'email': widget.email,
-                                'password':password,
-                                'file':path,
-                                'phone':phone,
-                                'address':address
-                              },
-                            ); print(<String, dynamic>{
-                                'email': widget.email,
-                                'password':password,
-                                'file':path,
-                                'phone':phone,
-                                'address':address
-                              },);
+                            
+                                  final request = http.MultipartRequest(
+                                    'PUT',
+                                    Uri.parse('https://firas.alwaysdata.net/api/updateUser'),
+                                  )
+                                  
+                                    ..fields['email'] = widget.email
+                                    ..fields['password'] = password
+                                    ..fields['address'] = address!
+                                    ..fields['phone'] = phone!;
+                           
+                                  final streamedResponse = await request.send();
+                                  final response = await http.Response.fromStream(streamedResponse);
+                             
                             if (response.statusCode == 200) {
                               print(<String, dynamic>{
                                 'email': widget.email,
@@ -192,6 +191,7 @@ Future<void> pickSingleFile() async {
                              Navigator.pop(context);
                             }
                             print(response.statusCode);
+                            print(response.body);
                           }
                         },
                         child: Text('Valider'),
