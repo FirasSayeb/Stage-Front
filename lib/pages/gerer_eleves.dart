@@ -218,6 +218,8 @@ class _GererClassesState extends State<GererEleves> {
         child: ListView.builder(
           itemCount: _filteredStudents.length,
           itemBuilder: (context, index) {
+             String? filePath = _filteredStudents[index]['profil'];
+                          String fileName = filePath != null ? filePath.split('/').last : '';
             return Card(
               elevation: 4,
               margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
@@ -225,7 +227,7 @@ class _GererClassesState extends State<GererEleves> {
                 child: ListTile(
                   title: Column(
                     children: [
-                      Row(
+                      Row( 
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           PopupMenuButton<String>(
@@ -285,10 +287,12 @@ class _GererClassesState extends State<GererEleves> {
                           ),
                         ],
                       ),
-                      CircleAvatar(
-                        backgroundImage: FileImage(File(_filteredStudents[index]['profil'] ?? '')),
-                        radius: 30,
-                      ),
+                      CircleAvatar( 
+    backgroundImage: NetworkImage(
+      "https://firas.alwaysdata.net/storage/$fileName",
+    ),
+    radius: 30,
+  ),
                       Text(
                         "Numero: ${_filteredStudents[index]['num']}",
                       ),

@@ -264,20 +264,20 @@ PlatformFile? file;
     var file = await MultipartFile.fromPath('file', path!);
     request.files.add(file);
   }
-
+   
   // Send request
   var response = await request.send();
                                     if (response.statusCode == 200) {
                                       Navigator.push(
-                                          context,
+                                          context,   
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   GererEleves(widget.email)));
                                     } else {
                                       setState(() {
-                                        errorMessage =
+                                        errorMessage = 
                                             "Error: ${response.statusCode}";
-                                      });
+                                      });   
                                     }
                                   }
                                 },
