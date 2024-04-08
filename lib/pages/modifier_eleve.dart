@@ -4,6 +4,7 @@ import 'package:app/pages/gerer_eleves.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class ModifierEleve extends StatefulWidget {
   final int id;
@@ -232,27 +233,24 @@ class _ModifierEleveState extends State<ModifierEleve> {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
                                 print("classe $classe");
-                                final response = await http.put(
-                                  Uri.parse("https://firas.alwaysdata.net/api/updateEleve/${widget.id}"),
-                                   body: <String, dynamic>{
-        'name': name ?? '',
-        'num': num ?? '',
-        'lastname': lastname ?? '',
-        'date': select ?? eleve['date_of_birth'] ?? '',
-        'class': classe ?? '',
-       'list':selectedParents.join(','), 
-        'file': path ?? '',  
-      },
-                                );
-                                   print({
-        'name': name ?? '',
-        'num': num ?? '',
-        'lastname': lastname ?? '',
-        'date': select ?? eleve['date_of_birth'] ?? '',
-        'class': classe ?? '',
-'list':selectedParents.join(','), 
-        'file': path ?? '',  
-      });
+                                 var request = MultipartRequest(
+                          'POST',
+                          Uri.parse("https://firas.alwaysdata.net/api/updateEleve/${widget.id}"),
+                        );
+                        request.fields['name'] = name!;
+                        request.fields['num'] = num!;
+                        request.fields['lastname'] = lastname!;
+                        request.fields['date'] =select ?? eleve['date_of_birth'] ?? '';
+                        request.fields['class'] = classe!;
+                        request.fields['list'] = selectedParents.join(',');
+                        if (path != null && path!.isNotEmpty) {
+                          print(path);
+                          var file = await MultipartFile.fromPath('file', path!);
+                          request.files.add(file);
+                        }
+                           var response = await request.send();        
+      
+                               
                                 if (response.statusCode == 200) {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));
                                 }

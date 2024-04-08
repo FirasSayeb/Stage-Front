@@ -36,15 +36,17 @@ class _ModifierClasseState extends State<ModifierClasse> {
         await http.get(Uri.parse("https://firas.alwaysdata.net/api/getClasse/${widget.id}"));
     if (response.statusCode == 200) {
       final classe = jsonDecode(response.body)['classe'];
-
-      setState(() {
+     
+setState(() {
+  body = classe['name'] ;
         name = name ?? (classe['emploi'] != null ? classe['emploi'].split('/').last : '');
         path = path ?? (classe['emploi'] != null ? classe['emploi'] : '');
         name2 = name2 ?? (classe['examens'] != null ? classe['examens'].split('/').last : '');
         path2 = path2 ?? (classe['examens'] != null ? classe['examens'] : '');
-        body = classe['name'] ?? '';
+        
          // Ensure body is not null
       });
+      
       print(body);
     } else {
       throw Exception('Failed to load classe');
@@ -98,14 +100,7 @@ class _ModifierClasseState extends State<ModifierClasse> {
               key: _formKey,
               child: Column(
                 children: [
-                  Container(
-                    height: 200,
-                    child: Card(
-                      elevation: 4,
-                      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                      child: ListTile(
-                        contentPadding: EdgeInsets.all(16.0),
-                        title: TextFormField(
+                  TextFormField(
   initialValue: body,
   style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
   onChanged: (value) {
@@ -118,12 +113,20 @@ class _ModifierClasseState extends State<ModifierClasse> {
     return null;
   },
 ),
-
+ 
+                  Container(
+                    height: 200,
+                    child: Card(
+                      elevation: 4,
+                      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(16.0),
+                        title: Text(''),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 8.0),
-                            ListTile(
+                            ListTile( 
                               title: Text(
                                 'Emlpoi: ${name != null ? name! : 'No file'}',
                                 style: TextStyle(fontSize: 14.0),
