@@ -129,7 +129,7 @@ class _HomeState extends State<AjouterActualite> {
              var response = await request.send();                  
 
                                 if (response.statusCode == 200) {  
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email))).then((_) => setState(() {}));
                                 } else {
                                   setState(() {
                                     errorMessage = "Error: ${response.statusCode}";

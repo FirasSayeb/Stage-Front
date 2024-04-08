@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:app/pages/Admin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:app/model/Actualite.dart';
 import 'package:http/http.dart';
+import 'package:open_file/open_file.dart';
 
 class ModierActualite extends StatefulWidget {
   final int id;
@@ -19,16 +21,28 @@ class _ModierActualiteState extends State<ModierActualite> {
   PlatformFile? file;
   String? name;
   String? path;
-  String? body;
+  String? selectedname;
+  String? selectedpath;
+  late String body;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Future<List<Actualite>> getActualite() async {
+  @override
+  void initState() {
+    super.initState();
+    getActualite();
+  }
+
+  Future<void> getActualite() async {
     try {
       final response =
           await http.get(Uri.parse("https://firas.alwaysdata.net/api/getActualite/${widget.id}"));
       if (response.statusCode == 200) {
         final List responseData = jsonDecode(response.body)['actualite'];
-        return responseData.map((data) => Actualite.fromJson(data)).toList();
+        setState(() {
+          body = responseData[0]["body"];
+          name = responseData[0]["filePath"] != null ? responseData[0]["filePath"].split('/').last : '';
+          path = responseData[0]["filePath"];
+        });
       } else {
         throw Exception('Failed to load actualite');
       }
@@ -42,20 +56,23 @@ class _ModierActualiteState extends State<ModierActualite> {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
       setState(() {
-        file = result.files.first;
-        name = file!.name;
-        path = file!.path;
+        file = result.files.single;
+        selectedname = file!.name;
+        selectedpath = file!.path;
         print("$name  name from function");
         print("$path path from function");
+        print(file);
       });
+    } else {
+      // Handle case when no file is picked
+      // You can show a snackbar or a dialog to inform the user
+      // that they need to pick a file.
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: const Text("Modifier"),
           centerTitle: true,
@@ -67,106 +84,103 @@ class _ModierActualiteState extends State<ModierActualite> {
             children: [
               Form(
                 key: _formKey,
-                child: FutureBuilder<List<Actualite>>(
-                  future: getActualite(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else {
-                      final actualite = snapshot.data![0]; // Assuming you only fetch one actualite
-                      name = name ?? (actualite.filePath != null ? actualite.filePath!.split('/').last : '');
-                      path = path ?? (actualite.filePath != null ? actualite.filePath! : '');
-                      body = actualite.body;
-                      return Column(
-                        children: [
-                          Container(
-                            height: 200,
-                            child: Card(
-                              elevation: 4,
-                              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                              child: ListTile(
-                                contentPadding: EdgeInsets.all(16.0),
-                                title: TextFormField(
-                                  initialValue: actualite.body,
-                                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                                  onChanged: (value) {
-                                    body = value;
-                                  },
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 8.0),
-                                    ListTile(
-                                      title: Text(
-                                        'File: ${name != null ? name! : 'No file'}',
-                                        style: TextStyle(fontSize: 14.0),
-                                      ),
-                                      onTap: () {
-                                        pickSingleFile();
-                                      },
+                child: Column(
+                  children: [
+                    TextFormField(
+                      initialValue: body ?? '',
+                      style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                      onChanged: (value) {
+                        setState(() {
+                          body = value;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          height: 200,
+                          child: Card(
+                            elevation: 4,
+                            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(16.0),
+                              title: Text(''),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 8.0),
+                                  ListTile(
+                                    title: Text(
+                                      'File: ${name != null ? name! : 'No file'}',
+                                      style: TextStyle(fontSize: 14.0),
                                     ),
-                                    SizedBox(height: 8.0),
-                                  ],
-                                ),
+                                    onTap: () {
+                                      pickSingleFile();
+                                    },
+                                  ),
+                                  SizedBox(height: 8.0),
+                                ],
                               ),
                             ),
                           ),
-                          ElevatedButton(
-  onPressed: () async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      // Remove this block so that path remains the selected file path
-      // if (file != null) {
-      //   setState(() {
-      //     path = file!.path!;
-      //   });
-      // }
-      var request = MultipartRequest(
-        'PUT',
-        Uri.parse("https://firas.alwaysdata.net/api/updateActualite/${widget.id}"),
-      );
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
 
-      request.fields['body'] = body!;
-      request.fields['email'] = widget.email;
+                              // Create a new multipart request
+                              var request = http.MultipartRequest(
+                                'POST', 
+                                Uri.parse("https://firas.alwaysdata.net/api/updateActualite/${widget.id}"),
+                              );
 
-      if (path != null && path!.isNotEmpty) {
-       // print(path);
-        var file = await MultipartFile.fromPath('file', path!);
-         print(file.filename);
-        request.files.add(file);
-      }
+                              // Add form fields (body and email)
+                              request.fields['body'] = body ?? '';
+                              request.fields['email'] = widget.email;
+                              print("${file!.path!} && ${file!.name}");
+                              // Add file if it exists and contains bytes
+                           if (file != null) {
+  if (file!.path != null && file!.path!.isNotEmpty) {
+    var fil = await MultipartFile.fromPath('file', file!.path!);
+    request.files.add(fil);
+  }
+}
 
-      var response = await request.send();
-   
 
-      if (response.statusCode == 200) {
-       
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email)));
-      }
-    }
-  },
-  child: Text('Valider'),
-),
 
-                        ],
-                      );
-                    }
-                  },
+
+                              var response = await request.send();
+                              var response2 = await http.Response.fromStream(response);
+
+                              // Handle the response
+                              if (response.statusCode == 200) {
+                                // If the update was successful, navigate to Admin page
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email)));
+                              } else {
+                                // Handle error
+                                print('Failed to update actualite');
+                                print(json.decode(json.encode(response2.body)));
+                              }
+                            }
+                          },
+                          child: Text('Valider'),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
         ),
-      ),
-    );
+      );
+    
   }
 }

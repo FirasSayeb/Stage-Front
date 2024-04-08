@@ -199,7 +199,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
                                   });
                                 }
                             var request = MultipartRequest(
-        'PUT',
+        'POST',
         Uri.parse("https://firas.alwaysdata.net/api/updateEnseignant"),
       );
 

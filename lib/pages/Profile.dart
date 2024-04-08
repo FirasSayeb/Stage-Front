@@ -168,7 +168,7 @@ Future<void> pickSingleFile() async {
                             _formKey.currentState!.save();
                             
                                   final request = http.MultipartRequest(
-                                    'PUT',
+                                    'POST',
                                     Uri.parse('https://firas.alwaysdata.net/api/updateUser'),
                                   )
                                   
@@ -176,7 +176,10 @@ Future<void> pickSingleFile() async {
                                     ..fields['password'] = password
                                     ..fields['address'] = address!
                                     ..fields['phone'] = phone!;
-                           
+                            if (file != null && file!.path!.isNotEmpty) {
+                                var fil = await MultipartFile.fromPath('file', file!.path!);
+                                request.files.add(fil);
+                              }
                                   final streamedResponse = await request.send();
                                   final response = await http.Response.fromStream(streamedResponse);
                              
