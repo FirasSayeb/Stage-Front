@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app/model/Actualite.dart';
 import 'package:app/pages/Home.dart';
 import 'package:app/pages/Profile.dart';
+import 'package:app/pages/ajouter_message.dart';
 import 'package:app/pages/voir_event.dart';
 import 'package:app/pages/voir_exercices.dart';
 import 'package:app/pages/voir_notes.dart';
@@ -150,6 +151,13 @@ class _SignupState extends State<Parent> {
       context,   
       MaterialPageRoute(builder: (context) => VoirEvent(widget.email)));},
               ),
+              ListTile(
+                  title: const Text("Envoyer Notification"), 
+                  leading: const Icon(Icons.notification_add),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterMessage(widget.email)));
+                  },
+                ),
                ListTile(
                 title: Text("Deconnexion"),
                 leading: Icon(Icons.exit_to_app),

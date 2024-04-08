@@ -6,6 +6,7 @@ import 'package:app/pages/Profile.dart';
 import 'package:app/pages/enseignant_home.dart';
 import 'package:app/pages/list_actualites.dart';
 import 'package:app/pages/list_elves.dart';
+import 'package:app/pages/voir_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
@@ -77,13 +78,23 @@ String fileName2WithExtension = pathPart.last;
       MaterialPageRoute(builder: (context) => ListEleves(widget.email,snapshot.data![index]['name'])));
       },
       title: Text( 
-        "Name: ${snapshot.data![index]['name']}\nEmploi : $fileNameWithExtension \nExamens : $fileName2WithExtension",
+        "Name: ${snapshot.data![index]['name']}\n ",
        
       ), 
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 8),
+           Image.network(
+                                        "https://firas.alwaysdata.net/storage/$fileNameWithExtension",
+                                        width: MediaQuery.of(context).size.width,
+                                        height: MediaQuery.of(context).size.height * 0.3,
+                                        fit: BoxFit.cover,
+                                      ), Image.network(
+                                        "https://firas.alwaysdata.net/storage/$fileName2WithExtension",
+                                        width: MediaQuery.of(context).size.width,
+                                        height: MediaQuery.of(context).size.height * 0.3,
+                                        fit: BoxFit.cover,
+                                      )
           
         ], 
       ),
@@ -92,7 +103,7 @@ String fileName2WithExtension = pathPart.last;
 );
 
 
-                        }, gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                        }, gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
                       ),
                     );
                   }
@@ -128,7 +139,13 @@ String fileName2WithExtension = pathPart.last;
       context,   
       MaterialPageRoute(builder: (context) => ListActualites(widget.email)));},
               ), 
-              
+               ListTile(
+                title: Text("Voir Notifications"),
+                leading: Icon(Icons.notification_add),
+                onTap: () { Navigator.push(
+      context,   
+      MaterialPageRoute(builder: (context) => VoirNotifications(widget.email)));},
+              ), 
                ListTile(
                 title: Text("Deconnexion"),
                 leading: Icon(Icons.exit_to_app),

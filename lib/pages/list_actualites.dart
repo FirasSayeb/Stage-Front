@@ -69,10 +69,12 @@ class _ListActualitesState extends State<ListActualites> {
                                 'Created By: ${snapshot.data![index].userName}',
                                 style: TextStyle(fontSize: 14.0),
                               ),SizedBox(height: 8.0), 
-                              Text(
-                                'File: $fileName',
-                                style: TextStyle(fontSize: 14.0),
-                              ),SizedBox(height: 8.0),
+                              Image.network(
+                                    "https://firas.alwaysdata.net/storage/$fileName",
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height * 0.3,
+                                    fit: BoxFit.cover,
+                                  )
                              
                             ],
                           ), 
