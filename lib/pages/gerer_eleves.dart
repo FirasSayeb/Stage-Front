@@ -26,45 +26,10 @@ class GererEleves extends StatefulWidget {
 }
 
 class _GererClassesState extends State<GererEleves> {
-  TextEditingController _searchController = TextEditingController();
-  List<Map<String, dynamic>> _filteredStudents = [];
+   late String searchString = '';
+  
 
-  @override
-  void initState() {
-    super.initState();
-    _searchController.addListener(_onSearchChanged);
-    getEleves().then((students) {
-      setState(() {
-        _filteredStudents = students;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  void _onSearchChanged() {
-    String query = _searchController.text;
-    setState(() {
-      _filteredStudents = _filterStudents(query);
-    });
-  }
-
-  List<Map<String, dynamic>> _filterStudents(String query) {
-    if (query.isEmpty) {
-      return List.from(_filteredStudents); // Return original list when query is empty
-    } else {
-      return _filteredStudents.where((student) {
-        return student['name'].toLowerCase().contains(query.toLowerCase()) ||
-            student['lastname'].toLowerCase().contains(query.toLowerCase()) ||
-            student['class_name'].toLowerCase().contains(query.toLowerCase());
-        // Add more fields if needed
-      }).toList();
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -80,21 +45,160 @@ class _GererClassesState extends State<GererEleves> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  hintText: 'Rechercher...',
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () {
-                      _searchController.clear();
-                    },
+               TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      searchString = value.toLowerCase();
+                    });
+                  },
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    hintText: 'Rechercher...',
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        setState(() {
+                          searchString = '';
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.01)),
+              FutureBuilder<List<Map<String, dynamic>>>(
+                  future: getEleves(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                     return SizedBox(
+        height: MediaQuery.of(context).size.height * 0.8,
+        child: ListView.builder(
+          itemCount: snapshot.data!.length,
+          itemBuilder: (context, index) {
+             String? filePath = snapshot.data![index]['profil'];
+                          String fileName = filePath != null ? filePath.split('/').last : '';
+                          if (searchString.isEmpty ||
+    (snapshot.data![index]['name'].toLowerCase().contains(searchString) ||
+    snapshot.data![index]['num'].toLowerCase().contains(searchString) ||
+    snapshot.data![index]['lastname'].toLowerCase().contains(searchString) ||
+    snapshot.data![index]['class_name'].toLowerCase().contains(searchString))) {
+  // Include the item in the search results
+  return Card(
+              elevation: 4,
+              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+              child: GestureDetector(
+                child: ListTile(
+                  title: Column(
+                    children: [
+                      Row( 
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          PopupMenuButton<String>(
+                            itemBuilder: (BuildContext context) => [
+                              PopupMenuItem<String>(
+                                value: 'modify',
+                                child: Text('Modifier'),
+                              ),
+                              PopupMenuItem<String>(
+                                value: 'delete',
+                                child: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                              ),
+                            ],
+                            onSelected: (String value) async {
+                              if (value == 'modify') {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ModifierEleve(widget.email, snapshot.data![index]['id']),
+                                  ),
+                                );
+                              } else if (value == 'delete') {
+                                bool confirmDelete = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Confirmation"),
+                                      content: Text("Etes-vous sûr que vous voulez supprimer?"),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false);
+                                          },
+                                          child: Text("Non"),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(true);
+                                          },
+                                          child: Text("Oui"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+
+                                if (confirmDelete == true) {
+                                  deleteEleve( snapshot.data![index]['name']);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => GererEleves(widget.email)),
+                                  ).then((_) => setState(() {}));
+                                }
+                              }
+                            },
+                            icon: Icon(Icons.more_vert),
+                          ),
+                        ],
+                      ),
+                      CircleAvatar( 
+    backgroundImage: NetworkImage(
+      "https://firas.alwaysdata.net/storage/$fileName",
+    ),
+    radius: 30,
+  ),
+                      Text(
+                        "Numero: ${ snapshot.data![index]['num']}",
+                      ),
+                      Text(
+                        "Name: ${ snapshot.data![index]['name']}",
+                      ),
+                      Text(
+                        "LastName: ${ snapshot.data![index]['lastname']}",
+                      ),
+                      Text(
+                        "ClassName: ${ snapshot.data![index]['class_name']}",
+                      ),
+                      Text(
+                        "Date of birth: ${ snapshot.data![index]['date_of_birth']}",
+                      ),
+                      Text(
+                        "Tuteurs : ${ snapshot.data![index] != null && snapshot.data![index].isNotEmpty ? snapshot.data![index]['parent_names'] ?? '' : ''} ",
+                      ),
+                    ],
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Subtitle content
+                    ],
                   ),
                 ),
               ),
-              Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.01)),
-              _buildStudentList(),
+            );}
+else {
+                              return Container();
+                            }
+ 
+                                   
+                                
+           
+          },
+        ),
+      );
+                    }})
             ],
           ),
         ),
@@ -209,124 +313,7 @@ class _GererClassesState extends State<GererEleves> {
     );
   }
 
-  Widget _buildStudentList() {
-    if (_filteredStudents.isEmpty) {
-      return Center(child: Text('No matching students found'));
-    } else {
-      return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.8,
-        child: ListView.builder(
-          itemCount: _filteredStudents.length,
-          itemBuilder: (context, index) {
-             String? filePath = _filteredStudents[index]['profil'];
-                          String fileName = filePath != null ? filePath.split('/').last : '';
-            return Card(
-              elevation: 4,
-              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-              child: GestureDetector(
-                child: ListTile(
-                  title: Column(
-                    children: [
-                      Row( 
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          PopupMenuButton<String>(
-                            itemBuilder: (BuildContext context) => [
-                              PopupMenuItem<String>(
-                                value: 'modify',
-                                child: Text('Modifier'),
-                              ),
-                              PopupMenuItem<String>(
-                                value: 'delete',
-                                child: Text('Supprimer', style: TextStyle(color: Colors.red)),
-                              ),
-                            ],
-                            onSelected: (String value) async {
-                              if (value == 'modify') {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ModifierEleve(widget.email, _filteredStudents[index]['id']),
-                                  ),
-                                );
-                              } else if (value == 'delete') {
-                                bool confirmDelete = await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text("Confirmation"),
-                                      content: Text("Etes-vous sûr que vous voulez supprimer?"),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop(false);
-                                          },
-                                          child: Text("Non"),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop(true);
-                                          },
-                                          child: Text("Oui"),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-
-                                if (confirmDelete == true) {
-                                  deleteEleve(_filteredStudents[index]["name"]);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => GererEleves(widget.email)),
-                                  ).then((_) => setState(() {}));
-                                }
-                              }
-                            },
-                            icon: Icon(Icons.more_vert),
-                          ),
-                        ],
-                      ),
-                      CircleAvatar( 
-    backgroundImage: NetworkImage(
-      "https://firas.alwaysdata.net/storage/$fileName",
-    ),
-    radius: 30,
-  ),
-                      Text(
-                        "Numero: ${_filteredStudents[index]['num']}",
-                      ),
-                      Text(
-                        "Name: ${_filteredStudents[index]['name']}",
-                      ),
-                      Text(
-                        "LastName: ${_filteredStudents[index]['lastname']}",
-                      ),
-                      Text(
-                        "ClassName: ${_filteredStudents[index]['class_name']}",
-                      ),
-                      Text(
-                        "Date of birth: ${_filteredStudents[index]['date_of_birth']}",
-                      ),
-                      Text(
-                        "Tuteurs : ${_filteredStudents != null && _filteredStudents.isNotEmpty ? _filteredStudents[index]['parent_names'] ?? '' : ''} ",
-                      ),
-                    ],
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Subtitle content
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      );
-    }
-  }
+  
 
   Future<List<Map<String, dynamic>>> getEleves() async {
     try {

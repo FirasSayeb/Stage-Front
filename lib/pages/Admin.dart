@@ -2,7 +2,19 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/model/Actualite.dart';
+import 'package:app/pages/Home.dart';
+import 'package:app/pages/Profile.dart';
+import 'package:app/pages/ajouter_deliberation.dart';
+import 'package:app/pages/ajouter_notification.dart';
+import 'package:app/pages/gerer_classes.dart';
+import 'package:app/pages/gerer_eleves.dart';
+import 'package:app/pages/gerer_emploi.dart';
+import 'package:app/pages/gerer_events.dart';
+import 'package:app/pages/gerer_services.dart';
+import 'package:app/pages/gerer_utilisateurs.dart';
 import 'package:app/pages/moifier_actualite.dart';
+import 'package:app/pages/valider_event.dart';
+import 'package:app/pages/valider_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -200,9 +212,107 @@ class _AdminState extends State<Admin> {
             ),
           ],
         ),
+        drawer: Drawer(
+          child: Container(
+            color: Colors.white,
+            child: ListView(
+              children: [const Padding(padding: EdgeInsets.only(top: 30)),ListTile( 
+                  title:  Text(" ${widget.email}"),
+                  leading: const Icon(Icons.person),
+                  onTap: () { 
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Profil(widget.email)));
+                  },
+                ),
+                
+                ListTile(
+                  title: const Text("Home"), 
+                  leading: const Icon(Icons.home),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email)));
+                  },
+                ),
+                ListTile(
+                  title: const Text("Gérer Enseignants"),
+                  leading: const Icon(Icons.school),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => GererEmploi(widget.email)));
+                  },
+                ),ListTile(
+                title: const Text("Gérer Services"),
+                leading: const Icon(Icons.miscellaneous_services),
+                onTap: () { 
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
+                },
+              ),ListTile(
+                title: const Text("Gérer Events"),
+                leading: const Icon(Icons.event),
+                onTap: () { 
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => GererEvents(widget.email)));
+                },
+              ),
+                ListTile(
+                  title: const Text("Gérer Tuteurs"),
+                  leading: const Icon(Icons.verified_user), 
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)));
+                  },
+                ), ListTile(
+                  title: const Text("Gérer Notes"), 
+                  leading: const Icon(Icons.grade),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterDel(widget.email)));
+                  },
+                ),
+                ListTile(
+                  title: const Text("Gérer Classes"), 
+                  leading: const Icon(Icons.class_),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => GererClasses(widget.email)));
+                  },
+                ),
+                ListTile(
+                  title: const Text("Gérer Eleves"), 
+                  leading: const Icon(Icons.smart_toy_rounded),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));
+                  },
+                ),ListTile(
+                  title: const Text("Envoyer Notification"), 
+                  leading: const Icon(Icons.notification_add),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterNotification(widget.email)));
+                  },
+                ),
+                ListTile(
+                  title: const Text("Valider  Services"), 
+                  leading: const Icon(Icons.check),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderService(widget.email)));
+                  },
+                ),
+                ListTile(
+                  title: const Text("Valider  Events"), 
+                  leading: const Icon(Icons.check),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderEvent(widget.email)));
+                  },
+                ),
+                ListTile(  
+                  title: const Text("Deconnexion"),
+                  leading: const Icon(Icons.exit_to_app),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+                  },
+                ), 
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
+}
+      
 
   void deleteActualite(int actualiteId) async {
     final url = Uri.parse("https://firas.alwaysdata.net/api/deleteActualite/$actualiteId");
@@ -218,4 +328,3 @@ class _AdminState extends State<Admin> {
       print('Error deleting actualite: $e');
     }
   }
-}

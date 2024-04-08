@@ -1,7 +1,4 @@
-
-
 import 'dart:convert';
-
 import 'package:app/pages/Admin.dart';
 import 'package:app/pages/AjouterService.dart';
 import 'package:app/pages/Home.dart';
@@ -17,7 +14,7 @@ import 'package:app/pages/gerer_utilisateurs.dart';
 import 'package:app/pages/valider_event.dart';
 import 'package:app/pages/valider_service.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
 class GererServices extends StatefulWidget {
   final String email;
@@ -28,22 +25,25 @@ class GererServices extends StatefulWidget {
 }
 
 class _GererServicesState extends State<GererServices> {
-  Future<List<Map<String, dynamic>>> getServices() async { 
-  try {
-    final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getServices"));
-    if (response.statusCode == 200) {
-     final List<dynamic> responseData = jsonDecode(response.body.toString())['list'];
-      final List<Map<String, dynamic>> parentList = responseData.map((data) => data as Map<String, dynamic>).toList();
-      return parentList; 
-      
-    } else {
-      throw Exception('Failed to load services'); 
-    } 
-  } catch (e) {
-    print('Error: $e');  
-    throw Exception('Failed to load services');
+  late String searchString = '';
+
+  Future<List<Map<String, dynamic>>> getServices() async {
+    try {
+      final response = await http.get(Uri.parse("https://firas.alwaysdata.net/api/getServices"));
+      if (response.statusCode == 200) {
+        final List<dynamic> responseData = jsonDecode(response.body.toString())['list'];
+        final List<Map<String, dynamic>> parentList =
+            responseData.map((data) => data as Map<String, dynamic>).toList();
+        return parentList;
+      } else {
+        throw Exception('Failed to load services');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Failed to load services');
+    }
   }
-}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,18 +59,25 @@ class _GererServicesState extends State<GererServices> {
           child: Column(
             children: [
               TextField(
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              hintText: 'Rechercher...',
-              suffixIcon: IconButton(
-                icon: Icon(Icons.clear), onPressed: () {  },
-                
+                onChanged: (value) {
+                  setState(() {
+                    searchString = value.toLowerCase();
+                  });
+                },
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  hintText: 'Rechercher...',
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      setState(() {
+                        searchString = '';
+                      });
+                    },
+                  ),
+                ),
               ),
-            ),
-           
-          ),
-          Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.01)),
-             
+              Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.01)),
               FutureBuilder<List<Map<String, dynamic>>>(
                 future: getServices(),
                 builder: (context, snapshot) {
@@ -84,100 +91,99 @@ class _GererServicesState extends State<GererServices> {
                       child: ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          return Card(
-                            elevation: 4,
-                            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                            child: ListTile(
-                              title: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [                                 
-                                  Text("Name : "+
-                                    snapshot.data![index]['name'] 
-                                    ,
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                  ),
+                          if (searchString.isEmpty ||
+                              snapshot.data![index]['name'].toLowerCase().contains(searchString) ||
+                              snapshot.data![index]['price'].toString().toLowerCase().contains(searchString)) {
+                            return Card(
+                              elevation: 4,
+                              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                              child: ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Name : " + snapshot.data![index]['name'],
+                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                    ),
                                     Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-  children: [
-    PopupMenuButton<String>(
-  itemBuilder: (BuildContext context) => [
-    PopupMenuItem<String>(
-      value: 'modify',
-      child: Text('Modifier'),
-    ),
-    PopupMenuItem<String>(
-      value: 'delete',
-      child: Text('Supprimer', style: TextStyle(color: Colors.red)),
-    ),
-  ],
-  onSelected: (String value) async {
-    if (value == 'modify') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ModService(
-            snapshot.data![index]["name"],
-            
-          ),
-        ),
-      );
-    } else if (value == 'delete') {
-      bool confirmDelete = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Confirmation"),
-            content: Text("Etes-vous sûr que vous voulez supprimer?"),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false); 
-                },
-                child: Text("Non"),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(true); 
-                },
-                child: Text("Oui"),
-              ),
-            ],
-          );
-        },
-      );
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        PopupMenuButton<String>(
+                                          itemBuilder: (BuildContext context) => [
+                                            PopupMenuItem<String>(
+                                              value: 'modify',
+                                              child: Text('Modifier'),
+                                            ),
+                                            PopupMenuItem<String>(
+                                              value: 'delete',
+                                              child: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                                            ),
+                                          ],
+                                          onSelected: (String value) async {
+                                            if (value == 'modify') {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => ModService(
+                                                    snapshot.data![index]["name"],
+                                                  ),
+                                                ),
+                                              );
+                                            } else if (value == 'delete') {
+                                              bool confirmDelete = await showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Confirmation"),
+                                                    content: Text("Etes-vous sûr que vous voulez supprimer?"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(false);
+                                                        },
+                                                        child: Text("Non"),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(true);
+                                                        },
+                                                        child: Text("Oui"),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
 
-      if (confirmDelete == true) {
-        print(snapshot.data![index]["email"]);
-        deleteService(snapshot.data![index]["name"]);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => GererServices(widget.email)),
-        ).then((_) => setState(() {}));
-      }
-    }
-  },
-  icon: Icon(Icons.more_vert),
-),
-
-  ],
-)
-                                ],
+                                              if (confirmDelete == true) {
+                                                print(snapshot.data![index]["email"]);
+                                                deleteService(snapshot.data![index]["name"]);
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => GererServices(widget.email)),
+                                                ).then((_) => setState(() {}));
+                                              }
+                                            }
+                                          },
+                                          icon: Icon(Icons.more_vert),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Price: ${snapshot.data![index]['price'].toString()}",
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                 
-                                  Text(
-  "Price: ${snapshot.data![index]['price'].toString()}",
-  style: TextStyle(color: Colors.grey),
-), 
-
-                                 
-                                 
-                                ],
-                              ),
-                            ),
-                          );
+                            );
+                          } else {
+                            return Container();
+                          }
                         },
                       ),
                     );
@@ -195,7 +201,7 @@ class _GererServicesState extends State<GererServices> {
             children: [
               const Padding(padding: EdgeInsets.only(top: 30)),
               ListTile(
-                title: Text(" ${widget.email}"), 
+                title: Text(" ${widget.email}"),
                 leading: Icon(Icons.person),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Profil(widget.email)));
@@ -218,13 +224,14 @@ class _GererServicesState extends State<GererServices> {
               ListTile(
                 title: const Text("Gérer Services"),
                 leading: const Icon(Icons.miscellaneous_services),
-                onTap: () { 
+                onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
                 },
-              ),ListTile(
+              ),
+              ListTile(
                 title: const Text("Gérer Events"),
                 leading: const Icon(Icons.event),
-                onTap: () { 
+                onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererEvents(widget.email)));
                 },
               ),
@@ -234,13 +241,14 @@ class _GererServicesState extends State<GererServices> {
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)));
                 },
-              ),ListTile(
-                  title: const Text("Gérer Notes"), 
-                  leading: const Icon(Icons.grade),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterDel(widget.email)));
-                  },
-                ),
+              ),
+              ListTile(
+                title: const Text("Gérer Notes"),
+                leading: const Icon(Icons.grade),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterDel(widget.email)));
+                },
+              ),
               ListTile(
                 title: const Text("Gérer Classes"),
                 leading: const Icon(Icons.class_),
@@ -254,25 +262,28 @@ class _GererServicesState extends State<GererServices> {
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));
                 },
-              ),ListTile(
-                  title: const Text("Envoyer Notification"), 
-                  leading: const Icon(Icons.notification_add),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterNotification(widget.email)));
-                  },
-                ),  ListTile(
-                  title: const Text("Valider  Services"), 
-                  leading: const Icon(Icons.check),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderService(widget.email)));
-                  },
-                ),ListTile(
-                  title: const Text("Valider  Events"), 
-                  leading: const Icon(Icons.check),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderEvent(widget.email)));
-                  },
-                ),
+              ),
+              ListTile(
+                title: const Text("Envoyer Notification"),
+                leading: const Icon(Icons.notification_add),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterNotification(widget.email)));
+                },
+              ),
+              ListTile(
+                title: const Text("Valider  Services"),
+                leading: const Icon(Icons.check),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderService(widget.email)));
+                },
+              ),
+              ListTile(
+                title: const Text("Valider  Events"),
+                leading: const Icon(Icons.check),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderEvent(widget.email)));
+                },
+              ),
               ListTile(
                 title: const Text("Deconnexion"),
                 leading: const Icon(Icons.exit_to_app),
@@ -280,35 +291,35 @@ class _GererServicesState extends State<GererServices> {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
                 },
               ),
-            ], 
+            ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-        Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AjouterService(widget.email),
-                    ),
-                  );
-      },),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AjouterService(widget.email),
+            ),
+          );
+        },
+      ),
     );
-  } 
- deleteService(String name) async {
-  try {
-    final response = await delete(Uri.parse("https://firas.alwaysdata.net/api/deleteService/$name"));
-    if (response.statusCode == 200) {
-      print('Success: Service deleted');
-    } else { 
+  }
+
+  deleteService(String name) async {
+    try {
+      final response = await http.delete(Uri.parse("https://firas.alwaysdata.net/api/deleteService/$name"));
+      if (response.statusCode == 200) {
+        print('Success: Service deleted');
+      } else {
+        throw Exception('Failed to delete service');
+      }
+    } catch (e) {
+      print('Error: $e');
       throw Exception('Failed to delete service');
     }
-  } catch (e) {
-    print('Error: $e');
-    throw Exception('Failed to delete service');
   }
-}
-
-
 }
