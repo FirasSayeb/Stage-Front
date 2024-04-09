@@ -209,7 +209,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
        request.fields['address'] = address!;
        request.fields['phone'] = phone!;
        request.fields['list'] = selectedClasses.join(',');
-      if (path != null && path!.isNotEmpty) {
+      if (file != null && file!.path!.isNotEmpty) {
         print(path);
         var file = await MultipartFile.fromPath('file', path!);
         request.files.add(file);

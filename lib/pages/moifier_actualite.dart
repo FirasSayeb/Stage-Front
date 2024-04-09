@@ -144,18 +144,13 @@ class _ModierActualiteState extends State<ModierActualite> {
                               // Add form fields (body and email)
                               request.fields['body'] = body ?? '';
                               request.fields['email'] = widget.email;
-                              print("${file!.path!} && ${file!.name}");
+                             
                               // Add file if it exists and contains bytes
-                           if (file != null) {
-  if (file!.path != null && file!.path!.isNotEmpty) {
-    var fil = await MultipartFile.fromPath('file', file!.path!);
-    request.files.add(fil);
-  }
-}
-
-
-
-
+                           if (file != null && file!.path!.isNotEmpty) {
+       
+        var file = await MultipartFile.fromPath('file', path!);
+        request.files.add(file);
+      } 
                               var response = await request.send();
                               var response2 = await http.Response.fromStream(response);
 
