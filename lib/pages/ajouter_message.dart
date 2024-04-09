@@ -188,7 +188,7 @@ class _AjouterMessageState extends State<AjouterMessage> {
   }
   Future<List<Map<String,dynamic>>> getUsers()async { 
    try{ 
-   final response =await get(Uri.parse("https://firas.alwaysdata.net/api/getUserss"));
+   final response =await get(Uri.parse("https://firas.alwaysdata.net/api/getUserss/${widget.email}"));
    if(response.statusCode==200){
      List<dynamic> classesData = jsonDecode(response.body)['list'];
       List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);

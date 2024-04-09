@@ -15,6 +15,7 @@ class ListActualites extends StatefulWidget {
 }
 
 class _ListActualitesState extends State<ListActualites> {
+  late String searchString="";
   Future<List<Actualite>> getActualites() async {
     try {
       final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getActualites"));
@@ -33,10 +34,32 @@ class _ListActualitesState extends State<ListActualites> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Actualites "),centerTitle: true,elevation: 0,backgroundColor: Color.fromARGB(160,0,54,99),),
-      body: Container(
-        child: FutureBuilder<List<Actualite>>( 
+      body: Column(
+          children: [
+            TextField(
+              onChanged: (value) {
+                setState(() {
+                  searchString = value.toLowerCase();
+                });
+              },
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                hintText: 'Rechercher...',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() {
+                      searchString = '';
+                    });
+                  },
+                ),
+              ),
+            ),
+            Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.01)),
+            Expanded(
+              child: FutureBuilder<List<Actualite>>(
                 future: getActualites(),
-                builder: (context, snapshot) {   
+                builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
@@ -45,50 +68,62 @@ class _ListActualitesState extends State<ListActualites> {
                     return ListView.builder(
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
-                           String? filePath = snapshot.data![index].filePath;
+                        if (searchString.isEmpty ||
+                            snapshot.data![index].userName.toLowerCase().contains(searchString)
+                            || snapshot.data![index].body.toLowerCase().contains(searchString)||
+                                snapshot.data![index].createdAt.toLowerCase().contains(searchString)
+                            ) {
+                          String? filePath = snapshot.data![index].filePath;
                           String fileName = filePath != null ? filePath.split('/').last : '';
-                      return Card(
-                        elevation: 4,
-                        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                        child: ListTile(
-                          contentPadding: EdgeInsets.all(16.0),
-                          title: Text( 
-                            snapshot.data![index].body,
-                            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 8.0),
-                              Text(
-                                'Created At: ${snapshot.data![index].createdAt}',
-                                style: TextStyle(fontSize: 14.0),
+                          return Card(
+                            elevation: 4,
+                            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(16.0),
+                              title: Row(
+                                children: [
+                                  Text(
+                                    "Nom : ${snapshot.data![index].body}",
+                                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                  ),
+                                  Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.45)),
+                                    
+                                ],
                               ),
-                              SizedBox(height: 4.0),  
-                              Text( 
-                                'Created By: ${snapshot.data![index].userName}',
-                                style: TextStyle(fontSize: 14.0),
-                              ),SizedBox(height: 8.0), 
-                              Image.network(
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 8.0),
+                                  Text(
+                                    'Created At: ${snapshot.data![index].createdAt}',
+                                    style: TextStyle(fontSize: 14.0),
+                                  ),
+                                  SizedBox(height: 4.0),
+                                  Text(
+                                    'Created By: ${snapshot.data![index].userName}',
+                                    style: TextStyle(fontSize: 14.0),
+                                  ),
+                                  Image.network(
                                     "https://firas.alwaysdata.net/storage/$fileName",
                                     width: MediaQuery.of(context).size.width,
                                     height: MediaQuery.of(context).size.height * 0.3,
                                     fit: BoxFit.cover,
                                   )
-                             
-                            ],
-                          ), 
-                          onTap: () {
-                            
-                          },
-                        ),
-                      );   
-                      },   
-                    ); 
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      },
+                    );
                   }
                 },
               ),
-      ),
+            ),
+          ],
+        ),
     );
   }
 }
