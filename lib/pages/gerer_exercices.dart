@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:app/pages/AjouterExercice.dart';
@@ -9,38 +8,40 @@ import 'package:http/http.dart';
 class GererExercices extends StatefulWidget {
   final String email;
   final String name;
-  GererExercices(this.email,this.name);
+  GererExercices(this.email, this.name);
 
   @override
   State<GererExercices> createState() => _GererExercicesState();
 }
 
 class _GererExercicesState extends State<GererExercices> {
+  late String searchString = '';
 
-  Future<List<Map<String, dynamic>>> getExercices() async { 
-  try {
-    final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getExercices/${widget.name}"));
-    if (response.statusCode == 200) {
-      final dynamic responseData = jsonDecode(response.body.toString())['list'];
-      if (responseData != null) { 
-        final List<Map<String, dynamic>> parentList =
-            (responseData as List<dynamic>).map((data) => data as Map<String, dynamic>).toList();
-        return parentList; 
+  Future<List<Map<String, dynamic>>> getExercices() async {
+    try {
+      final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getExercices/${widget.name}"));
+      if (response.statusCode == 200) {
+        final dynamic responseData = jsonDecode(response.body.toString())['list'];
+        if (responseData != null) {
+          final List<Map<String, dynamic>> parentList =
+              (responseData as List<dynamic>).map((data) => data as Map<String, dynamic>).toList();
+          return parentList;
+        } else {
+          throw Exception('Response data is null');
+        }
       } else {
-        throw Exception('Response data is null');
-      }  
-    } else {  
+        throw Exception('Failed to load exercices');
+      }
+    } catch (e) {
+      print('Error: $e');
       throw Exception('Failed to load exercices');
-    }  
-  } catch (e) { 
-    print('Error: $e');
-    throw Exception('Failed to load exercices');
+    }
   }
-}
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: AppBar( 
+    return Scaffold(
+      appBar: AppBar(
         title: const Text("Gerer Exercices "),
         centerTitle: true,
         elevation: 0,
@@ -51,19 +52,27 @@ class _GererExercicesState extends State<GererExercices> {
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
-              Padding(padding: EdgeInsets.all(10)),
-              GestureDetector(
-                child: Text('Ajouter Exercice'),
-                onTap: () { 
-                  print('ajouter Exercice');  
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AjouterExercice(widget.email,widget.name),
-                    ),
-                  );
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    searchString = value.toLowerCase();
+                  });
                 },
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  hintText: 'Rechercher...',
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      setState(() {
+                        searchString = '';
+                      });
+                    },
+                  ),
+                ),
               ),
+              Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.01)),
+
               FutureBuilder<List<Map<String, dynamic>>>(
                 future: getExercices(),
                 builder: (context, snapshot) {
@@ -72,62 +81,100 @@ class _GererExercicesState extends State<GererExercices> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else {
+                    // Filter the data based on the search string
+                    final List<Map<String, dynamic>> filteredData = snapshot.data!.where((exercise) {
+  final name = exercise['name'].toLowerCase();
+  final description = exercise['description'].toLowerCase();
+  return name.contains(searchString) || description.contains(searchString);
+}).toList();
+
+
                     return SizedBox(
                       height: MediaQuery.of(context).size.height * 0.8,
                       child: ListView.builder(
-                        itemCount: snapshot.data!.length,
+                        itemCount: filteredData.length,
                         itemBuilder: (context, index) {
                           return Card(
-                          
                             elevation: 4,
                             margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                             child: ListTile(
-                              title: Text("Name : "+
-                                snapshot.data![index]['name'] 
-                                ,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Name : " + filteredData[index]['name'],
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      PopupMenuButton<String>(
+                                        itemBuilder: (BuildContext context) => [
+                                          PopupMenuItem<String>(
+                                            value: 'modify',
+                                            child: Text('Modifier'),
+                                          ),
+                                          PopupMenuItem<String>(
+                                            value: 'delete',
+                                            child: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                                          ),
+                                        ],
+                                        onSelected: (String value) async {
+                                          if (value == 'modify') {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => ModExercice(filteredData[index]['name']),
+                                              ),
+                                            );
+                                          } else if (value == 'delete') {
+                                            bool confirmDelete = await showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text("Confirmation"),
+                                                  content: Text("Etes-vous sûr que vous voulez supprimer?"),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop(false);
+                                                      },
+                                                      child: Text("Non"),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop(true);
+                                                      },
+                                                      child: Text("Oui"),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+
+                                            if (confirmDelete == true) {
+                                              deleteExercice(filteredData[index]['name']);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => GererExercices(widget.email, widget.name),
+                                                ),
+                                              ).then((_) => setState(() {}));
+                                            }
+                                          }
+                                        },
+                                        icon: Icon(Icons.more_vert),
+                                      ),
+                                    ],
+                                  )
+                                ],
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(height: 8),
-                                  Text("Description : "+
-                                snapshot.data![index]['description'] 
-                                ,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                                 
-                                  SizedBox(height: 8),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      ElevatedButton( 
-                                        onPressed: () {
-                                          Navigator.push(  
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => ModExercice(snapshot.data![index]['name']),
-                                            ),
-                                          ).then((_) => setState(() {}));
-                                        }, 
-                                        child: Text('Modifier'), 
-                                      ),  
-                                      ElevatedButton( 
-                                        onPressed: () { 
-                                          deleteExercice(snapshot.data![index]['name']);
-                                          Navigator.push(
-                                            context, 
-                                            MaterialPageRoute(
-                                              builder: (context) => GererExercices(widget.email,widget.name),
-                                            ),
-                                          ).then((_) => setState(() {}));
-                                        }, 
-                                        child: Text('Supprimer'),
-                                        style: ButtonStyle(
-                                          backgroundColor: MaterialStatePropertyAll(Colors.red),
-                                        ),
-                                      ),
-                                    ], 
+                                  Text(
+                                    "Description : " + filteredData[index]['description'],
+                                    style: TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -143,19 +190,31 @@ class _GererExercicesState extends State<GererExercices> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AjouterExercice(widget.email, widget.name),
+            ),
+          );
+        },
+      ),
     );
   }
+
   deleteExercice(String name) async {
-  try {
-    final response = await delete(Uri.parse("https://firas.alwaysdata.net/api/deleteExercice/$name"));
-    if (response.statusCode == 200) {
-      print('Success: Exercice deleted'); 
-    } else { 
+    try {
+      final response = await delete(Uri.parse("https://firas.alwaysdata.net/api/deleteExercice/$name"));
+      if (response.statusCode == 200) {
+        print('Success: Exercice deleted');
+      } else {
+        throw Exception('Failed to delete exercice');
+      }
+    } catch (e) {
+      print('Error: $e');
       throw Exception('Failed to delete exercice');
     }
-  } catch (e) {
-    print('Error: $e');
-    throw Exception('Failed to delete exercice');
   }
-}
 }

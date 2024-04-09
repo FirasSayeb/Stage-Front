@@ -15,6 +15,13 @@ class _ModExerciceState extends State<ModExercice> {
   final fkey = GlobalKey<FormState>();
   late String name = '';
   late String description = '';
+  late Future<Map<String, dynamic>> _exerciceFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _exerciceFuture = getExercice();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,23 +35,23 @@ class _ModExerciceState extends State<ModExercice> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Form(
-              key: fkey,
-              child: FutureBuilder<Map<String, dynamic>>(
-                future: getExercice(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else {
-                    final exercice = snapshot.data as Map<String, dynamic>?;
+            FutureBuilder<Map<String, dynamic>>(
+              future: _exerciceFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else {
+                  final exercice = snapshot.data as Map<String, dynamic>?;
 
-                    if (exercice == null) {
-                      return Center(child: Text('Exercice not found'));
-                    }
+                  if (exercice == null) {
+                    return Center(child: Text('Exercice not found'));
+                  }
 
-                    return Column(
+                  return Form(
+                    key: fkey,
+                    child: Column(
                       children: [
                         Container(
                           height: 200,
@@ -115,10 +122,10 @@ class _ModExerciceState extends State<ModExercice> {
                           child: Text('Valider'),
                         ),
                       ],
-                    );
-                  }
-                },
-              ),
+                    ),
+                  );
+                }
+              },
             ),
           ],
         ),
@@ -126,15 +133,15 @@ class _ModExerciceState extends State<ModExercice> {
     );
   }
 
-  Future<Map<String, dynamic>> getExercice() async { 
+  Future<Map<String, dynamic>> getExercice() async {
     try {
       final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getExercice/${widget.name}"));
       if (response.statusCode == 200) {
         return jsonDecode(response.body)['exercice'];
       } else {
         throw Exception('Failed to load exercice');
-      } 
-    } catch (e) { 
+      }
+    } catch (e) {
       print('Error: $e');
       throw Exception('Failed to load exercice');
     }
