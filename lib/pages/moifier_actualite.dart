@@ -52,23 +52,25 @@ class _ModierActualiteState extends State<ModierActualite> {
     }
   }
 
-  Future<void> pickSingleFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      setState(() {
-        file = result.files.single;
-        selectedname = file!.name;
-        selectedpath = file!.path;
-        print("$name  name from function");
-        print("$path path from function");
-        print(file);
-      });
-    } else {
-      // Handle case when no file is picked
-      // You can show a snackbar or a dialog to inform the user
-      // that they need to pick a file.
-    }
+ Future<void> pickSingleFile() async {
+  FilePickerResult? result = await FilePicker.platform.pickFiles();
+  if (result != null) {
+    setState(() {
+      file = result.files.single;
+      selectedname = file!.name;
+      selectedpath = file!.path;
+      path = selectedpath; // Update the path variable with the selected file path
+      print("$name  name from function");
+      print("$path path from function");
+      print(file);
+    }); 
+  } else {
+    // Handle case when no file is picked
+    // You can show a snackbar or a dialog to inform the user
+    // that they need to pick a file.
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -146,8 +148,8 @@ class _ModierActualiteState extends State<ModierActualite> {
                               request.fields['email'] = widget.email;
                              
                               // Add file if it exists and contains bytes
-                           if (file != null && file!.path!.isNotEmpty) {
-       
+                           if (file != null && file!.path!.isNotEmpty && path!=null) {
+       print(path);
         var file = await MultipartFile.fromPath('file', path!);
         request.files.add(file);
       } 

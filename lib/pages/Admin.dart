@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:app/model/Actualite.dart';
 import 'package:app/pages/Home.dart';
 import 'package:app/pages/Profile.dart';
+import 'package:app/pages/ajouter_actualite.dart';
 import 'package:app/pages/ajouter_deliberation.dart';
 import 'package:app/pages/ajouter_notification.dart';
 import 'package:app/pages/gerer_classes.dart';
@@ -212,8 +213,11 @@ class _AdminState extends State<Admin> {
             ),
           ],
         ),
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterActualite(widget.email)));
+        },child: Icon(Icons.add),),
         drawer: Drawer(
-          child: Container(
+          child: Container( 
             color: Colors.white,
             child: ListView(
               children: [const Padding(padding: EdgeInsets.only(top: 30)),ListTile( 
