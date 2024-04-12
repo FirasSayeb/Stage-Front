@@ -64,7 +64,6 @@ String fileNameWithExtension = pathParts.last;
 String fileName2WithExtension = pathPart.last;
                           return Card(
   elevation: 4,
-  color:  const Color.fromARGB(255, 59, 157, 206),
   margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
   child: GestureDetector( 
     onTap: () { 
@@ -81,23 +80,39 @@ String fileName2WithExtension = pathPart.last;
         "Name: ${snapshot.data![index]['name']}\n ",
        
       ), 
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-           Image.network(
-                                        "https://firas.alwaysdata.net/storage/$fileNameWithExtension",
-                                        width: MediaQuery.of(context).size.width,
-                                        height: MediaQuery.of(context).size.height * 0.3,
-                                        fit: BoxFit.cover,
-                                      ), Image.network(
-                                        "https://firas.alwaysdata.net/storage/$fileName2WithExtension",
-                                        width: MediaQuery.of(context).size.width,
-                                        height: MediaQuery.of(context).size.height * 0.3,
-                                        fit: BoxFit.cover,
-                                      )
-          
-        ], 
+      subtitle: Row(
+  children: [
+    Expanded(
+      child: Padding(
+        padding: EdgeInsets.all(4.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: Image.network(
+            "https://firas.alwaysdata.net/storage/$fileNameWithExtension",
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.3,
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
+    ),
+    Expanded(
+      child: Padding(
+        padding: EdgeInsets.all(4.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: Image.network(
+            "https://firas.alwaysdata.net/storage/$fileName2WithExtension",
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.3,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    ),
+  ],
+),
+
     ),
   ),
 );
@@ -116,7 +131,7 @@ String fileName2WithExtension = pathPart.last;
       drawer: Drawer(
         child: Container(
          
-          color:  Color.fromARGB(160,0,54,99),
+          color: Colors.white,
           child: ListView(  
             children: [ const Padding(padding: EdgeInsets.only(top: 30)), ListTile( 
                   title:  Text(" ${widget.email}"),
