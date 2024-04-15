@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:app/pages/gerer_exercices.dart';
+import 'package:app/pages/marquer_absence.dart';
 import 'package:app/pages/notifier_parent.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -47,12 +48,29 @@ class _ListElevesState extends State<ListEleves> {
                   padding: EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
+            ), Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MarquerAbsence(widget.email,widget.name),
+                    ),
+                  );
+                },
+                child: Text('Marquer Absence'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.indigo[300],
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Center(
                 child: Text(
-                  "Select Eleve Pour Envoyer Notification : ",
+                  "Sélectionnez l'étudiant pour envoyer une notification : ",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), 
                 ),
               ),
