@@ -33,9 +33,13 @@ String? validateEmail(String? value) {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return  Scaffold(
+        appBar: AppBar(
+          title: Text('réinitialiser le mot de passe') ,
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: const Color.fromARGB(160, 0, 54, 99),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -49,7 +53,7 @@ String? validateEmail(String? value) {
               Container(
                 alignment: Alignment.topCenter,
                 child: const Text(
-                  "Reset Password ",
+                  "réinitialiser le mot de passe ",
                   style: TextStyle(fontSize: 20),
                 ),
               ),
@@ -110,22 +114,7 @@ String? validateEmail(String? value) {
                           child: const Text("Valider  "),
                         ),
                       ), 
-                      Padding(padding: EdgeInsets.all(5)),
-                      GestureDetector(
-                        onTap: () {
-                          // Handle navigation to the previous page
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(20),
-                          margin: const EdgeInsets.symmetric(horizontal: 40),
-                          decoration: BoxDecoration(
-                            color: Colors.lightBlueAccent,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Text("Go Back  "),
-                        ),
-                      ),
+                      
                       Text(
                         errorMessage,
                         style: TextStyle(color: Colors.red),
@@ -137,7 +126,7 @@ String? validateEmail(String? value) {
             ],
           ),
         ),
-      ),
-    );
+      );
+   
   }
 }

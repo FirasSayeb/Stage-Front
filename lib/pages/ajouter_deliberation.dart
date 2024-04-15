@@ -154,25 +154,7 @@ class _AjouterDelState extends State<AjouterDel> {
                    
                 ),
               ),
-              Padding(padding: EdgeInsets.all(5)),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  margin: const EdgeInsets.symmetric(horizontal: 40),
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlueAccent,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Text("Go Back  "),
-                ),
-              ),
-              Text(
-                errorMessage,
-                style: TextStyle(color: Colors.red),
-              ),
+             
             ],
           ),
         ),
