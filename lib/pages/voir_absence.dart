@@ -50,7 +50,7 @@ class _VoirAbsenceState extends State<VoirAbsence> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notes Viewer'),
+        title: Text('Absences Viewer'),
       ),
       body: SingleChildScrollView(
         child: Column(

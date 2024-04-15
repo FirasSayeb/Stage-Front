@@ -15,6 +15,7 @@ class MarquerAbsence extends StatefulWidget {
 
 class _MarquerAbsenceState extends State<MarquerAbsence> {
   String errorMessage='';
+  late Response response2;
   late List<bool> absenceList;
   late DateTime selectedDateTime;
   late String selectedOption;
@@ -94,7 +95,7 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
                       value: selectedOption,
                       items: options.map((String option) {
                         return DropdownMenuItem<String>(
-                          value: option,
+                          value: option, 
                           child: Text(option),
                         );
                       }).toList(),
@@ -144,6 +145,23 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
                                   body: userData,   
                                 );
                                    print(userData);
+                                   response2 = await post(
+                                          Uri.parse(
+                                              'https://fcm.googleapis.com/fcm/send'),
+                                          headers: {
+                                            'Content-Type':
+                                                'application/json',
+                                            'Authorization':
+                                                'key=AAAA4WMATYA:APA91bFxzOAlkcvXkHv6pyk9-Bqb8rtUwF6TXiBiEAQLuiGUwr6X084p-GR2lSSfJM_-H6urIktOdKGYhqPjKEscHN9XoxN8AMMvxXjbq27ZzQbk-S589EH-euzjPeduKyoXgt1lXuSE',
+                                          },
+                                          body: jsonEncode({
+                                            "to": token,
+                                            "notification": {
+                                              "title": "Notification",
+                                              "body": "votre enfant est absent"
+                                            }
+                                          }),
+                                        );
                                 if (response.statusCode == 200) {  
                                   Navigator.push(context,MaterialPageRoute(builder: (context) => ListEleves(widget.email, widget.name),));
                                 } else { 
@@ -194,4 +212,21 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
       throw Exception('Failed to load eleves');
     }
   } 
+   Future<List<Map<String, dynamic>>> getUsers() async {
+    try {
+      final response = await get(Uri.parse(
+          "https://firas.alwaysdata.net/api/getUsers/${widget.name}"));
+      if (response.statusCode == 200) {
+        List<dynamic> classesData = jsonDecode(response.body)['list'];
+        List<Map<String, dynamic>> classes =
+            List<Map<String, dynamic>>.from(classesData);
+        return classes;
+      } else {
+        throw Exception('failed to get users');
+      }
+    } catch (e) {
+      print(e);
+      throw Exception('Failed to load users');
+    }
+  }
 }

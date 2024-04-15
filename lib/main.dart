@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:app/pages/Home.dart';
 import 'package:app/pages/NotificationService.dart';
 
-void main() async {
+void main() async { 
   WidgetsFlutterBinding.ensureInitialized();
   Platform.isAndroid ?  
   await Firebase.initializeApp( 
