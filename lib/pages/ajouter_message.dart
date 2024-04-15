@@ -186,14 +186,15 @@ class _AjouterMessageState extends State<AjouterMessage> {
     ),
     ); 
   }
-  Future<List<Map<String, dynamic>>> getUsers() async {
+  Future<List<Map<String,dynamic>>> getUsers() async {
   try {
     final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getUserss/${widget.email}"));
     if (response.statusCode == 200) {
       // Parse the response JSON object into a list of maps
-      Map<String, dynamic> responseData = jsonDecode(response.body)['list'];
-      List<Map<String, dynamic>> users = responseData.values.toList().cast<Map<String, dynamic>>();
-      return users;
+      final responseData = jsonDecode(response.body)['list'];
+      List<Map<String,dynamic>> streetsList =  List<Map<String,dynamic>>.from(responseData);
+      //List<Map<String, dynamic>> users = responseData.values.toList().cast<Map<String, dynamic>>();
+      return streetsList;
     } else {
       throw Exception('Failed to get users');
     }

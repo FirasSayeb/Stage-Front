@@ -135,8 +135,8 @@ class _SignupState extends State<Parent> {
       drawer: Drawer(
         child: Container(
          
-          color:  Color.fromARGB(160,0,54,99),
-          child: ListView(  
+          color:  Colors.white,
+          child: ListView( 
             children: [  
              Padding(padding: EdgeInsets.only(top:50)),
               ListTile( 
