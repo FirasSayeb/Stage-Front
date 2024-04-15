@@ -4,6 +4,8 @@ import 'package:app/model/Actualite.dart';
 import 'package:app/pages/Home.dart';
 import 'package:app/pages/Profile.dart';
 import 'package:app/pages/ajouter_message.dart';
+import 'package:app/pages/marquer_absence.dart';
+import 'package:app/pages/voir_absence.dart';
 import 'package:app/pages/voir_event.dart';
 import 'package:app/pages/voir_exercices.dart';
 import 'package:app/pages/voir_notes.dart';
@@ -159,6 +161,13 @@ class _SignupState extends State<Parent> {
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirNotes(widget.email)));},
+              ),
+               ListTile(
+                title: Text("Voir Absences"),
+                leading: Icon(Icons.do_not_disturb_alt_sharp),
+                onTap: () { Navigator.push(
+      context,   
+      MaterialPageRoute(builder: (context) =>VoirAbsence(widget.email)));},
               ),
               ListTile(
                 title: Text("Voir Exercices"),

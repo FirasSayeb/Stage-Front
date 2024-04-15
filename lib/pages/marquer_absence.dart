@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/pages/list_elves.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -17,7 +18,7 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
   late List<bool> absenceList;
   late DateTime selectedDateTime;
   late String selectedOption;
-  List<String> options = ['matière 1', 'matière 2', 'matière 3'];
+  List<String> options = ['matiere 1', 'matiere 2', 'matiere 3'];
 
   final _formKey = GlobalKey<FormState>(); // Key for the form
 
@@ -144,7 +145,7 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
                                 );
                                    print(userData);
                                 if (response.statusCode == 200) {  
-                                  
+                                  Navigator.push(context,MaterialPageRoute(builder: (context) => ListEleves(widget.email, widget.name),));
                                 } else { 
                                   setState(() { 
                                     errorMessage = "Error: ${response.statusCode}, ${response.body}";
