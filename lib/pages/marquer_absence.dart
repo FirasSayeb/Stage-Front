@@ -14,12 +14,13 @@ class MarquerAbsence extends StatefulWidget {
 }
 
 class _MarquerAbsenceState extends State<MarquerAbsence> {
-  String errorMessage='';
-  late Response response2;
+  String errorMessage = '';
+  late Response response2 = Response('', 200);
   late List<bool> absenceList;
   late DateTime selectedDateTime;
   late String selectedOption;
   List<String> options = ['matiere 1', 'matiere 2', 'matiere 3'];
+  late List<String> tokens = [];
 
   final _formKey = GlobalKey<FormState>(); // Key for the form
 
@@ -29,7 +30,27 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
     absenceList = [];
     selectedDateTime = DateTime.now();
     selectedOption = options.first;
+    
   }
+
+  Future<void> fetchTokens(bool val) async {
+  try {
+    final users = await getUsers();
+    print(users);
+    
+    
+    for (var user in users) {
+      if (!val) {
+       
+        tokens.add(user['token'].toString());
+      }
+    }
+  } catch (e) {
+    print('Failed to fetch tokens: $e');
+  }
+}
+
+
 
   Future<void> _selectDateTime(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -83,7 +104,7 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
               if (absenceList.isEmpty) {
                 absenceList = List.generate(snapshot.data!.length, (index) => true);
               }
-              return SingleChildScrollView( // Wrap in SingleChildScrollView to prevent overflow
+              return SingleChildScrollView(
                 child: Column(
                   children: [
                     ElevatedButton(
@@ -95,7 +116,7 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
                       value: selectedOption,
                       items: options.map((String option) {
                         return DropdownMenuItem<String>(
-                          value: option, 
+                          value: option,
                           child: Text(option),
                         );
                       }).toList(),
@@ -120,73 +141,85 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
                             onChanged: (bool? value) {
                               setState(() {
                                 absenceList[index] = value!;
+                                fetchTokens(value);
+                                print(tokens);
                                 print(absenceList);
                               });
                             },
                           ),
                         );
                       },
-                    ), Center(
-                          child: GestureDetector(
-                            onTap: () async {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
-                   
-                               Map<String, dynamic> userData = {
-                                'email': widget.email,
-                                'selectedDateTime': selectedDateTime.toString(),
-                                'selectedOption': selectedOption,
-                                'absenceList': absenceList.toString(),
-                              };
-                                        print(userData);
-                                
-                                Response response = await post(
-                                  Uri.parse("https://firas.alwaysdata.net/api/marquerAbsence"),
-                                  body: userData,   
-                                );
-                                   print(userData);
-                                   response2 = await post(
-                                          Uri.parse(
-                                              'https://fcm.googleapis.com/fcm/send'),
-                                          headers: {
-                                            'Content-Type':
-                                                'application/json',
-                                            'Authorization':
-                                                'key=AAAA4WMATYA:APA91bFxzOAlkcvXkHv6pyk9-Bqb8rtUwF6TXiBiEAQLuiGUwr6X084p-GR2lSSfJM_-H6urIktOdKGYhqPjKEscHN9XoxN8AMMvxXjbq27ZzQbk-S589EH-euzjPeduKyoXgt1lXuSE',
-                                          },
-                                          body: jsonEncode({
-                                            "to": token,
-                                            "notification": {
-                                              "title": "Notification",
-                                              "body": "votre enfant est absent"
-                                            }
-                                          }),
-                                        );
-                                if (response.statusCode == 200) {  
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) => ListEleves(widget.email, widget.name),));
-                                } else { 
-                                  setState(() { 
-                                    errorMessage = "Error: ${response.statusCode}, ${response.body}";
-                                  });
-                                }  
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(20),
-                              margin: const EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(
-                                color: Colors.lightBlueAccent,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: const Text("Ajouter "),
-                            ),
-                          ), 
+                    ),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+
+                            Map<String, dynamic> userData = {
+                              'email': widget.email,
+                              'selectedDateTime': selectedDateTime.toString(),
+                              'selectedOption': selectedOption,
+                              'absenceList': absenceList.toString(),
+                            };
+                            print(userData);
+
+                            Response response = await post(
+                              Uri.parse("https://firas.alwaysdata.net/api/marquerAbsence"),
+                              body: userData,
+                            );
+                              print(tokens);
+                            for (String token in tokens) {
+                              response2 = await post(
+                                Uri.parse(
+                                    'https://fcm.googleapis.com/fcm/send'),
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  'Authorization':
+                                  'key=AAAA4WMATYA:APA91bFxzOAlkcvXkHv6pyk9-Bqb8rtUwF6TXiBiEAQLuiGUwr6X084p-GR2lSSfJM_-H6urIktOdKGYhqPjKEscHN9XoxN8AMMvxXjbq27ZzQbk-S589EH-euzjPeduKyoXgt1lXuSE',
+                                },
+                                body: jsonEncode({
+                                  "to": token,
+                                  "notification": {
+                                    "title": "Notification",
+                                    "body": "votre enfant est absent"
+                                  }
+                                }),
+                              );
+                              print({
+                                  "to": token,
+                                  "notification": {
+                                    "title": "Notification",
+                                    "body": "votre enfant est absent"
+                                  }
+                                });
+                            }
+
+                            if (response.statusCode == 200 && response2.statusCode==200) {
+                              Navigator.pop(context);
+                              //Navigator.push(context, MaterialPageRoute(builder: (context) => ListEleves(widget.email, widget.name),));
+                            } else {
+                              setState(() {
+                                errorMessage = "Error: ${response.statusCode}, ${response.body}";
+                              });
+                            }
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                            color: Colors.lightBlueAccent,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Text("Ajouter "),
                         ),
-                       
-                        Text(
-                          errorMessage,
-                          style: TextStyle(color: Colors.red),
-                        ),
+                      ),
+                    ),
+                    Text(
+                      errorMessage,
+                      style: TextStyle(color: Colors.red),
+                    ),
                   ],
                 ),
               );
@@ -211,16 +244,14 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
       print(e);
       throw Exception('Failed to load eleves');
     }
-  } 
-   Future<List<Map<String, dynamic>>> getUsers() async {
+  }
+  Future<List<Map<String, dynamic>>> getUsers() async {
     try {
-      final response = await get(Uri.parse(
-          "https://firas.alwaysdata.net/api/getUsers/${widget.name}"));
+      final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getUsers/${widget.name}"));
       if (response.statusCode == 200) {
-        List<dynamic> classesData = jsonDecode(response.body)['list'];
-        List<Map<String, dynamic>> classes =
-            List<Map<String, dynamic>>.from(classesData);
-        return classes;
+        List<dynamic> usersData = jsonDecode(response.body)['list'];
+        List<Map<String, dynamic>> users = List<Map<String, dynamic>>.from(usersData);
+        return users;
       } else {
         throw Exception('failed to get users');
       }
