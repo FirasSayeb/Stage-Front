@@ -16,6 +16,7 @@ import 'package:app/pages/gerer_utilisateurs.dart';
 import 'package:app/pages/moifier_actualite.dart';
 import 'package:app/pages/valider_event.dart';
 import 'package:app/pages/valider_service.dart';
+import 'package:app/pages/voir_all_absences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -285,6 +286,12 @@ class _AdminState extends State<Admin> {
                   leading: const Icon(Icons.notification_add),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterNotification(widget.email)));
+                  },
+                ),ListTile(
+                  title: const Text("Home"), 
+                  leading: const Icon(Icons.home),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAll(widget.email)));
                   },
                 ),
                 ListTile(
