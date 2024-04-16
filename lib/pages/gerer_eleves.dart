@@ -14,6 +14,7 @@ import 'package:app/pages/gerer_utilisateurs.dart';
 import 'package:app/pages/modifier_eleve.dart';
 import 'package:app/pages/valider_event.dart';
 import 'package:app/pages/valider_service.dart';
+import 'package:app/pages/voir_all_absences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -276,6 +277,12 @@ else {
                   leading: Icon(Icons.notification_add),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterNotification(widget.email)));
+                  },
+                ),ListTile(
+                  title: const Text("Voir Absences"), 
+                  leading: const Icon(Icons.edit_calendar),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAll(widget.email)));
                   },
                 ),
                 ListTile(

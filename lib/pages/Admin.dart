@@ -288,8 +288,8 @@ class _AdminState extends State<Admin> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterNotification(widget.email)));
                   },
                 ),ListTile(
-                  title: const Text("Home"), 
-                  leading: const Icon(Icons.home),
+                  title: const Text("Voir Absences"), 
+                  leading: const Icon(Icons.edit_calendar),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAll(widget.email)));
                   },
