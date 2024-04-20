@@ -44,6 +44,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
   @override
   void initState() {
     super.initState();
+    classe="";
     fetchData();
   }
 
@@ -80,7 +81,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
           elevation: 0,
           backgroundColor: const Color.fromARGB(160, 0, 54, 99),
         ),
-        body: SingleChildScrollView(
+        body: classe.isNotEmpty ? SingleChildScrollView(
           child: Column(
             children: [
               Form(
@@ -262,12 +263,14 @@ class _ModifierEleveState extends State<ModifierEleve> {
               ),
             ],
           ),
-        ),
+        ): Center(
+              child: CircularProgressIndicator(),
+            ), 
       );
   }
 
   Future<void> _selectDate(String initialDate) async {
-    DateTime? picked = await showDatePicker(
+    DateTime? picked = await showDatePicker( 
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
