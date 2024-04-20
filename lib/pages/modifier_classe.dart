@@ -27,6 +27,7 @@ class _ModifierClasseState extends State<ModifierClasse> {
   @override
   void initState() {
     super.initState();
+    body=""; 
     getClasse();
   }
 
@@ -92,7 +93,7 @@ class _ModifierClasseState extends State<ModifierClasse> {
         elevation: 0,
         backgroundColor: const Color.fromARGB(160, 0, 54, 99),
       ),
-      body: SingleChildScrollView(
+      body: body.isNotEmpty ? SingleChildScrollView(
         child: Column(
           children: [
             Form(
@@ -190,7 +191,9 @@ class _ModifierClasseState extends State<ModifierClasse> {
             ),
           ],
         ),
-      ),
+      ): Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 }
