@@ -104,16 +104,15 @@ class _AdminState extends State<Admin> {
                           String fileName = filePath != null ? filePath.split('/').last : '';
                           return Card(
                             elevation: 4,
-                            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            
                             child: ListTile(
-                              contentPadding: EdgeInsets.all(16.0),
                               title: Row(
                                 children: [
                                   Text(
                                     "Nom : ${snapshot.data![index].body}",
                                     style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                   ),
-                                  Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.45)),
+                                  Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.33)),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
