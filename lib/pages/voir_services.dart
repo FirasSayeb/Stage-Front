@@ -149,14 +149,14 @@ print(isSubscribed);
                       leading: isSubscribed
     ? ElevatedButton(
         onPressed: () async {
-          Response response = await delete(
+          /*Response response = await delete(
             Uri.parse("https://firas.alwaysdata.net/api/delSer/$_selectedEleveId"),
           );
           if (response.statusCode == 200) {
             getServi(_selectedEleveId!);
-          }
+          }*/
         },
-        child: Text('Remove'), 
+        child: Text('Ajouter'), 
       )
     : ElevatedButton( 
         onPressed: () async {
@@ -171,7 +171,7 @@ print(isSubscribed);
            getServi(_selectedEleveId!);
           }
         },
-        child: Text('Add'),
+        child: Text('Ajouter'),
       ),
                     );
                   },
