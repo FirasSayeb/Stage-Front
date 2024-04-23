@@ -42,7 +42,7 @@ class _ModierActualiteState extends State<ModierActualite> {
         elevation: 0,
         backgroundColor: const Color.fromARGB(160, 0, 54, 99),
       ),
-      body: _body.isNotEmpty
+      body: _body.isNotEmpty  
           ? SingleChildScrollView(
               child: Column(
                 children: [
@@ -50,22 +50,27 @@ class _ModierActualiteState extends State<ModierActualite> {
                     key: _formKey,
                     child: Column(
                       children: [
+                         Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.05)),
                         TextFormField(
-                          initialValue: _body,
-                          style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.bold),
-                          onChanged: (value) {
-                            setState(() {
-                              _body = value;
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                        ),
+  initialValue: _body,
+  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+  onChanged: (value) {
+    setState(() {
+      _body = value;
+    });
+  },
+  decoration: InputDecoration(
+    labelText: 'Body',
+    border: OutlineInputBorder(),
+  ),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter some text';
+    }
+    return null;
+  },
+),
+
                         Column(
                           children: [
                             Container(
@@ -167,10 +172,10 @@ class _ModierActualiteState extends State<ModierActualite> {
         final List responseData = jsonDecode(response.body)['actualite'];
         setState(() {
           _body = responseData[0]["body"];
-          name = responseData[0]["filePath"] != null
-              ? responseData[0]["filePath"].split('/').last
+          name = responseData[0]["file_path"] != null
+              ? responseData[0]["file_path"].split('/').last
               : '';
-          path = responseData[0]["filePath"];
+          path = responseData[0]["file_path"];
         });
       } else {
         throw Exception('Failed to load actualite');
@@ -204,15 +209,13 @@ class _ModierActualiteState extends State<ModierActualite> {
         file = result.files.single;
         selectedname = file!.name;
         selectedpath = file!.path;
-        path = selectedpath; // Update the path variable with the selected file path
+        path = selectedpath; 
         print("$name  name from function");
         print("$path path from function");
         print(file);
       });
     } else {
-      // Handle case when no file is picked
-      // You can show a snackbar or a dialog to inform the user
-      // that they need to pick a file.
+      
     }
   }
 }

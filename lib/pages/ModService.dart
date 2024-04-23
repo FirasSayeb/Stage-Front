@@ -54,48 +54,70 @@ class _ModServiceState extends State<ModService> {
                     return Column(
                       children: [
                         Container(
-                          height: 200,
-                          child: Card(
-                            elevation: 4,
-                            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                            child: ListTile(
-                              contentPadding: EdgeInsets.all(16.0),
-                              title: TextFormField(
-                                initialValue: classe['name'] != null ? classe['name'] : '',
-                                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                                onChanged: (value) {
-                                  name = value;
-                                },
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 8.0),
-                                  TextFormField(
-                                    keyboardType: TextInputType.number,
-                                    initialValue: classe['price'].toString() != null ? classe['price'].toString() : '',
-                                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                                    onChanged: (value) {
-                                      price = double.tryParse(value);
-                                    },
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter some text';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+  height: 200,
+  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+  decoration: BoxDecoration(
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.5),
+        spreadRadius: 2,
+        blurRadius: 4,
+        offset: Offset(0, 3), // changes position of shadow
+      ),
+    ],
+    borderRadius: BorderRadius.circular(8),
+    color: Colors.white,
+  ),
+  child: Padding(
+    padding: EdgeInsets.all(16.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          initialValue: classe['name'] ?? '',
+          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+          onChanged: (value) {
+            setState(() {
+              name = value;
+            });
+          },
+          decoration: InputDecoration(
+            labelText: 'Name',
+            border: OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter some text';
+            }
+            return null;
+          },
+        ),
+        SizedBox(height: 8.0),
+        TextFormField(
+          keyboardType: TextInputType.number,
+          initialValue: classe['price'] != null ? classe['price'].toString() : '',
+          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+          onChanged: (value) {
+            setState(() {
+              price = double.tryParse(value) ?? 0.0;
+            });
+          },
+          decoration: InputDecoration(
+            labelText: 'Price',
+            border: OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter some text';
+            }
+            return null;
+          },
+        ),
+      ],
+    ),
+  ),
+),
+
                         ElevatedButton(
                           onPressed: () async {
                             if (fkey.currentState!.validate()) {

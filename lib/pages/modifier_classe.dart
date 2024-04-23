@@ -100,57 +100,70 @@ class _ModifierClasseState extends State<ModifierClasse> {
               key: _formKey,
               child: Column(
                 children: [
+                  Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.05)),
                   TextFormField(
-                      initialValue: body ?? '',
-                      style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                      onChanged: (value) {
-                        setState(() {
-                          body = value;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                    ),
-                  Container(
-                    height: 200,
-                    child: Card(
-                      elevation: 4,
-                      margin:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                      child: ListTile(
-                        contentPadding: EdgeInsets.all(16.0),
-                        title: Text(''),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 8.0),
-                            ListTile(
-                              title: Text(
-                                'Emlpoi: ${name != null ? name! : 'No file'}',
-                                style: TextStyle(fontSize: 14.0),
-                              ),
-                              onTap: () {
-                                pickSingleFile();
-                              },
-                            ),
-                            ListTile(
-                              title: Text(
-                                'Examens: ${name2 != null ? name2! : 'No file'}',
-                                style: TextStyle(fontSize: 14.0),
-                              ),
-                              onTap: () {
-                                pickSecondFile();
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+  initialValue: body ?? '',
+  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+  onChanged: (value) {
+    setState(() {
+      body = value;
+    });
+  },
+  decoration: InputDecoration(
+    labelText: 'Nom',
+    border: OutlineInputBorder(),
+  ),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter some text';
+    }
+    return null;
+  },
+),
+
+Container(
+  height: 200,
+  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+  decoration: BoxDecoration(
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.5),
+        spreadRadius: 2,
+        blurRadius: 4,
+        offset: Offset(0, 3), // changes position of shadow
+      ),
+    ],
+    borderRadius: BorderRadius.circular(8),
+    color: Colors.white,
+  ),
+  child: Padding(
+    padding: EdgeInsets.all(16.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          title: Text(
+            'Emlpoi: ${name != null ? name! : 'No file'}',
+            style: TextStyle(fontSize: 14.0),
+          ),
+          onTap: () {
+            pickSingleFile();
+          },
+        ),
+        ListTile(
+          title: Text(
+            'Examens: ${name2 != null ? name2! : 'No file'}',
+            style: TextStyle(fontSize: 14.0),
+          ),
+          onTap: () {
+            pickSecondFile();
+          },
+        ),
+      ],
+    ),
+  ),
+),
+
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {

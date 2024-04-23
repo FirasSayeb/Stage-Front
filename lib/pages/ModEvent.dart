@@ -60,55 +60,74 @@ class _ModServiceState extends State<ModEvent> {
                     child: Column(
                       children: [
                         Container(
-                          height: 200,
-                          child: Card(
-                            elevation: 4,
-                            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                            child: ListTile(
-                              contentPadding: EdgeInsets.all(16.0),
-                              title: TextFormField(
-                                initialValue: name,
-                                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                                onChanged: (value) {
-                                  name = value;
-                                },
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 8.0),
-                                  TextFormField(
-                                    initialValue: price.toString(),
-                                    keyboardType: TextInputType.number,
-                                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                                    onChanged: (value) {
-                                      price = double.tryParse(value) ?? 0.0;
-                                    },
-                                  ),
-                                  TextFormField(
-                                    initialValue: date,
-                                    decoration: InputDecoration(
-                                      labelText: 'Date',
-                                      filled: true,
-                                      prefixIcon: Icon(Icons.calendar_today),
-                                      enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
-                                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
-                                    ),
-                                    onTap: () {
-                                      _selectDate(date);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+  height: MediaQuery.of(context).size.height*0.35,
+  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+  decoration: BoxDecoration(
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.5),
+        spreadRadius: 2,
+        blurRadius: 4,
+        offset: Offset(0, 3), 
+      ),
+    ],
+    borderRadius: BorderRadius.circular(8),
+    color: Colors.white,
+  ),
+  child: Padding(
+    padding: EdgeInsets.all(16.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          initialValue: name,
+          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+          onChanged: (value) {
+            name = value;
+          },
+          decoration: InputDecoration(
+            labelText: 'Name',
+            border: OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter some text';
+            }
+            return null;
+          },
+        ),
+        SizedBox(height: 8.0),
+        TextFormField(
+          initialValue: price.toString(),
+          keyboardType: TextInputType.number,
+          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+          onChanged: (value) {
+            price = double.tryParse(value) ?? 0.0;
+          },
+          decoration: InputDecoration(
+            labelText: 'Price',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        SizedBox(height: 8.0),
+        TextFormField(
+          initialValue: date,
+          decoration: InputDecoration(
+            labelText: 'Date',
+            filled: true,
+            prefixIcon: Icon(Icons.calendar_today),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+          ),
+          onTap: () {
+            _selectDate(date);
+          },
+        ),
+      ],
+    ),
+  ),
+),
+
                         ElevatedButton(
                           onPressed: () async {
                             if (fkey.currentState!.validate()) {
