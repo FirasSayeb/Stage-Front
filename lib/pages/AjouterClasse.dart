@@ -72,37 +72,32 @@ class _HomeState extends State<AjouterClasse> {
                   height: MediaQuery.of(context).size.height*0.4,
                   child: Lottie.asset("assets/add.json"),
                 ),
-                const Padding(padding: EdgeInsets.all(5)),
-                Container(
-                  alignment: Alignment.topCenter,
-                  child: const Text(
-                    "Ajouter Classe ",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.all(5)),
+                
                 Center(
                   child: Form( 
                     key: fkey,
                     child: Column(
                       children: [
-                        TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty || value.length == 0) {
-                              return "champs obligatoire";
-                            } else if (value.length < 3) {
-                              return "verifier votre champs";
-                            }
-                            return null;
-                          },
-                          onSaved: (newValue) { 
-                            name = newValue!;
-                          },
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            hintText: "Name:", 
-                            icon: Icon(Icons.text_fields_sharp),
-                          ),  
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } else if (value.length < 3) {
+                                return "verifier votre champs";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) { 
+                              name = newValue!;
+                            },
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "Nom:",
+                            ),  
+                          ),
                         ),
                         ElevatedButton.icon(
                           onPressed: picksinglefile,
@@ -113,7 +108,7 @@ class _HomeState extends State<AjouterClasse> {
                           ),
                           icon: Icon(Icons.insert_drive_file_sharp),
                           label: Text(
-                            'Pick Emploi',
+                            'Choisissez Emploi',
                             style: TextStyle(fontSize: 25),
                           )
                         ),
@@ -127,7 +122,7 @@ class _HomeState extends State<AjouterClasse> {
                           ),
                           icon: Icon(Icons.insert_drive_file_sharp),
                           label: Text(
-                            'Pick calenderier examens',
+                            'Choisir le calendrier des examens',
                             style: TextStyle(fontSize: 12),
                           )
                         ),

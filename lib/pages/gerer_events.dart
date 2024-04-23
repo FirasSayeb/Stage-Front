@@ -108,7 +108,7 @@ class _GererEventsState extends State<GererEvents> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Name : " + snapshot.data![index]['name'],
+                                      "Nom : " + snapshot.data![index]['name'],
                                       style: TextStyle(fontWeight: FontWeight.bold),
                                     ),
                                     Row(
@@ -181,7 +181,7 @@ class _GererEventsState extends State<GererEvents> {
                                   children: [
                                     SizedBox(height: 4),
                                     Text(
-                                      "Price: ${snapshot.data![index]['price'].toString()}",
+                                      "Prix: ${snapshot.data![index]['price'].toString()}",
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                     Text(

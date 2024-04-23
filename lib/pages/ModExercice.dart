@@ -83,7 +83,7 @@ class _ModExerciceState extends State<ModExercice> {
             name = value;
           },
           decoration: InputDecoration(
-            labelText: 'Name',
+            labelText: 'Nom',
             border: OutlineInputBorder(),
           ),
           validator: (value) {

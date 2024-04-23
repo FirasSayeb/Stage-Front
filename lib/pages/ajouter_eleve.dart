@@ -70,79 +70,91 @@ PlatformFile? file;
                           key: fkey,  
                           child: Column(   
                             children: [
-                               TextFormField(
-                                validator: (value) {
-                                  if (value!.isEmpty || value.length == 0) {
-                                    return "champs obligatoire";
-                                  } else if (value.length < 3) {
-                                    return "verifier votre champs";
-                                  }
-                                  return null;
-                                },
-                                onSaved: (newValue) {
-                                  num = newValue!;
-                                },
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  hintText: "Numero inscription:",
-                                  icon: Icon(Icons.text_fields_sharp),
+                               Container(
+                                padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                                 child: TextFormField(
+                                  validator: (value) {
+                                    if (value!.isEmpty || value.length == 0) {
+                                      return "champs obligatoire";
+                                    } else if (value.length < 3) {
+                                      return "verifier votre champs";
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (newValue) {
+                                    num = newValue!;
+                                  },
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                     border: OutlineInputBorder(),
+                              labelText: "Numero inscription :",
+                                   
+                                  ),
+                                                             ),
+                               ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value!.isEmpty || value.length == 0) {
+                                      return "champs obligatoire";
+                                    } else if (value.length < 3) {
+                                      return "verifier votre champs";
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (newValue) {
+                                    name = newValue!;
+                                  },
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                     border: OutlineInputBorder(),
+                              labelText: "Nom :",
+                                   
+                                  ),
                                 ),
                               ),
-                              TextFormField(
-                                validator: (value) {
-                                  if (value!.isEmpty || value.length == 0) {
-                                    return "champs obligatoire";
-                                  } else if (value.length < 3) {
-                                    return "verifier votre champs";
-                                  }
-                                  return null;
-                                },
-                                onSaved: (newValue) {
-                                  name = newValue!;
-                                },
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  hintText: "Nom:",
-                                  icon: Icon(Icons.text_fields_sharp),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value!.isEmpty || value.length == 0) {
+                                      return "champs obligatoire";
+                                    } else if (value.length < 3) {
+                                      return "verifier votre champs";
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (newValue) {
+                                    lastname = newValue!;
+                                  },
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                              labelText: "prénom :",
+                                  ),
                                 ),
                               ),
-                              const Padding(padding: EdgeInsets.all(5)),
-                              TextFormField(
-                                validator: (value) {
-                                  if (value!.isEmpty || value.length == 0) {
-                                    return "champs obligatoire";
-                                  } else if (value.length < 3) {
-                                    return "verifier votre champs";
-                                  }
-                                  return null;
-                                },
-                                onSaved: (newValue) {
-                                  lastname = newValue!;
-                                },
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  hintText: "Prenom:",
-                                  icon: Icon(Icons.text_fields_sharp),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                                child: TextFormField(
+                                  controller: TextEditingController(text: date),
+                                  onSaved: (newValue) {
+                                    date = newValue!;
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: 'Date',
+                                    filled: true, 
+                                    prefixIcon: Icon(Icons.calendar_today),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.blue)),
+                                  ),
+                                  onTap: () {
+                                    _selectDate();
+                                  },
                                 ),
-                              ),
-                              Padding(padding: EdgeInsets.all(10)),
-                              TextFormField(
-                                controller: TextEditingController(text: date),
-                                onSaved: (newValue) {
-                                  date = newValue!;
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'Date',
-                                  filled: true, 
-                                  prefixIcon: Icon(Icons.calendar_today),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide.none),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blue)),
-                                ),
-                                onTap: () {
-                                  _selectDate();
-                                },
                               ),
                               Padding(padding: EdgeInsets.all(10)),
                               FutureBuilder<List<Map<String, dynamic>>>(

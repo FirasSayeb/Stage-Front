@@ -85,82 +85,104 @@ String? validateEmail(String? value) {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty || value.length == 0) {
-                              return "champs obligatoire";
-                            } else if (value.length < 3) {
-                              return "verifier votre champs";
-                            }
-                            return null;
-                          },
-                          onSaved: (newValue) {
-                            nom = newValue!;
-                          },
-                          decoration: InputDecoration(label: Text('nom :'), icon: Icon(Icons.text_fields)),
-                        ),
-                        TextFormField(
-                          validator: validateEmail,
-                          onSaved: (newValue) {
-                            email = newValue!;
-                          },
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(label: Text('email :'), icon: Icon(Icons.email)),
-                        ),
-                        TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty || value.length == 0) {
-                              return "champs obligatoire";
-                            } else if (value.length < 3) {
-                              return "verifier votre champs";
-                            }
-                            return null;
-                          },
-                          onSaved: (newValue) {
-                            password = newValue!;
-                          },
-                          decoration: InputDecoration(
-                            icon: Icon(Icons.password),
-                            suffixIcon: IconButton(
-                              icon: Icon(hide ? Icons.visibility : Icons.visibility_off),
-                              onPressed: () {
-                                setState(() {
-                                  hide = !hide;
-                                });
-                              },
-                            ),
-                            label: Text('password :'),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } else if (value.length < 3) {
+                                return "verifier votre champs";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              nom = newValue!;
+                            },
+                            decoration: InputDecoration( labelText: 'Nom : ',
+                            border: OutlineInputBorder(),),
                           ),
-                          obscureText: hide,
                         ),
-                        TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty || value.length == 0) {
-                              return "champs obligatoire";
-                            } else if (value.length < 3) {
-                              return "verifier votre champs";
-                            }
-                            return null;
-                          },
-                          onSaved: (newValue) {
-                            address = newValue!;
-                          },
-                          decoration: InputDecoration(label: Text('Address :'), icon: Icon(Icons.location_city)),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                            validator: validateEmail,
+                            onSaved: (newValue) {
+                              email = newValue!;
+                            },
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(labelText: 'Email : ',
+                            border: OutlineInputBorder(),),
+                          ),
                         ),
-                        TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty || value.length == 0) {
-                              return "champs obligatoire";
-                            } else if (value.length < 8 || value.length >8) {
-                              return "verifier votre champs";
-                            }
-                            return null;
-                          },
-                          onSaved: (newValue) {
-                            phone = newValue!;
-                          },
-                          keyboardType: TextInputType.phone,
-                          decoration: InputDecoration(label: Text('phone :'), icon: Icon(Icons.phone)),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } else if (value.length < 3) {
+                                return "verifier votre champs";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              password = newValue!;
+                            },
+                            decoration: InputDecoration(
+                               labelText: 'password :',
+  border: OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                icon: Icon(hide ? Icons.visibility : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    hide = !hide;
+                                  });
+                                },
+                              ),
+                              
+                            ),
+                            obscureText: hide,
+                          ),
+                        ),
+                        Container(
+                           padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } else if (value.length < 3) {
+                                return "verifier votre champs";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              address = newValue!;
+                            },
+                            decoration: InputDecoration( labelText: 'Address :',
+  
+      border: OutlineInputBorder(),),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } else if (value.length < 8 || value.length >8) {
+                                return "verifier votre champs";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              phone = newValue!;
+                            },
+                            keyboardType: TextInputType.phone,
+                            decoration: InputDecoration(labelText: 'phone :',
+  
+      border: OutlineInputBorder(),),
+                          ),
                         ),
                         Center(
                           child: ElevatedButton.icon(
@@ -170,7 +192,7 @@ String? validateEmail(String? value) {
                             ),
                             icon: Icon(Icons.insert_drive_file_sharp),
                             label: Text(
-                              'Pick Image',
+                              'Choisir une image',
                               style: TextStyle(fontSize: 25),
                             ),
                           ),

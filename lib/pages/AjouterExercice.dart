@@ -41,57 +41,56 @@ class _AjouterExerciceState extends State<AjouterExercice> {
                   height: MediaQuery.of(context).size.height * 0.44,
                   child: Lottie.asset("assets/homework.json"),
                 ),
-                const Padding(padding: EdgeInsets.all(5)),
-                Container(
-                  alignment: Alignment.topCenter,
-                  child: const Text(
-                    "Ajouter Exercice ",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.all(5)),
+                
                 Center(
                   child: Form(
                     key: fkey,
                     child: Column(
                       children: [
-                        TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty || value.length == 0) {
-                              return "champs obligatoire";
-                            } else if (value.length < 3) {
-                              return "verifier votre champs";
-                            }
-                            return null;
-                          },
-                          onSaved: (newValue) {
-                            name = newValue!;
-                          },
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            hintText: "Name:",
-                            icon: Icon(Icons.text_fields_sharp),
+                        Container(
+                           padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } else if (value.length < 3) {
+                                return "verifier votre champs";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              name = newValue!;
+                            },
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "Nom:",
+                             
+                             
+                            ),
                           ),
                         ),
-                        TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty || value.length == 0) {
-                              return "champs obligatoire";
-                            } else if (value.length < 3) {
-                              return "verifier votre champs";
-                            }
-                            return null;
-                          },
-                          onSaved: (newValue) {
-                            description = newValue!;
-                          },
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            hintText: "Description:",
-                            icon: Icon(Icons.text_fields_sharp),
+                        Container(
+                           padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } else if (value.length < 3) {
+                                return "verifier votre champs";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              description = newValue!;
+                            },
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                             border: OutlineInputBorder(),
+                              labelText: "Description:",
+                            ),
                           ),
                         ),
-                        Padding(padding: EdgeInsets.all(5)),
                         FutureBuilder(
                           future: getUsers(),
                           builder: (context, snapshot) {

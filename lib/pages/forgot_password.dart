@@ -63,15 +63,19 @@ String? validateEmail(String? value) {
                   key: fkey,
                   child: Column(
                     children: [
-                      TextFormField(
-                        validator:validateEmail,
-                        onSaved: (newValue) {
-                          user.email = newValue!;
-                        },
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          hintText: "Email:",
-                          icon: Icon(Icons.email),
+                      Container(
+                         padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                        child: TextFormField(
+                          validator:validateEmail,
+                          onSaved: (newValue) {
+                            user.email = newValue!;
+                          },
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: "Email:",
+                                
+                              ),
                         ),
                       ),
                       Padding(padding: EdgeInsets.all(10)),

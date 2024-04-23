@@ -95,71 +95,95 @@ class _ModEnsignantState extends State<ModEnsignant> {
                         ),
                       ),
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.text_fields),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Nom :',
+  
+      border: OutlineInputBorder(),
+                        ),
+                        initialValue: snapshot.data!['name'],
+                        readOnly: true,
                       ),
-                      initialValue: snapshot.data!['name'],
-                      readOnly: true,
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.email),
+                    Container(
+                       padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                         labelText: 'Email :',
+      border: OutlineInputBorder(),
+                        ),
+                        initialValue: snapshot.data!['email'],
+                        readOnly: true,
                       ),
-                      initialValue: snapshot.data!['email'],
-                      readOnly: true,
                     ),
-                    TextFormField(
-                      onSaved: (newValue) {
-                        password = newValue!;
-                      },
-                      keyboardType: TextInputType.text,
-                      obscureText: hide,
-                      decoration: InputDecoration(
-                        hintText: "Modifier Password:",
-                        icon: Icon(Icons.password),
-                        suffixIcon: IconButton(
-                          icon: Icon(hide ? Icons.visibility : Icons.visibility_off),
-                          onPressed: () {
-                            setState(() {
-                              hide = !hide;
-                            });
-                          },
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      child: TextFormField(
+                        onSaved: (newValue) {
+                          password = newValue!;
+                        },
+                        keyboardType: TextInputType.text,
+                        obscureText: hide,
+                        decoration: InputDecoration(
+                          labelText: 'Modifier Mot de passe :',
+  
+      border: OutlineInputBorder(),
+                         
+                          suffixIcon: IconButton(
+                            icon: Icon(hide ? Icons.visibility : Icons.visibility_off),
+                            onPressed: () {
+                              setState(() {
+                                hide = !hide;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),
-                    TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "champs obligatoire";
-                        }
-                        return null;
-                      },
-                      onSaved: (newValue) {
-                        phone = newValue;
-                      },
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.phone),
+                    Container(
+                       padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "champs obligatoire";
+                          }
+                          return null;
+                        },
+                        onSaved: (newValue) {
+                          phone = newValue;
+                        },
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          labelText: 'numéro de téléphone  :',
+  
+      border: OutlineInputBorder(),
+                        ),
+                        initialValue: snapshot.data!['phone'],
                       ),
-                      initialValue: snapshot.data!['phone'],
                     ),
-                    TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "champs obligatoire";
-                        }
-                        return null;
-                      },
-                      onSaved: (newValue) {
-                        address = newValue;
-                      },
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.location_city),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "champs obligatoire";
+                          }
+                          return null;
+                        },
+                        onSaved: (newValue) {
+                          address = newValue;
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'address  :',
+  
+      border: OutlineInputBorder(),
+                        ),
+                        initialValue: snapshot.data!['address'],
                       ),
-                      initialValue: snapshot.data!['address'],
                     ),
-                    Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                    
                     Center(
                       child: FutureBuilder<List<Map<String, dynamic>>>(
                         future: getClasses(),
@@ -209,7 +233,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
        request.fields['address'] = address!;
        request.fields['phone'] = phone!;
        request.fields['list'] = selectedClasses.join(',');
-      if (file != null && file!.path!.isNotEmpty) {
+      if (file != null && file!.path!.isNotEmpty && path!.isNotEmpty) {
         print(path);
         var file = await MultipartFile.fromPath('file', path!);
         request.files.add(file);

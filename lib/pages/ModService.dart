@@ -82,7 +82,7 @@ class _ModServiceState extends State<ModService> {
             });
           },
           decoration: InputDecoration(
-            labelText: 'Name',
+            labelText: 'Nom',
             border: OutlineInputBorder(),
           ),
           validator: (value) {
@@ -103,7 +103,7 @@ class _ModServiceState extends State<ModService> {
             });
           },
           decoration: InputDecoration(
-            labelText: 'Price',
+            labelText: 'Prix',
             border: OutlineInputBorder(),
           ),
           validator: (value) {

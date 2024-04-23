@@ -51,25 +51,28 @@ class _ModierActualiteState extends State<ModierActualite> {
                     child: Column(
                       children: [
                          Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.05)),
-                        TextFormField(
-  initialValue: _body,
-  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-  onChanged: (value) {
-    setState(() {
-      _body = value;
-    });
-  },
-  decoration: InputDecoration(
-    labelText: 'Body',
-    border: OutlineInputBorder(),
-  ),
-  validator: (value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter some text';
-    }
-    return null;
-  },
-),
+                        Container(
+                           padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                          initialValue: _body,
+                          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                          onChanged: (value) {
+                            setState(() {
+                              _body = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            labelText: 'Body',
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                        ),
+                        ),
 
                         Column(
                           children: [

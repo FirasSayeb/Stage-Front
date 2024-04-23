@@ -88,9 +88,9 @@ class _HomeState extends State<AjouterActualite> {
                             },
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                              hintText: "Nom:", 
-                              icon: Icon(Icons.text_fields_sharp),
-                            ),  
+                            labelText: 'Body',
+                            border: OutlineInputBorder(),
+                          ), 
                           ),
                         ),
                         ElevatedButton.icon(

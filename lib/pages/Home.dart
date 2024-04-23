@@ -85,8 +85,9 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
                             },
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              hintText: "Email:",
-                              icon: Icon(Icons.email),
+                              border: OutlineInputBorder(),
+                              labelText: "Email:",
+                              
                             ),
                           ),
                         ),
@@ -107,8 +108,9 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
                             keyboardType: TextInputType.text,
                             obscureText: hide,
                             decoration: InputDecoration(
-                              hintText: "Mot de passe:",
-                              icon: Icon(Icons.password),
+                              border: OutlineInputBorder(),
+                              labelText: "Mot de passe:",
+                              
                               suffixIcon: IconButton(
                                 icon: Icon(Icons.remove_red_eye),
                                 onPressed: () {

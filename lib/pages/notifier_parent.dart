@@ -33,14 +33,18 @@ class _NotifierParentState extends State<NotifierParent> {
       body: SingleChildScrollView(
       child: Form(key:fkey ,child:Column(children: [ 
         Lottie.asset('assets/aaa.json',height: MediaQuery.of(context).size.height*0.4,width:MediaQuery.of(context).size.width),
-        TextFormField( 
-          onChanged: (value) { 
-            message=value; 
-          },onSaved: (newValue) {
-            message=newValue!;
-          },
-          decoration: InputDecoration(  
-            label: Text('Message :')
+        Container(
+          padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+          child: TextFormField( 
+            onChanged: (value) { 
+              message=value; 
+            },onSaved: (newValue) {
+              message=newValue!;
+            },
+            decoration: InputDecoration(  
+               border: OutlineInputBorder(),
+              labelText: 'Message :'
+            ),
           ),
         ),FutureBuilder<List<Map<String,dynamic>>>(future: getUsers(), builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

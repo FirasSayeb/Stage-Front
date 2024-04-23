@@ -102,7 +102,7 @@ class _GererExercicesState extends State<GererExercices> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Name : " + filteredData[index]['name'],
+                                    "Nom : " + filteredData[index]['name'],
                                     style: TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Row(

@@ -59,7 +59,7 @@ class _ValiderServiceState extends State<ValiderService> {
                             elevation: 4,
                             margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                             child: ListTile(
-                              title: Text("Eleve Name : "+
+                              title: Text("Nom d'Eleve : "+
                                 snapshot.data![index]['eleve_name'] 
                                 ,
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -68,7 +68,7 @@ class _ValiderServiceState extends State<ValiderService> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: 4),
-                                  Text("Service Name : "+
+                                  Text("Nom du service : "+
                                 snapshot.data![index]['service_name'] 
                                 ,
                                 style: TextStyle(fontWeight: FontWeight.bold),

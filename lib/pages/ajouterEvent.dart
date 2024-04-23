@@ -38,71 +38,72 @@ class _AjouterServiceState extends State<AjouterEvent> {
                   height: MediaQuery.of(context).size.height*0.3,
                   child: Lottie.asset("assets/event.json"),
                 ),
-                const Padding(padding: EdgeInsets.all(5)),
-                Container(
-                  alignment: Alignment.topCenter,
-                  child: const Text(
-                    "Ajouter Event ",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.all(5)),
+               
                 Center(
                   child: Form( 
                     key: fkey,
                     child: Column(
                       children: [
-                        TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty || value.length == 0) {
-                              return "champs obligatoire";
-                            } else if (value.length < 3) {
-                              return "verifier votre champs";
-                            }
-                            return null;
-                          },
-                          onSaved: (newValue) { 
-                            name = newValue!;
-                          },
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            hintText: "Name:", 
-                            icon: Icon(Icons.text_fields_sharp),
-                          ),  
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } else if (value.length < 3) {
+                                return "verifier votre champs";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) { 
+                              name = newValue!;
+                            },
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              hintText: "Nom:", 
+                              border: OutlineInputBorder(),
+                            ),  
+                          ),
                         ),
-                      TextFormField(
-  onSaved: (newValue) {
-    
-    if (newValue != null && newValue.isNotEmpty) {
-      price = double.parse(newValue);
-    }
-  },
-  keyboardType: TextInputType.number, 
-  decoration: InputDecoration(
-    hintText: "Price:",
-    icon: Icon(Icons.price_change),
-  ),
-),
+                      Container(
+                         padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                        child: TextFormField(
+                        onSaved: (newValue) {
+                          
+                          if (newValue != null && newValue.isNotEmpty) {
+                            price = double.parse(newValue);
+                          }
+                        },
+                        keyboardType: TextInputType.number, 
+                        decoration: InputDecoration(
+                         hintText: "Prix:", 
+                              border: OutlineInputBorder(),
+                        ),
+                      ),
+                      ),
 
                      
-                           Padding(padding: EdgeInsets.all(5)),  TextFormField(
-                                controller: TextEditingController(text: date),
-                                onSaved: (newValue) {
-                                  date = newValue!;
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'Date',
-                                  filled: true, 
-                                  prefixIcon: Icon(Icons.calendar_today),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide.none),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blue)),
+                             Container(
+                              padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                               child: TextFormField(
+                                  controller: TextEditingController(text: date),
+                                  onSaved: (newValue) {
+                                    date = newValue!;
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: 'Date',
+                                    filled: true, 
+                                    prefixIcon: Icon(Icons.calendar_today),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.blue)),
+                                  ),
+                                  onTap: () {
+                                    _selectDate();
+                                  },
                                 ),
-                                onTap: () {
-                                  _selectDate();
-                                },
-                              ),
+                             ),
                         Center(
                           child: GestureDetector(
                             onTap: () async {

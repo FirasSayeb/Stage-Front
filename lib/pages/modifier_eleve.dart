@@ -21,7 +21,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
     if (result != null) {
       setState(() {
         file = result.files.first;
-        name = file!.name;
+        //name = file!.name;
         path = file!.path;
       });
     }
@@ -38,6 +38,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
   late String classe ;
   late String parent1 = '';
   late String parent2 = '';
+  late String fileName;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -62,6 +63,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
           parent1 = data['parent_names'] != null && data['parent_names'].isNotEmpty ? data['parent_names'][0] : '';
           parent2 = data['parent_names'] != null && data['parent_names'].length > 1 ? data['parent_names'][1] : '';
           path = data['profil'];
+          fileName = path != null ? path!.split('/').last : '';
         });
       } else {
         throw Exception('Failed to load data');
@@ -93,72 +95,91 @@ class _ModifierEleveState extends State<ModifierEleve> {
                         pickSingleFile();
                       },
                       child: ListTile(
-                        title: CircleAvatar(
-                          backgroundImage: FileImage(File(path ?? '')),
-                          radius: 30,
-                        ),
+                        title: CircleAvatar( 
+    backgroundImage: NetworkImage(
+      "https://firas.alwaysdata.net/storage/$fileName",
+    ),
+    radius: 30,
+  ),
                       ),
                     ),
-                    Container(
-                      height: 400,
-                      child: Card(  
-                        elevation: 4,  
-                        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                        child: ListTile(
-                          contentPadding: EdgeInsets.all(16.0),
-                          title: Column( 
+                     Column( 
                             children: [
-                              TextFormField( 
-                                initialValue: num,
-                                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                                onChanged: (value) {
-                                  num = value;
-                                },
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              TextFormField(
-                                initialValue: name,
-                                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                                onChanged: (value) {
-                                  name = value;
-                                },
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              TextFormField(
-                                initialValue: lastname,
-                                style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                                onChanged: (value) {
-                                  lastname = value;
-                                },
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              TextFormField(
-                                initialValue: date,
-                                decoration: InputDecoration(
-                                  labelText: 'Date',
-                                  filled: true,
-                                  prefixIcon: Icon(Icons.calendar_today),
-                                  enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
-                                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                              Container(
+                                 padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                                child: TextFormField( 
+                                  initialValue: num,
+                                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                  onChanged: (value) {
+                                    num = value;
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                              labelText: "Numero inscription :",
+                                  ),
                                 ),
-                                onTap: () {
-                                  _selectDate(date);
-                                },
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                                child: TextFormField(
+                                  initialValue: name,
+                                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                  onChanged: (value) {
+                                    name = value;
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                   border: OutlineInputBorder(),
+                              labelText: "Nom :",
+                                ),
+                                ),
+                              ),
+                              Container(
+                                 padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                                child: TextFormField(
+                                  initialValue: lastname,
+                                  style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                  onChanged: (value) {
+                                    lastname = value;
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                     border: OutlineInputBorder(),
+                                labelText: "prénom :",
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                 padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                                child: TextFormField(
+                                  initialValue: date,
+                                  decoration: InputDecoration(
+                                    labelText: 'Date',
+                                    filled: true,
+                                    prefixIcon: Icon(Icons.calendar_today),
+                                    enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                                  ),
+                                  onTap: () {
+                                    _selectDate(date);
+                                  },
+                                ),
                               ),
                               FutureBuilder<List<Map<String, dynamic>>>(
                                 future: getClasses(),
@@ -201,7 +222,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
                                   } else {
                                     return DropdownButton(
                                       value: selectedParents.isNotEmpty ? selectedParents[0] : null,
-                                      hint: Text("select parent"), 
+                                      hint: Text("sélectionner tuteurs"), 
                                       items: snapshot.data!.map((e){
                                         return DropdownMenuItem(
                                           child: Text(e['email'].toString()),
@@ -226,9 +247,9 @@ class _ModifierEleveState extends State<ModifierEleve> {
                               ),
                             ],
                           ),
-                        ),
-                      ),
-                    ),
+                      
+                      
+                    
                     ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {

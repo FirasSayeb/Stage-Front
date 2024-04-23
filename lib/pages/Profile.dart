@@ -99,66 +99,85 @@ Future<void> pickSingleFile() async {
   ),
 ),
 
-                    TextFormField(
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.text_fields),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                         labelText: 'Nom : ',
+                            border: OutlineInputBorder()
+                        ),
+                        initialValue: snapshot.data!['name'],
+                        readOnly: true,
                       ),
-                      initialValue: snapshot.data!['name'],
-                      readOnly: true,
                     ), 
-                    TextFormField(
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.email),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Email : ',
+                            border: OutlineInputBorder(),
+                        ),
+                        initialValue: snapshot.data!['email'],
+                        readOnly: true,
                       ),
-                      initialValue: snapshot.data!['email'],
-                      readOnly: true,
                     ),
-                    TextFormField(
-                     
-                      onSaved: (newValue) {
-                        password = newValue!;
-                      },
-                      keyboardType: TextInputType.text,
-                      obscureText: hide, 
-                      decoration: InputDecoration( 
-                        hintText: "Modifier Password:", 
-                        icon: Icon(Icons.password),
-                        suffixIcon: IconButton(
-                          icon: Icon(hide ? Icons.visibility : Icons.visibility_off), 
-                          onPressed: () {
-                            setState(() {
-                              hide = !hide; 
-                            });
-                          },
+                    Container(
+                       padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      child: TextFormField(
+                        onSaved: (newValue) {
+                          password = newValue!;
+                        },
+                        keyboardType: TextInputType.text,
+                        obscureText: hide, 
+                        decoration: InputDecoration( 
+                         labelText: 'Modifier mot de passe :',
+  border: OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            icon: Icon(hide ? Icons.visibility : Icons.visibility_off), 
+                            onPressed: () {
+                              setState(() {
+                                hide = !hide; 
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),
-                    TextFormField(
-                      validator: (value) {
-                        if( value==null ||value.isEmpty){
-                          return "champs obligatoire";
-                        }return null  ;
-                      },
-                      onSaved: (newValue) {
-                        phone=newValue;
-                      },
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.phone),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      child: TextFormField(
+                        validator: (value) {
+                          if( value==null ||value.isEmpty){
+                            return "champs obligatoire";
+                          }return null  ;
+                        },
+                        onSaved: (newValue) {
+                          phone=newValue;
+                        },
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                         labelText: 'phone :',
+      border: OutlineInputBorder(),
+                        ),
+                        initialValue: snapshot.data!['phone'],
                       ),
-                      initialValue: snapshot.data!['phone'],
                     ),
-                    TextFormField(validator: (value) {
-                        if( value==null ||value.isEmpty){
-                          return "champs obligatoire";
-                        }return null  ;
-                      }, onSaved: (newValue) {
-                        address=newValue;
-                      }, 
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.location_city),
+                    Container(
+                       padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      child: TextFormField(validator: (value) {
+                          if( value==null ||value.isEmpty){
+                            return "champs obligatoire";
+                          }return null  ;
+                        }, onSaved: (newValue) {
+                          address=newValue;
+                        }, 
+                        decoration: InputDecoration(
+                         labelText: 'Address :',
+  
+      border: OutlineInputBorder(),
+                        ),
+                        initialValue: snapshot.data!['address'],
                       ),
-                      initialValue: snapshot.data!['address'],
                     ),
                     Padding(padding: EdgeInsets.symmetric(vertical: 10)),
                     Center(

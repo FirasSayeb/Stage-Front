@@ -59,16 +59,21 @@ class _ValiderEventState extends State<ValiderEvent> {
                             elevation: 4,
                             margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                             child: ListTile(
-                              title: Text("Eleve Name : "+
-                                snapshot.data![index]['eleve_name'] 
-                                ,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              title: Row(
+                                children: [
+                                  Text("Nom d'Eleve : "+
+                                    snapshot.data![index]['eleve_name'] 
+                                    ,
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  
+                                ],
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: 4),
-                                  Text("Event Name : "+
+                                  Text("Nom de l'événement : "+
                                 snapshot.data![index]['event_name'] 
                                 ,
                                 style: TextStyle(fontWeight: FontWeight.bold),

@@ -56,69 +56,80 @@ class _ForgotPasswordState extends State<ResetPassword> {
                   key: fkey,
                   child: Column(
                     children: [
-                      TextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty || value.length == 0) {
-                            return "champs obligatoire";
-                          } 
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          code = int.parse(newValue!) ;
-                        }, 
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          hintText: "Code:",
-                          icon: Icon(Icons.qr_code),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty || value.length == 0) {
+                              return "champs obligatoire";
+                            } 
+                            return null;
+                          },
+                          onSaved: (newValue) {
+                            code = int.parse(newValue!) ;
+                          }, 
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                             border: OutlineInputBorder(),
+                              labelText: "Code :",
+                          ),
                         ),
                       ),
-                      Padding(padding: EdgeInsets.all(4)),
-                      TextFormField(
-                        obscureText: hide1,
-                        validator: (value) {
-                          if (value!.isEmpty || value.length == 0) {
-                            return "champs obligatoire";
-                          } 
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          user.password = newValue!;
-                        },
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          hintText: "Password:",
-                          icon: Icon(Icons.password),suffixIcon: IconButton(
-                              icon: Icon(Icons.remove_red_eye),
-                              onPressed: () {
-                                setState(() {
-                                  hide1 = !hide1; 
-                                });
-                              },
-                            ),
+                     
+                      Container(
+                         padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                        child: TextFormField(
+                          obscureText: hide1,
+                          validator: (value) {
+                            if (value!.isEmpty || value.length == 0) {
+                              return "champs obligatoire";
+                            } 
+                            return null;
+                          },
+                          onSaved: (newValue) {
+                            user.password = newValue!;
+                          },
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                             border: OutlineInputBorder(),
+                              labelText: "Mot de passe :",
+                           suffixIcon: IconButton(
+                                icon: Icon(Icons.remove_red_eye),
+                                onPressed: () {
+                                  setState(() {
+                                    hide1 = !hide1; 
+                                  });
+                                },
+                              ),
+                          ),
                         ),
-                      ),Padding(padding: EdgeInsets.all(4)),
-                      TextFormField(
-                         obscureText: hide2,
-                        validator: (value) {
-                          if (value!.isEmpty || value.length == 0) {
-                            return "champs obligatoire";
-                          } 
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          valide = newValue!;
-                        },
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          hintText: "Confirme Password:",
-                          icon: Icon(Icons.password), suffixIcon: IconButton(
-                              icon: Icon(Icons.remove_red_eye),
-                              onPressed: () {
-                                setState(() {
-                                  hide2 = !hide2;
-                                });
-                              },
-                            ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                        child: TextFormField(
+                           obscureText: hide2,
+                          validator: (value) {
+                            if (value!.isEmpty || value.length == 0) {
+                              return "champs obligatoire";
+                            } 
+                            return null;
+                          },
+                          onSaved: (newValue) {
+                            valide = newValue!;
+                          },
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                             border: OutlineInputBorder(),
+                              labelText:"Confirme Password:",
+                            suffixIcon: IconButton(
+                                icon: Icon(Icons.remove_red_eye),
+                                onPressed: () {
+                                  setState(() {
+                                    hide2 = !hide2;
+                                  });
+                                },
+                              ),
+                          ),
                         ),
                       ),Padding(padding: EdgeInsets.all(4)),
                       GestureDetector(
