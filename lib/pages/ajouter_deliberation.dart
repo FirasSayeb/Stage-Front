@@ -139,6 +139,12 @@ class _AjouterDelState extends State<AjouterDel> {
                     );
                         }
                       }
+                      if(response2.statusCode==200){
+                        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Admin(widget.email)),
+      );
+                      }
                     },
                     child: Container(
                       padding: const EdgeInsets.all(20),
