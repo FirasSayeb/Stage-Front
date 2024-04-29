@@ -7,7 +7,7 @@ import 'package:http/http.dart';
 
 class ModEnsignant extends StatefulWidget {
   final String email;
-  ModEnsignant( this.email);
+  ModEnsignant(this.email);
 
   @override
   State<ModEnsignant> createState() => _ModEnsignantState();
@@ -23,11 +23,14 @@ class _ModEnsignantState extends State<ModEnsignant> {
   PlatformFile? file;
   String? name;
   String? path;
+  late Future<List<Map<String, dynamic>>> _classesFuture;
 
   @override
   void initState() {
     super.initState();
+
     _getUserFuture = getUser(widget.email);
+    _classesFuture = getClasses(); // Fetch classes here
   }
 
   Future<void> pickSingleFile() async {
@@ -79,187 +82,192 @@ class _ModEnsignantState extends State<ModEnsignant> {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else {
               path = file == null ? snapshot.data!['avatar'] : path;
-              return Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        pickSingleFile();
-                      },
-                      child: ListTile(
-                        title: CircleAvatar(
-                          backgroundImage: FileImage(File(path!)),
-                          radius: 30,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Nom :',
-  
-      border: OutlineInputBorder(),
-                        ),
-                        initialValue: snapshot.data!['name'],
-                        readOnly: true,
-                      ),
-                    ),
-                    Container(
-                       padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                         labelText: 'Email :',
-      border: OutlineInputBorder(),
-                        ),
-                        initialValue: snapshot.data!['email'],
-                        readOnly: true,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
-                      child: TextFormField(
-                        onSaved: (newValue) {
-                          password = newValue!;
-                        },
-                        keyboardType: TextInputType.text,
-                        obscureText: hide,
-                        decoration: InputDecoration(
-                          labelText: 'Modifier Mot de passe :',
-  
-      border: OutlineInputBorder(),
-                         
-                          suffixIcon: IconButton(
-                            icon: Icon(hide ? Icons.visibility : Icons.visibility_off),
-                            onPressed: () {
-                              setState(() {
-                                hide = !hide;
-                              });
+              String fileName = path!.split('/').last;
+              return FutureBuilder<List<Map<String, dynamic>>>(
+                future: _classesFuture,
+                builder: (context, classesSnapshot) {
+                  if (classesSnapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (classesSnapshot.hasError) {
+                    return Center(child: Text('Failed to get classes'));
+                  } else {
+                    return Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              pickSingleFile();
                             },
+                            child: ListTile(
+                              title: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  "https://firas.alwaysdata.net/storage/$fileName",
+                                ),
+                                radius: 30,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                       padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "champs obligatoire";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          phone = newValue;
-                        },
-                        keyboardType: TextInputType.phone,
-                        decoration: InputDecoration(
-                          labelText: 'numéro de téléphone  :',
-  
-      border: OutlineInputBorder(),
-                        ),
-                        initialValue: snapshot.data!['phone'],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "champs obligatoire";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          address = newValue;
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'address  :',
-  
-      border: OutlineInputBorder(),
-                        ),
-                        initialValue: snapshot.data!['address'],
-                      ),
-                    ),
-                    
-                    Center(
-                      child: FutureBuilder<List<Map<String, dynamic>>>(
-                        future: getClasses(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
-                          } else if (snapshot.hasError) {
-                            return Center(child: Text('Failed to get classes'));
-                          } else {
-                            return DropdownButton(
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: MediaQuery.of(context).size.width * 0.1,
+                                vertical: MediaQuery.of(context).size.height * 0.02),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Nom :',
+                                border: OutlineInputBorder(),
+                              ),
+                              initialValue: snapshot.data!['name'],
+                              readOnly: true,
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: MediaQuery.of(context).size.width * 0.1,
+                                vertical: MediaQuery.of(context).size.height * 0.02),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Email :',
+                                border: OutlineInputBorder(),
+                              ),
+                              initialValue: snapshot.data!['email'],
+                              readOnly: true,
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: MediaQuery.of(context).size.width * 0.1,
+                                vertical: MediaQuery.of(context).size.height * 0.02),
+                            child: TextFormField(
+                              onSaved: (newValue) {
+                                password = newValue!;
+                              },
+                              keyboardType: TextInputType.text,
+                              obscureText: hide,
+                              decoration: InputDecoration(
+                                labelText: 'Modifier Mot de passe :',
+                                border: OutlineInputBorder(),
+                                suffixIcon: IconButton(
+                                  icon: Icon(hide ? Icons.visibility : Icons.visibility_off),
+                                  onPressed: () {
+                                    setState(() {
+                                      hide = !hide;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: MediaQuery.of(context).size.width * 0.1,
+                                vertical: MediaQuery.of(context).size.height * 0.02),
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "champs obligatoire";
+                                }
+                                return null;
+                              },
+                              onSaved: (newValue) {
+                                phone = newValue;
+                              },
+                              keyboardType: TextInputType.phone,
+                              decoration: InputDecoration(
+                                labelText: 'numéro de téléphone  :',
+                                border: OutlineInputBorder(),
+                              ),
+                              initialValue: snapshot.data!['phone'],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: MediaQuery.of(context).size.width * 0.1,
+                                vertical: MediaQuery.of(context).size.height * 0.02),
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "champs obligatoire";
+                                }
+                                return null;
+                              },
+                              onSaved: (newValue) {
+                                address = newValue;
+                              },
+                              decoration: InputDecoration(
+                                labelText: 'address  :',
+                                border: OutlineInputBorder(),
+                              ),
+                              initialValue: snapshot.data!['address'],
+                            ),
+                          ),
+                          Center(
+                            child: DropdownButton(
                               value: selectedClasses.isNotEmpty ? selectedClasses.first : null,
                               hint: Text("select classe(s)"),
-                              items: snapshot.data!.map((e) {
+                              items: classesSnapshot.data!.map((e) {
                                 return DropdownMenuItem(
                                   child: Text(e['name'].toString()),
                                   value: e['name'].toString(),
                                 );
                               }).toList(),
                               onChanged: (value) {
-                                setState(() {
-                                  if (!selectedClasses.contains(value)) selectedClasses.addAll([value.toString()]);
-                                });
+                                if (!selectedClasses.contains(value)) selectedClasses.addAll([value.toString()]);
+                                setState(() {});
                               },
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
-                             if (file != null) {
-                                  setState(() {
-                                    path = file!.path!;
-                                  });
-                                }
-                            var request = MultipartRequest(
-        'POST',
-        Uri.parse("https://firas.alwaysdata.net/api/updateEnseignant"),
-      );
+                            ),
+                          ),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  if (file != null) {
+                                    setState(() {
+                                      path = file!.path!;
+                                    });
+                                  }
+                                  var request = http.MultipartRequest(
+                                    'POST',
+                                    Uri.parse("https://firas.alwaysdata.net/api/updateEnseignant"),
+                                  );
 
-      
-      request.fields['email'] = widget.email;
-      request.fields['password'] = password;
-       request.fields['address'] = address!;
-       request.fields['phone'] = phone!;
-       request.fields['list'] = selectedClasses.join(',');
-      if (file != null && file!.path!.isNotEmpty && path!.isNotEmpty) {
-        print(path);
-        var file = await MultipartFile.fromPath('file', path!);
-        request.files.add(file);
-      } 
-      print(file);
-             var response = await request.send();
-                          
-                            print(request.fields);
-                            
-                            if (response.statusCode == 200) {
-                               print(request.fields);
-                            
-                              Navigator.pop(context);
-                            }else{
-                            var response2 = await http.Response.fromStream(response);
-  final result = json.decode(json.encode(response2.body));
-    print(response.statusCode);
-    print(result);
-                            }
-                          }
-                        },
-                        child: Text('Valider'),
+                                  request.fields['email'] = widget.email;
+                                  request.fields['password'] = password;
+                                  request.fields['address'] = address!;
+                                  request.fields['phone'] = phone!;
+                                  request.fields['list'] = selectedClasses.join(',');
+                                  if (file != null && file!.path!.isNotEmpty && path!.isNotEmpty) {
+                                    print(path);
+                                    var file = await MultipartFile.fromPath('file', path!);
+                                    request.files.add(file);
+                                  }
+                                  print(file);
+                                  var response = await request.send();
+
+                                  print(request.fields);
+
+                                  if (response.statusCode == 200) {
+                                    print(request.fields);
+
+                                    Navigator.pop(context);
+                                  } else {
+                                    var response2 = await http.Response.fromStream(response);
+                                    final result = json.decode(json.encode(response2.body));
+                                    print(response.statusCode);
+                                    print(result);
+                                  }
+                                }
+                              },
+                              child: Text('Valider'),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
+                    );
+                  }
+                },
               );
             }
           },
