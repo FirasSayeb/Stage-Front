@@ -39,7 +39,8 @@ class _ModifierEleveState extends State<ModifierEleve> {
   late String parent1 = '';
   late String parent2 = '';
   late String fileName;
-
+late Future<List<Map<String, dynamic>>> _classes;
+  late Future<List<Map<String, dynamic>>> _parents;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -47,6 +48,8 @@ class _ModifierEleveState extends State<ModifierEleve> {
     super.initState();
     classe="";
     fetchData();
+     _classes = getClasses();
+    _parents = getParents();
   }
 
   Future<void> fetchData() async {
@@ -182,7 +185,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
                                 ),
                               ),
                               FutureBuilder<List<Map<String, dynamic>>>(
-                                future: getClasses(),
+                                future: _classes,
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState == ConnectionState.waiting) {
                                     return CircularProgressIndicator();
@@ -211,7 +214,7 @@ class _ModifierEleveState extends State<ModifierEleve> {
                                 },
                               ),
                               FutureBuilder<List<Map<String, dynamic>>>(
-                                future: getParents(),
+                                future: _parents,
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState == ConnectionState.waiting) {
                                     return CircularProgressIndicator();
