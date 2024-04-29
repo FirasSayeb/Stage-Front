@@ -6,6 +6,7 @@ import 'package:app/pages/Profile.dart';
 import 'package:app/pages/ajouter_message.dart';
 import 'package:app/pages/marquer_absence.dart';
 import 'package:app/pages/voir_absence.dart';
+import 'package:app/pages/voir_emploi.dart';
 import 'package:app/pages/voir_event.dart';
 import 'package:app/pages/voir_exercices.dart';
 import 'package:app/pages/voir_notes.dart';
@@ -175,6 +176,12 @@ class _SignupState extends State<Parent> {
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirExcercices(widget.email)));},
+              ), ListTile(
+                title: Text("Voir Emplois"),
+                leading: Icon(Icons.calendar_month),
+                onTap: () { Navigator.push(
+      context,   
+      MaterialPageRoute(builder: (context) => VoirEmploi(widget.email)));},
               ),
                ListTile(
                 title: Text("Voir Notifications"),
