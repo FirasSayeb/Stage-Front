@@ -146,7 +146,7 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
                                 Map<String, String> userData = {
                                   'email': user.email,
                                   'password': user.password,
-                                  'token':mtoken!,
+                                  'token':mtoken ?? '',
                                 };  
                                  print(mtoken); 
                                 Response response = await post(
