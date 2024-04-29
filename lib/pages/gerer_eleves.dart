@@ -38,7 +38,7 @@ class _GererClassesState extends State<GererEleves> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("Gerer Eleves "),
+          title: const Text("Eleves "),
           centerTitle: true,
           elevation: 0,
           backgroundColor: Color.fromARGB(160, 0, 54, 99),
@@ -224,49 +224,49 @@ else {
                   },
                 ),
                 ListTile(
-                  title: Text("Gérer Enseignants"),
+                  title: Text("Enseignants"),
                   leading: Icon(Icons.school),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEmploi(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: Text("Gérer Services"),
+                  title: Text("Services"),
                   leading: Icon(Icons.miscellaneous_services),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: Text("Gérer Events"),
+                  title: Text("Events"),
                   leading: Icon(Icons.event),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEvents(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: Text("Gérer Tuteurs"),
+                  title: Text("Tuteurs"),
                   leading: Icon(Icons.verified_user),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: Text("Gérer Notes"),
+                  title: Text("Notes"),
                   leading: Icon(Icons.grade),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterDel(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: Text("Gérer Classes"),
+                  title: Text("Classes"),
                   leading: Icon(Icons.class_),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererClasses(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: Text("Gérer Eleves"),
+                  title: Text("Eleves"),
                   leading: Icon(Icons.smart_toy_rounded),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));
@@ -279,21 +279,21 @@ else {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterNotification(widget.email)));
                   },
                 ),ListTile(
-                  title: const Text("Voir Absences"), 
+                  title: const Text("Absences"), 
                   leading: const Icon(Icons.edit_calendar),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAll(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: Text("Valider  Services"),
+                  title: Text("Valider Services"),
                   leading: Icon(Icons.check),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderService(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: Text("Valider  Events"),
+                  title: Text("Valider Events"),
                   leading: Icon(Icons.check),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderEvent(widget.email)));

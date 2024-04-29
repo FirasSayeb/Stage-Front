@@ -66,7 +66,7 @@ class _GererClassesState extends State<GererEmploi> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("Gerer Enseignants "),
+          title: const Text("Enseignants "),
           centerTitle: true,
           elevation: 0,
           backgroundColor: Color.fromARGB(160, 0, 54, 99),
@@ -235,49 +235,49 @@ class _GererClassesState extends State<GererEmploi> {
                   },
                 ),
                 ListTile(
-                  title: const Text("Gérer Enseignants"),
+                  title: const Text("Enseignants"),
                   leading: const Icon(Icons.school),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEmploi(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: const Text("Gérer Services"),
+                  title: const Text("Services"),
                   leading: const Icon(Icons.miscellaneous_services),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: const Text("Gérer Events"),
+                  title: const Text("Events"),
                   leading: const Icon(Icons.event),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEvents(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: const Text("Gérer Tuteurs"),
+                  title: const Text("Tuteurs"),
                   leading: const Icon(Icons.verified_user),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: const Text("Gérer Notes"),
+                  title: const Text("Notes"),
                   leading: const Icon(Icons.grade),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterDel(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: const Text("Gérer Classes"),
+                  title: const Text("Classes"),
                   leading: const Icon(Icons.class_),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererClasses(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: const Text("Gérer Eleves"),
+                  title: const Text("Eleves"),
                   leading: const Icon(Icons.smart_toy_rounded),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));
@@ -290,7 +290,7 @@ class _GererClassesState extends State<GererEmploi> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterNotification(widget.email)));
                   },
                 ),ListTile(
-                  title: const Text("Voir Absences"), 
+                  title: const Text("Absences"), 
                   leading: const Icon(Icons.edit_calendar),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAll(widget.email)));

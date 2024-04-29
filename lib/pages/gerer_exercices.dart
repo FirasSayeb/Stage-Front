@@ -42,7 +42,7 @@ class _GererExercicesState extends State<GererExercices> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Gerer Exercices "),
+        title: const Text("Exercices "),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Color.fromARGB(160, 0, 54, 99),
