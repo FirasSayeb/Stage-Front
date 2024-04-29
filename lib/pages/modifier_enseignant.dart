@@ -217,7 +217,31 @@ class _ModEnsignantState extends State<ModEnsignant> {
                                 setState(() {});
                               },
                             ),
-                          ),
+                          ),Text(
+  'Selected Classes:',
+  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+),
+SizedBox(height: 10),
+Container(
+  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(8),
+    color: Colors.grey[200],
+  ),
+  child: ListView.builder(
+    shrinkWrap: true,
+    itemCount: selectedClasses.length,
+    itemBuilder: (context, index) {
+      return ListTile(
+        title: Text(
+          selectedClasses[index],
+          style: TextStyle(fontSize: 16),
+        ),
+      );
+    },
+  ),
+),
+
                           Center(
                             child: ElevatedButton(
                               onPressed: () async {

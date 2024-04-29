@@ -278,7 +278,31 @@ class _AjouterEleveState extends State<AjouterEleve> {
                                   }
                                 },
                               ),
-                              Padding(padding: EdgeInsets.all(10)),
+                              Text(
+  'Selected Tuteurs:',
+  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+),
+SizedBox(height: 10),
+Container(
+  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(8),
+    color: Colors.grey[200],
+  ),
+  child: ListView.builder(
+    shrinkWrap: true,
+    itemCount: selectedParents.length,
+    itemBuilder: (context, index) {
+      return ListTile(
+        title: Text(
+          selectedParents[index],
+          style: TextStyle(fontSize: 16),
+        ),
+      );
+    },
+  ),
+),
+
                               GestureDetector(
                                 onTap: () async {
                                   if (fkey.currentState!.validate()) {
