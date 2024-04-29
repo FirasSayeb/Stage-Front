@@ -294,12 +294,15 @@ late Future<List<Map<String, dynamic>>> _classes;
   }
 
   Future<void> _selectDate(String initialDate) async {
-    DateTime? picked = await showDatePicker( 
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2050),
-    );
+     DateTime now = DateTime.now();
+  DateTime elevenYearsAgo = DateTime(now.year - 11, now.month, now.day);
+  DateTime fiveYearsAgo = DateTime(now.year - 5, now.month, now.day);
+  DateTime? picked = await showDatePicker(
+    context: context,
+    initialDate: fiveYearsAgo,
+    firstDate: elevenYearsAgo, 
+    lastDate: fiveYearsAgo,
+  );
 
     if (picked != null) {
       setState(() {

@@ -174,7 +174,7 @@ class _AjouterEleveState extends State<AjouterEleve> {
                                     date = newValue!;
                                   },
                                   decoration: InputDecoration(
-                                    labelText: 'Date',
+                                    labelText: 'date de naissance',
                                     filled: true,
                                     prefixIcon: Icon(Icons.calendar_today),
                                     enabledBorder: OutlineInputBorder(
@@ -353,20 +353,25 @@ class _AjouterEleveState extends State<AjouterEleve> {
     );
   }
 
-  Future<void> _selectDate() async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2050),
-    );
-    if (picked != null) {
-      setState(() {
-        date = picked.toString().split(" ")[0];
-        print('Selected Date: $date');
-      });
-    }
+Future<void> _selectDate() async {
+  DateTime now = DateTime.now();
+  DateTime elevenYearsAgo = DateTime(now.year - 11, now.month, now.day);
+  DateTime fiveYearsAgo = DateTime(now.year - 5, now.month, now.day);
+  DateTime? picked = await showDatePicker(
+    context: context,
+    initialDate: fiveYearsAgo,
+    firstDate: elevenYearsAgo, 
+    lastDate: fiveYearsAgo,
+  );
+  if (picked != null) {
+    setState(() {
+      date = picked.toString().split(" ")[0];
+      print('Selected Date: $date');
+    });
   }
+}
+
+
 
   Future<List<Map<String, dynamic>>> getParents() async {
     try {
