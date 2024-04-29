@@ -23,6 +23,8 @@ class _HomeState extends State<AjouterParent> {
   late String address;
   late String phone;
   bool hide = true;
+  bool hide2=true;
+  late String valide;
   String? deviceToken;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
@@ -78,7 +80,7 @@ String? validateEmail(String? value) {
           children: [
             Column(
               children: [
-                Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05)),
+                Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02)),
                 Center(
                   child: Form(
                     key: fkey,
@@ -144,7 +146,34 @@ String? validateEmail(String? value) {
                             ),
                             obscureText: hide,
                           ),
+                        ), Container(
+                        padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                        child: TextFormField(
+                           obscureText: hide2,
+                          validator: (value) {
+                            if (value!.isEmpty || value.length == 0) {
+                              return "champs obligatoire";
+                            } 
+                            return null;
+                          },
+                          onSaved: (newValue) {
+                            valide = newValue!;
+                          },
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                             border: OutlineInputBorder(),
+                              labelText:"Confirme Password:",
+                            suffixIcon: IconButton(
+                                icon: Icon(Icons.remove_red_eye),
+                                onPressed: () {
+                                  setState(() {
+                                    hide2 = !hide2;
+                                  });
+                                },
+                              ),
+                          ),
                         ),
+                      ),
                         Container(
                            padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
                           child: TextFormField(
@@ -200,9 +229,10 @@ String? validateEmail(String? value) {
                         Center(
                           child: GestureDetector(
                             onTap: () async {
-                              if (fkey.currentState!.validate()) {
+                              if (fkey.currentState!.validate() ) {
                                 fkey.currentState!.save();
-                                try {
+                                if( password==valide){
+ try {
                                   var file = await MultipartFile.fromPath('file', path!);
                                   final request = http.MultipartRequest(
                                     'POST',
@@ -236,6 +266,8 @@ String? validateEmail(String? value) {
                                     errorMessage = 'Échec d\'ajout du parent';
                                   });
                                 }
+                                }
+                               
                               }
                             },
                             child: Container(

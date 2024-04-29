@@ -25,6 +25,8 @@ class _HomeState extends State<AjouterEnseignant> {
   late String address;
   late String phone;
   bool hide = true;
+  bool hide2=true;
+  late String valide;
   String? deviceToken;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   late Future<List<Map<String, dynamic>>> _classesFuture;
@@ -160,7 +162,34 @@ class _HomeState extends State<AjouterEnseignant> {
                               ),
                               obscureText: hide,
                             ),
+                          ),Container(
+                        padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                        child: TextFormField(
+                           obscureText: hide2,
+                          validator: (value) {
+                            if (value!.isEmpty || value.length == 0) {
+                              return "champs obligatoire";
+                            } 
+                            return null;
+                          },
+                          onSaved: (newValue) {
+                            valide = newValue!;
+                          },
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                             border: OutlineInputBorder(),
+                              labelText:"Confirme Password:",
+                            suffixIcon: IconButton(
+                                icon: Icon(Icons.remove_red_eye),
+                                onPressed: () {
+                                  setState(() {
+                                    hide2 = !hide2;
+                                  });
+                                },
+                              ),
                           ),
+                        ),
+                      ),
                           Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: MediaQuery.of(context).size.width * 0.1,
@@ -253,7 +282,8 @@ class _HomeState extends State<AjouterEnseignant> {
                               onTap: () async {
                                 if (fkey.currentState!.validate()) {
                                   fkey.currentState!.save();
-                                  try {
+                                  if(password==valide){
+                                    try {
                                     var request = http.MultipartRequest(
                                       'POST',
                                       Uri.parse("https://firas.alwaysdata.net/api/addEnseignant"),
@@ -289,6 +319,7 @@ class _HomeState extends State<AjouterEnseignant> {
                                     setState(() {
                                       errorMessage = 'Échec d\'ajout du parent';
                                     });
+                                  }
                                   }
                                 }
                               },
