@@ -302,68 +302,105 @@ Container(
   ),
 ),
 
-                          Center(
-                            child: GestureDetector(
-                              onTap: () async {
-                                if (fkey.currentState!.validate()) {
-                                  fkey.currentState!.save();
-                                  if(password==valide){
-                                    try {
-                                    var request = http.MultipartRequest(
-                                      'POST',
-                                      Uri.parse("https://firas.alwaysdata.net/api/addEnseignant"),
-                                    );
+                        Center(
+  child: GestureDetector(
+    onTap: () async {
+      if (fkey.currentState!.validate()) {
+        fkey.currentState!.save();
+        if (password != valide) {
+          showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Error"),
+                                                    content: Text("'Les mots de passe ne sont pas les mêmes'"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(false);
+                                                        },
+                                                        child: Text("OK"),
+                                                      ),
+                                                      
+                                                    ],
+                                                  );
+                                                },
+                                              );
+        } else {
+          try {
+            var request = http.MultipartRequest(
+              'POST',
+              Uri.parse("https://firas.alwaysdata.net/api/addEnseignant"),
+            );
 
-                                    request.fields['name'] = nom;
-                                    request.fields['email'] = email;
-                                    request.fields['password'] = password;
-                                    request.fields['address'] = address;
-                                    request.fields['phone'] = phone;
-                                    request.fields['list'] = selectedClasses.join(',');
-                                    request.fields['token'] = deviceToken!;
-                                    if (path != null && path!.isNotEmpty) {
-                                      var file = await MultipartFile.fromPath('file', path!);
-                                      request.files.add(file);
-                                    }
-                                    var response = await request.send();
-                                    print(request.fields);
-                                    if (response.statusCode == 200) {
-                                      print(request.fields);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => GererEmploi(widget.email)),
-                                      );
-                                    } else {
-                                      setState(() {
-                                        errorMessage = 'Échec d\'ajout du parent';
-                                      });
-                                    }
-                                  } catch (e) {
-                                    print('Error: $e');
-                                    setState(() {
-                                      errorMessage = 'Échec d\'ajout du parent';
-                                    });
-                                  }
-                                  }
-                                }
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(20),
-                                margin: const EdgeInsets.symmetric(horizontal: 20),
-                                decoration: BoxDecoration(
-                                  color: Colors.lightBlueAccent,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: const Text("Ajouter "),
-                              ),
-                            ),
-                          ),
+            request.fields['name'] = nom;
+            request.fields['email'] = email;
+            request.fields['password'] = password;
+            request.fields['address'] = address;
+            request.fields['phone'] = phone;
+            request.fields['list'] = selectedClasses.join(',');
+            request.fields['token'] = deviceToken!;
+            if (path != null && path!.isNotEmpty) {
+              var file = await MultipartFile.fromPath('file', path!);
+              request.files.add(file);
+            }
+            var response = await request.send();
+            print(request.fields);
+            if (response.statusCode == 200) {
+              print(request.fields);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => GererEmploi(widget.email)),
+              );
+            } else {
+              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Error"),
+                                                    content: Text("Échec d'envoyer email"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(false);
+                                                        },
+                                                        child: Text("OK"),
+                                                      ),
+                                                      
+                                                    ],
+                                                  );
+                                                },
+                                              );
+             
+            }
+          } catch (e) {
+            print('Error: $e');
+           
+          }
+        }
+      }
+    },
+    child: Container(
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.lightBlueAccent,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: const Text("Ajouter "),
+    ),
+  ),
+),
+
+
                           Padding(padding: EdgeInsets.all(5)),
-                          Text(
+                          /*Text(
                             errorMessage,
                             style: TextStyle(color: Colors.red),
-                          ),
+                            
+
+                          ),*/
                         ],
                       ))),
               ],
@@ -389,4 +426,7 @@ Container(
       throw Exception('Failed to load classes');
     }
   }
+ 
 }
+
+
