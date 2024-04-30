@@ -339,10 +339,24 @@ Container(
                                               builder: (context) =>
                                                   GererEleves(widget.email)));
                                     } else {
-                                      setState(() {
-                                        errorMessage =
-                                            "Error: ${response.statusCode}";
-                                      });
+                                      showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Error"),
+                                                    content: Text("Échec d'ajout eleve"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(true);
+                                                        },
+                                                        child: Text("OK"),
+                                                      ),
+                                                      
+                                                    ],
+                                                  );
+                                                },
+                                              );
                                     }
                                   }
                                 },

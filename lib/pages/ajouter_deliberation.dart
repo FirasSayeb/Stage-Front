@@ -68,9 +68,24 @@ class _AjouterDelState extends State<AjouterDel> {
       );
     } else {
      
-      setState(() {
-        errorMessage = "Error: ${response.statusCode}";
-      });
+      showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Error"),
+                                                    content: Text("Échec d\'ajout Notes"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(false);
+                                                        },
+                                                        child: Text("OK"),
+                                                      ),
+                                                      
+                                                    ],
+                                                  );
+                                                },
+                                              );
     }
   } catch (e) {
     // Handle error
@@ -105,8 +120,8 @@ class _AjouterDelState extends State<AjouterDel> {
                 ),
                 icon: Icon(Icons.insert_drive_file_sharp),
                 label: Text(
-                  'Pick Excel File',
-                  style: TextStyle(fontSize: 25),
+                  'Choisir un fichier Excel',
+                  style: TextStyle(fontSize: 20),
                 ),
               ),
               Center(

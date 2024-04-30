@@ -231,7 +231,26 @@ String? validateEmail(String? value) {
                             onTap: () async {
                               if (fkey.currentState!.validate() ) {
                                 fkey.currentState!.save();
-                                if( password==valide){
+                                if (password != valide) {
+          showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Error"),
+                                                    content: Text("'Les mots de passe ne sont pas les mêmes'"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(false);
+                                                        },
+                                                        child: Text("OK"),
+                                                      ),
+                                                      
+                                                    ],
+                                                  );
+                                                },
+                                              );
+        } else {
  try {
                                   var file = await MultipartFile.fromPath('file', path!);
                                   final request = http.MultipartRequest(
@@ -256,14 +275,29 @@ String? validateEmail(String? value) {
                                       MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)),
                                     );
                                   } else {
-                                    setState(() {
-                                      errorMessage = 'Échec d\'ajout du parent';
-                                    });
+                                   showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Error"),
+                                                    content: Text("Échec d'ajout du parent"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(true);
+                                                        },
+                                                        child: Text("OK"),
+                                                      ),
+                                                      
+                                                    ],
+                                                  );
+                                                },
+                                              );
                                   }
                                 } catch (e) {
                                   print('Error: $e');
                                   setState(() {
-                                    errorMessage = 'Échec d\'ajout du parent';
+                                    errorMessage = '';
                                   });
                                 }
                                 }
@@ -281,10 +315,7 @@ String? validateEmail(String? value) {
                             ),
                           ),
                         ),
-                        Text(
-                          errorMessage,
-                          style: TextStyle(color: Colors.red),
-                        ),
+                       
                       ],
                     ),
                   ),

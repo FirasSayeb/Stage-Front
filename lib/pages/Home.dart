@@ -180,9 +180,25 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
                                     );
                                   }
                                 } else {
-                                  setState(() {
-                                    errorMessage = "Authentification échouée: ${response.body}";
-                                  });
+                                  showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Error"),
+                                                    content: Text("Authentification échouée: ${response.body}"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(false);
+                                                        },
+                                                        child: Text("OK"),
+                                                      ),
+                                                      
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                 
                                 }
                               }
                             },

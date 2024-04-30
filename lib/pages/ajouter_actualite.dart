@@ -131,9 +131,25 @@ class _HomeState extends State<AjouterActualite> {
                                 if (response.statusCode == 200) {  
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email))).then((_) => setState(() {}));
                                 } else {
-                                  setState(() {
-                                    errorMessage = "Error: ${response.statusCode}";
-                                  });
+                                  showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Error"),
+                                                    content: Text("Échec d\'ajout actualite"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(false);
+                                                        },
+                                                        child: Text("OK"),
+                                                      ),
+                                                      
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                 
                                 }  
                               }
                             },
@@ -149,10 +165,7 @@ class _HomeState extends State<AjouterActualite> {
                           ), 
                         ),
                        
-                        Text(
-                          errorMessage,
-                          style: TextStyle(color: Colors.red),
-                        ),
+                        
                       ],
                     ),
                   ),
