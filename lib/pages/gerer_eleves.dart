@@ -258,14 +258,23 @@ class _GererClassesState extends State<GererEleves> {
                                                 "LastName: ${snapshot.data![index]['lastname']}",
                                               ),
                                               Text(
-                                                "ClassName: ${snapshot.data![index]['class_name']}",
+                                                "ClassName: ${snapshot.data![index]['class']['name']}",
                                               ),
                                               Text(
                                                 "Date of birth: ${snapshot.data![index]['date_of_birth']}",
                                               ),
                                               Text(
-                                                "Tuteurs : ${snapshot.data![index] != null && snapshot.data![index].isNotEmpty ? snapshot.data![index]['parent_names'] ?? '' : ''} ",
-                                              ),
+  "Tuteurs: ${
+    snapshot.data![index] != null && 
+    snapshot.data![index]['parents'] != null && 
+    snapshot.data![index]['parents'].isNotEmpty 
+      ? snapshot.data![index]['parents']
+          .map((parent) => parent['name'])
+          .join(', ') 
+      : ''
+  }",
+),
+
                                             ],
                                           ),
                                           subtitle: Column(
