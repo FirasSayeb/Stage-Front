@@ -22,7 +22,7 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
   List<String> options = ['matiere 1', 'matiere 2', 'matiere 3'];
   late List<String> tokens = [];
 
-  final _formKey = GlobalKey<FormState>(); // Key for the form
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -157,6 +157,7 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
                             _formKey.currentState!.save();
 
                             Map<String, dynamic> userData = {
+                              'class':widget.name,
                               'email': widget.email,
                               'selectedDateTime': selectedDateTime.toString(),
                               'selectedOption': selectedOption,
