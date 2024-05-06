@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:app/pages/Admin.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -122,15 +123,18 @@ class _ModierActualiteState extends State<ModierActualite> {
                                   request.fields['email'] = widget.email;
 
                                   // Add file if it exists and contains bytes
-                                  if (file != null &&
-                                      file!.path!.isNotEmpty &&
-                                      path != null) {
-                                    print(path);
-                                    var file =
-                                        await MultipartFile.fromPath(
-                                            'file', path!);
-                                    request.files.add(file);
+                                 if (path != null && path!.isNotEmpty) {
+                                  if (kIsWeb) {
+                                    request.files.add(http.MultipartFile.fromBytes(
+                                      'file',
+                                      file!.bytes!,
+                                      filename: file!.name,
+                                    ));
+                                  } else {
+                                    request.files.add(await MultipartFile
+                                        .fromPath('file', path!));
                                   }
+                                }
                                   var response = await request.send();
                                   var response2 =
                                       await http.Response.fromStream(response);
@@ -204,22 +208,24 @@ class _ModierActualiteState extends State<ModierActualite> {
       );
     }
   }
-
-  Future<void> pickSingleFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      setState(() {
-        file = result.files.single;
-        selectedname = file!.name;
-        selectedpath = file!.path;
-        path = selectedpath; 
-        print("$name  name from function");
-        print("$path path from function");
-        print(file);
-      });
-    } else {
-      
-    }
+Future<void> pickSingleFile() async {
+  FilePickerResult? result = await FilePicker.platform.pickFiles();
+  if (result != null) {
+    setState(() {
+      file = result.files.single;
+      selectedname = file!.name;
+      if (kIsWeb) {
+        path = base64Encode(file!.bytes!); 
+      } else {
+        path = file!.path;
+      }
+      name = selectedname;
+      print("$name  name from function");
+      print("$path path from function");
+      print(file);
+    });
   }
+}
+
 }
   

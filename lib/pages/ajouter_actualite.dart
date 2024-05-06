@@ -1,8 +1,11 @@
+import 'dart:convert'; 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
-import 'package:app/pages/Admin.dart';
 import 'package:flutter/material.dart';
+import 'package:app/pages/Admin.dart';
 
 class AjouterActualite extends StatefulWidget {
   final String email;
@@ -10,25 +13,30 @@ class AjouterActualite extends StatefulWidget {
   AjouterActualite(this.email);
 
   @override
-  State<AjouterActualite> createState() => _HomeState(); 
+  State<AjouterActualite> createState() => _HomeState();
 }
 
-class _HomeState extends State<AjouterActualite> { 
+class _HomeState extends State<AjouterActualite> {
   PlatformFile? file;
-  String? path;
+  dynamic path;
   Future<void> picksinglefile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
       file = result.files.first;
-      path = file!.path;
+      if (kIsWeb) {
+        path = base64Encode(file!.bytes!); 
+      } else {
+        path = file!.path;
+      }
       print(file!.bytes);
       print(file!.extension);
       print(file!.name);
-      print(file!.path);
+      print(path);
     }
   }
+
   late String body;
-  final fkey = GlobalKey<FormState>(); 
+  final fkey = GlobalKey<FormState>();
   String errorMessage = '';
 
   @override
@@ -39,14 +47,14 @@ class _HomeState extends State<AjouterActualite> {
   }
 
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
-          title: Text('Ajouter Actualite') ,
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: const Color.fromARGB(160, 0, 54, 99),
-        ),
+      appBar: AppBar(
+        title: Text('Ajouter Actualite'),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: const Color.fromARGB(160, 0, 54, 99),
+      ),
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -55,7 +63,7 @@ class _HomeState extends State<AjouterActualite> {
                 const Padding(padding: EdgeInsets.all(10)),
                 Container(
                   alignment: FractionalOffset.center,
-                  height: MediaQuery.of(context).size.height*0.4,
+                  height: MediaQuery.of(context).size.height * 0.4,
                   child: Lottie.asset("assets/add.json"),
                 ),
                 const Padding(padding: EdgeInsets.all(5)),
@@ -68,12 +76,16 @@ class _HomeState extends State<AjouterActualite> {
                 ),
                 const Padding(padding: EdgeInsets.all(5)),
                 Center(
-                  child: Form( 
+                  child: Form(
                     key: fkey,
                     child: Column(
                       children: [
                         Container(
-                           padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  MediaQuery.of(context).size.width * 0.1,
+                              vertical:
+                                  MediaQuery.of(context).size.height * 0.02),
                           child: TextFormField(
                             validator: (value) {
                               if (value!.isEmpty || value.length == 0) {
@@ -88,24 +100,21 @@ class _HomeState extends State<AjouterActualite> {
                             },
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                            labelText: 'Body',
-                            border: OutlineInputBorder(),
-                          ), 
+                              labelText: 'Body',
+                              border: OutlineInputBorder(),
+                            ),
                           ),
                         ),
                         ElevatedButton.icon(
-                          onPressed: picksinglefile,
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              Color.fromARGB(255, 61, 186, 228)
-                            )
-                          ),
-                          icon: Icon(Icons.insert_drive_file_sharp),
-                          label: Text(
-                            'Choisir une image',
-                            style: TextStyle(fontSize: 25),
-                          )
-                        ),
+                            onPressed: picksinglefile,
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    Color.fromARGB(255, 61, 186, 228))),
+                            icon: Icon(Icons.insert_drive_file_sharp),
+                            label: Text(
+                              'Choisir une image',
+                              style: TextStyle(fontSize: 25),
+                            )),
                         const Padding(padding: EdgeInsets.all(10)),
                         Center(
                           child: GestureDetector(
@@ -114,58 +123,70 @@ class _HomeState extends State<AjouterActualite> {
                                 fkey.currentState!.save();
                                 print(body);
 
-                                 var request = MultipartRequest(
-        'POST',
-        Uri.parse("https://firas.alwaysdata.net/api/addActualite"),
-      );
+                                var request = http.MultipartRequest(
+                                  'POST',
+                                  Uri.parse(
+                                      "https://firas.alwaysdata.net/api/addActualite"),
+                                );
 
-      request.fields['body'] = body;
-      request.fields['email'] = widget.email;
-      
-      if (path != null && path!.isNotEmpty) {
-        var file = await MultipartFile.fromPath('file', path!);
-        request.files.add(file);
-      }
-             var response = await request.send();                  
+                                request.fields['body'] = body;
+                                request.fields['email'] = widget.email;
 
-                                if (response.statusCode == 200) {  
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email))).then((_) => setState(() {}));
+                                if (path != null && path!.isNotEmpty) {
+                                  if (kIsWeb) {
+                                    request.files.add(http.MultipartFile.fromBytes(
+                                      'file',
+                                      file!.bytes!,
+                                      filename: file!.name,
+                                    ));
+                                  } else {
+                                    request.files.add(await MultipartFile
+                                        .fromPath('file', path!));
+                                  }
+                                }
+                                var response = await request.send();
+
+                                if (response.statusCode == 200) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Admin(widget.email))).then((_) =>
+                                      setState(() {}));
                                 } else {
                                   showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text("Error"),
-                                                    content: Text("Échec d\'ajout actualite"),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context).pop(false);
-                                                        },
-                                                        child: Text("OK"),
-                                                      ),
-                                                      
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                 
-                                }  
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text("Error"),
+                                        content:
+                                            Text("Échec d\'ajout actualite"),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false);
+                                            },
+                                            child: Text("OK"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
                               }
                             },
                             child: Container(
                               padding: const EdgeInsets.all(20),
-                              margin: const EdgeInsets.symmetric(horizontal: 20),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               decoration: BoxDecoration(
                                 color: Colors.lightBlueAccent,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: const Text("Ajouter "),
                             ),
-                          ), 
+                          ),
                         ),
-                       
-                        
                       ],
                     ),
                   ),
