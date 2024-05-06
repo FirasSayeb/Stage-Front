@@ -298,7 +298,7 @@ Container(
                           request.fields['date'] = select ?? date ?? '';
                           request.fields['class'] = classe!;
                           request.fields['list'] = selectedParents.join(',');
-                          if (path != null && path!.isNotEmpty) {
+                          if (file!=null) {
                                   if (kIsWeb) {
                                     request.files.add(http.MultipartFile.fromBytes(
                                       'file',

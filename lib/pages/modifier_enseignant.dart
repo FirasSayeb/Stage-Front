@@ -266,7 +266,7 @@ Container(
                                   request.fields['address'] = address!;
                                   request.fields['phone'] = phone!;
                                   request.fields['list'] = selectedClasses.join(',');
-                                 if (path != null && path!.isNotEmpty) {
+                                 if (file!=null) {
                                   if (kIsWeb) {
                                     request.files.add(http.MultipartFile.fromBytes(
                                       'file',

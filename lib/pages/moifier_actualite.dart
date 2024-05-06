@@ -123,7 +123,7 @@ class _ModierActualiteState extends State<ModierActualite> {
                                   request.fields['email'] = widget.email;
 
                                   // Add file if it exists and contains bytes
-                                 if (path != null && path!.isNotEmpty) {
+                                 if (file!=null) {
                                   if (kIsWeb) {
                                     request.files.add(http.MultipartFile.fromBytes(
                                       'file',

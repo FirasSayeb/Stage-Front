@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/pages/Admin.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
@@ -21,13 +22,21 @@ class _AjouterDelState extends State<AjouterDel> {
   PlatformFile? file;
   late Response response2;
   String errorMessage = '';
+  late String path;
 
-  Future<void> pickSingleFile() async {
+  Future<void> picksinglefile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
-      setState(() {
-        file = result.files.first;
-      });
+      file = result.files.first;
+      if (kIsWeb) {
+        path = base64Encode(file!.bytes!); 
+      } else {
+        path = file!.path!;
+      }
+      print(file!.bytes);
+      print(file!.extension);
+      print(file!.name);
+      print(path);
     }
   }
 
@@ -50,16 +59,24 @@ class _AjouterDelState extends State<AjouterDel> {
       Uri.parse("https://firas.alwaysdata.net/api/addNote"),
     ); 
     request.fields['email'] = widget.email;
-    request.files.add(http.MultipartFile.fromBytes( 
-      'file',    
-      fileBytes,
-      filename: file!.name,              
-    ));
+    if (path != null && path!.isNotEmpty) {
+                                  if (kIsWeb) {
+                                    request.files.add(http.MultipartFile.fromBytes(
+                                      'file',
+                                      file!.bytes!,
+                                      filename: file!.name,
+                                    ));
+                                  } else {
+                                    request.files.add(await MultipartFile
+                                        .fromPath('file', path!));
+                                  }
+                                }
       
      
     var response = await request.send();
-    print(fileBytes);
-    print(file!.name);
+    //print(fileBytes);
+   // print(file!.name);
+   print(widget.email);
     if (response.statusCode == 200) {
       
       Navigator.push(
@@ -114,7 +131,7 @@ class _AjouterDelState extends State<AjouterDel> {
                   width: MediaQuery.of(context).size.width),
               Padding(padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.02)),
               ElevatedButton.icon(
-                onPressed: pickSingleFile,
+                onPressed: picksinglefile,
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 61, 186, 228)),
                 ),
