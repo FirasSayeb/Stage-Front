@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -34,8 +35,13 @@ Future<void> pickSingleFile() async {
   if (result != null) {
     setState(() {
       file = result.files.first;
+      if (kIsWeb) {
+        path = base64Encode(file!.bytes!); 
+      } else {
+        path = file!.path;
+      }
       name = file!.name;
-      path = file!.path;
+     
       print("$name  name from function");
       print("$path path from function");
     });
@@ -193,12 +199,20 @@ Future<void> pickSingleFile() async {
                                   
                                     ..fields['email'] = widget.email
                                     ..fields['password'] = password
-                                    ..fields['address'] = address!
-                                    ..fields['phone'] = phone!;
-                            if (file != null && file!.path!.isNotEmpty) {
-                                var fil = await MultipartFile.fromPath('file', file!.path!);
-                                request.files.add(fil);
-                              }
+                                    ..fields['address'] = address ?? ''
+                                    ..fields['phone'] = phone ?? '' ;
+                           if (path != null && path!.isNotEmpty) {
+                                  if (kIsWeb) {
+                                    request.files.add(http.MultipartFile.fromBytes(
+                                      'file',
+                                      file!.bytes!,
+                                      filename: file!.name,
+                                    ));
+                                  } else {
+                                    request.files.add(await MultipartFile
+                                        .fromPath('file', path!));
+                                  }
+                                }
                                   final streamedResponse = await request.send();
                                   final response = await http.Response.fromStream(streamedResponse);
                              

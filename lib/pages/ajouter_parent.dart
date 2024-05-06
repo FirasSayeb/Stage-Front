@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:app/pages/gerer_utilisateurs.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -31,10 +34,16 @@ class _HomeState extends State<AjouterParent> {
   Future<void> picksinglefile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
-      setState(() {
-        file = result.files.first;
+      file = result.files.first;
+      if (kIsWeb) {
+        path = base64Encode(file!.bytes!); 
+      } else {
         path = file!.path;
-      });
+      }
+      print(file!.bytes);
+      print(file!.extension);
+      print(file!.name);
+      print(path);
     }
   }
 
@@ -252,7 +261,7 @@ String? validateEmail(String? value) {
                                               );
         } else {
  try {
-                                  var file = await MultipartFile.fromPath('file', path!);
+                                 
                                   final request = http.MultipartRequest(
                                     'POST',
                                     Uri.parse('https://firas.alwaysdata.net/api/addParent'),
@@ -262,10 +271,21 @@ String? validateEmail(String? value) {
                                     ..fields['password'] = password
                                     ..fields['address'] = address
                                     ..fields['phone'] = phone
-                                    ..fields['token'] = deviceToken!;
-                                    
+                                    ..fields['token'] = deviceToken ?? '';
+                                     if (path != null && path!.isNotEmpty) {
+                                  if (kIsWeb) {
+                                    request.files.add(http.MultipartFile.fromBytes(
+                                      'file',
+                                      file!.bytes!,
+                                      filename: file!.name,
+                                    ));
+                                  } else {
+                                    request.files.add(await MultipartFile
+                                        .fromPath('file', path!));
+                                  }
+                                }
                                          
-    request.files.add(file);
+   
                                   final streamedResponse = await request.send();
                                   final response = await http.Response.fromStream(streamedResponse);
 

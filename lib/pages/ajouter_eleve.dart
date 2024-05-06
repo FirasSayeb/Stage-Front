@@ -1,7 +1,9 @@
 import 'package:app/pages/gerer_eleves.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:http/http.dart'as http;
 import 'dart:convert';
 
 class AjouterEleve extends StatefulWidget {
@@ -44,11 +46,15 @@ class _AjouterEleveState extends State<AjouterEleve> {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
       file = result.files.first;
-      path = file!.path;
+      if (kIsWeb) {
+        path = base64Encode(file!.bytes!); 
+      } else {
+        path = file!.path;
+      }
       print(file!.bytes);
       print(file!.extension);
       print(file!.name);
-      print(file!.path);
+      print(path);
     }
   }
 
@@ -322,12 +328,18 @@ Container(
                                     request.fields['list'] =
                                         selectedParents.join(',');
 
-                                    // Add file (if available)
                                     if (path != null && path!.isNotEmpty) {
-                                      var file = await MultipartFile.fromPath(
-                                          'file', path!);
-                                      request.files.add(file);
-                                    }
+                                  if (kIsWeb) {
+                                    request.files.add(http.MultipartFile.fromBytes(
+                                      'file',
+                                      file!.bytes!,
+                                      filename: file!.name,
+                                    ));
+                                  } else {
+                                    request.files.add(await MultipartFile
+                                        .fromPath('file', path!));
+                                  }
+                                }
 
                                     // Send request
                                     var response =

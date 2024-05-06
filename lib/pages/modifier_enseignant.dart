@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -30,21 +31,28 @@ class _ModEnsignantState extends State<ModEnsignant> {
     super.initState();
 
     _getUserFuture = getUser(widget.email);
-    _classesFuture = getClasses(); // Fetch classes here
+    _classesFuture = getClasses(); 
   }
 
-  Future<void> pickSingleFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      setState(() {
-        file = result.files.first;
-        name = file!.name;
+ Future<void> picksinglefile() async {
+  FilePickerResult? result = await FilePicker.platform.pickFiles();
+  if (result != null) {
+    setState(() {
+      file = result.files.first;
+      name = file!.name;
+      if (kIsWeb) {
+        path = base64Encode(file!.bytes!); // Convert bytes to base64 string
+      } else {
         path = file!.path;
-        print("$name  name from function");
-        print("$path path from function");
-      });
-    }
+      }
+      print(file!.bytes);
+      print(file!.extension);
+      print(file!.name);
+      print(path);
+    });
   }
+}
+
 
   Future<Map<String, dynamic>> getUser(String email) async {
     try {
@@ -98,7 +106,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              pickSingleFile();
+                              picksinglefile();
                             },
                             child: ListTile(
                               title: CircleAvatar(
@@ -247,11 +255,7 @@ Container(
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
-                                  if (file != null) {
-                                    setState(() {
-                                      path = file!.path!;
-                                    });
-                                  }
+                                 
                                   var request = http.MultipartRequest(
                                     'POST',
                                     Uri.parse("https://firas.alwaysdata.net/api/updateEnseignant"),
@@ -262,12 +266,19 @@ Container(
                                   request.fields['address'] = address!;
                                   request.fields['phone'] = phone!;
                                   request.fields['list'] = selectedClasses.join(',');
-                                  if (file != null && file!.path!.isNotEmpty && path!.isNotEmpty) {
-                                    print(path);
-                                    var file = await MultipartFile.fromPath('file', path!);
-                                    request.files.add(file);
+                                 if (path != null && path!.isNotEmpty) {
+                                  if (kIsWeb) {
+                                    request.files.add(http.MultipartFile.fromBytes(
+                                      'file',
+                                      file!.bytes!,
+                                      filename: file!.name,
+                                    ));
+                                  } else {
+                                    request.files.add(await MultipartFile
+                                        .fromPath('file', path!));
                                   }
-                                  print(file);
+                                }
+                                 
                                   var response = await request.send();
 
                                   print(request.fields);

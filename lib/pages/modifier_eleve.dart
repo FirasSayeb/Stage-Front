@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:app/pages/gerer_eleves.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -16,14 +17,19 @@ class ModifierEleve extends StatefulWidget {
 }
 
 class _ModifierEleveState extends State<ModifierEleve> {
-  Future<void> pickSingleFile() async {
+ Future<void> picksinglefile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
-      setState(() {
-        file = result.files.first;
-        //name = file!.name;
+      file = result.files.first;
+      if (kIsWeb) {
+        path = base64Encode(file!.bytes!); 
+      } else {
         path = file!.path;
-      });
+      }
+      print(file!.bytes);
+      print(file!.extension);
+      print(file!.name);
+      print(path);
     }
   }
 
@@ -95,7 +101,7 @@ late Future<List<Map<String, dynamic>>> _classes;
                   children: [
                     GestureDetector(
                       onTap: () {
-                        pickSingleFile();
+                        picksinglefile();
                       },
                       child: ListTile(
                         title: CircleAvatar( 
@@ -292,11 +298,18 @@ Container(
                           request.fields['date'] = select ?? date ?? '';
                           request.fields['class'] = classe!;
                           request.fields['list'] = selectedParents.join(',');
-                          if (file != null && file!.path!.isNotEmpty) {
-                            print(path);
-                            var file = await MultipartFile.fromPath('file', path!);
-                            request.files.add(file);
-                          }
+                          if (path != null && path!.isNotEmpty) {
+                                  if (kIsWeb) {
+                                    request.files.add(http.MultipartFile.fromBytes(
+                                      'file',
+                                      file!.bytes!,
+                                      filename: file!.name,
+                                    ));
+                                  } else {
+                                    request.files.add(await MultipartFile
+                                        .fromPath('file', path!));
+                                  }
+                                }
                           var response = await request.send();        
                           if (response.statusCode == 200) {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));

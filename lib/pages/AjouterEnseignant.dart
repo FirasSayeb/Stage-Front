@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:app/pages/gerer_emploi.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -44,15 +45,19 @@ class _HomeState extends State<AjouterEnseignant> {
     _classesFuture = getClasses();
   }
 
-  Future<void> picksinglefile() async {
+ Future<void> picksinglefile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
       file = result.files.first;
-      path = file!.path;
+      if (kIsWeb) {
+        path = base64Encode(file!.bytes!); 
+      } else {
+        path = file!.path;
+      }
       print(file!.bytes);
       print(file!.extension);
       print(file!.name);
-      print(file!.path);
+      print(path);
     }
   }
 
@@ -339,11 +344,19 @@ Container(
             request.fields['address'] = address;
             request.fields['phone'] = phone;
             request.fields['list'] = selectedClasses.join(',');
-            request.fields['token'] = deviceToken!;
+            request.fields['token'] = deviceToken ?? '';
             if (path != null && path!.isNotEmpty) {
-              var file = await MultipartFile.fromPath('file', path!);
-              request.files.add(file);
-            }
+                                  if (kIsWeb) {
+                                    request.files.add(http.MultipartFile.fromBytes(
+                                      'file',
+                                      file!.bytes!,
+                                      filename: file!.name,
+                                    ));
+                                  } else {
+                                    request.files.add(await MultipartFile
+                                        .fromPath('file', path!));
+                                  }
+                                }
             var response = await request.send();
             print(request.fields);
             if (response.statusCode == 200) {
