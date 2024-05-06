@@ -155,7 +155,9 @@ class _ProfilState extends State<Profil> {
                         validator: (value) {
                           if(value == null || value.isEmpty){
                             return "champs obligatoire";
-                          }
+                          } else if (value.length < 8 || value.length > 8) {
+                                  return "verifier votre champs";
+                                }
                           return null;
                         },
                         onSaved: (newValue) {

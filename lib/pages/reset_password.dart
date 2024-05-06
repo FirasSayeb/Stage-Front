@@ -137,7 +137,46 @@ class _ForgotPasswordState extends State<ResetPassword> {
                           if (fkey.currentState!.validate()) {
                             fkey.currentState!.save();
                             print(widget.email+user.password+valide);
-                               if(code ==widget.value && user.password==valide){
+                             if (user.password != valide) {
+          showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Error"),
+                                                    content: Text("'Les mots de passe ne sont pas les mêmes'"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(false);
+                                                        },
+                                                        child: Text("OK"),
+                                                      ),
+                                                      
+                                                    ],
+                                                  );
+                                                },
+                                              );
+        } else  if(code !=widget.value) {
+           showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Error"),
+                                                    content: Text("Verifier Code"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(false);
+                                                        },
+                                                        child: Text("OK"),
+                                                      ),
+                                                      
+                                                    ],
+                                                  );
+                                                },
+                                              );
+        }
+                               else{
                                  Map<String, String> userData = {
                                   'email':widget.email,
                               'password': user.password,
@@ -161,20 +200,11 @@ class _ForgotPasswordState extends State<ResetPassword> {
                                     "Error: ${response.statusCode}, ${response.body}";
                               });
                             } 
-                               }
-                               else if(code!=widget.value) {
-                                setState(() {
-                                errorMessage =
-                                    "Error: Verifier Code "; 
-                              });}else if(user.password!=valide){
-                                  setState(() {
-                                errorMessage =
-                                    "Error: Password et verifier password sont differents ";
-                              });
-                              }
+                               
+                              
                                }
                            
-                          
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.all(20),
@@ -187,10 +217,7 @@ class _ForgotPasswordState extends State<ResetPassword> {
                         ),
                       ), 
                       
-                      Text(
-                        errorMessage,
-                        style: TextStyle(color: Colors.red),
-                      ),
+                     
                     ],
                   ),
                 ),
