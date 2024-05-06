@@ -40,29 +40,56 @@ class _AjouterDelState extends State<AjouterDel> {
     }
   }
 
-  Future<void> uploadFile() async {
-  if (file == null) {
-    // No file selected
-    return;
-  }
+  
+  
 
-  try {
-    // Convert PlatformFile to File
-    File fileFromPicker = File(file!.path!);
 
-    // Read the bytes of the file
-    List<int> fileBytes = await fileFromPicker.readAsBytes();
-
-   
-    var request = http.MultipartRequest(
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Ajouter Notes'),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: const Color.fromARGB(160, 0, 54, 99),
+      ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: fkey,
+          child: Column(
+            children: [
+              Lottie.asset('assets/file.json',
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  width: MediaQuery.of(context).size.width),
+              Padding(padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.02)),
+              ElevatedButton.icon(
+                onPressed: picksinglefile,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 61, 186, 228)),
+                ),
+                icon: Icon(Icons.insert_drive_file_sharp),
+                label: Text(
+                  'Choisir un fichier Excel',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Center(
+                child: FutureBuilder(
+                  future: getParents(),
+                  builder:(context, snapshot) {
+                    return GestureDetector(
+                    onTap: () async {
+                      if (fkey.currentState!.validate()) {
+                        fkey.currentState!.save();
+                        var request = http.MultipartRequest(
       'POST',
       Uri.parse("https://firas.alwaysdata.net/api/addNote"),
     ); 
     request.fields['email'] = widget.email;
-    if (path != null && path!.isNotEmpty) {
+    if (file!=null) {
                                   if (kIsWeb) {
                                     request.files.add(http.MultipartFile.fromBytes(
-                                      'file',
+                                      'file', 
                                       file!.bytes!,
                                       filename: file!.name,
                                     ));
@@ -103,53 +130,7 @@ class _AjouterDelState extends State<AjouterDel> {
                                                   );
                                                 },
                                               );
-    }
-  } catch (e) {
-    // Handle error
-    setState(() {
-      errorMessage = "Error: $e"; 
-    });
-  }
-}
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Ajouter Notes'),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: const Color.fromARGB(160, 0, 54, 99),
-      ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: fkey,
-          child: Column(
-            children: [
-              Lottie.asset('assets/file.json',
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  width: MediaQuery.of(context).size.width),
-              Padding(padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.02)),
-              ElevatedButton.icon(
-                onPressed: picksinglefile,
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 61, 186, 228)),
-                ),
-                icon: Icon(Icons.insert_drive_file_sharp),
-                label: Text(
-                  'Choisir un fichier Excel',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-              Center(
-                child: FutureBuilder(
-                  future: getParents(),
-                  builder:(context, snapshot) {
-                    return GestureDetector(
-                    onTap: () async {
-                      if (fkey.currentState!.validate()) {
-                        fkey.currentState!.save();
-                        await uploadFile(); 
+    } 
                         for(int i=0;i<snapshot.data!.length;i++){
                             response2 = await post(
                   Uri.parse('https://fcm.googleapis.com/fcm/send'),
