@@ -18,10 +18,10 @@ class _ProfilState extends State<Profil> {
   bool hide = true; 
   String errorMessage = '';
   late String password;
-  late String? phone;
-  late String? address;
+  late String phone;
+  late String address;
   late Future<Map<String, dynamic>> _getUserFuture; 
-   PlatformFile? file;
+  PlatformFile? file;
   String? name;
   String? path;
   @override
@@ -30,23 +30,22 @@ class _ProfilState extends State<Profil> {
     _getUserFuture = getUser(widget.email); 
   }
 
-Future<void> pickSingleFile() async {
-  FilePickerResult? result = await FilePicker.platform.pickFiles();
-  if (result != null) {
-    setState(() {
-      file = result.files.first;
-      if (kIsWeb) {
-        path = base64Encode(file!.bytes!); 
-      } else {
-        path = file!.path;
-      }
-      name = file!.name;
-     
-      print("$name  name from function");
-      print("$path path from function");
-    });
+  Future<void> pickSingleFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      setState(() {
+        file = result.files.first;
+        if (kIsWeb) {
+          path = base64Encode(file!.bytes!); 
+        } else {
+          path = file!.path;
+        }
+        name = file!.name;
+        print("$name  name from function");
+        print("$path path from function");
+      });
+    }
   }
-}
 
   Future<Map<String, dynamic>> getUser(String email) async {
     try {
@@ -83,52 +82,53 @@ Future<void> pickSingleFile() async {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}')); 
             } else {
-                String? filePath = snapshot.data!['avatar'];
-                          String fileName = filePath != null ? filePath.split('/').last : '';
-              path= file==null ? snapshot.data!['avatar'] : path;
+              String? filePath = snapshot.data!['avatar'];
+              String fileName = filePath != null ? filePath.split('/').last : '';
+              path = file == null ? snapshot.data!['avatar'] : path;
+              phone = snapshot.data!['phone'] ?? '';
+              address = snapshot.data!['address'] ?? '';
               return Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  GestureDetector(
-  onTap: () {
-    pickSingleFile(); 
-  }, 
-  child: ListTile( 
-    title: CircleAvatar( 
-    backgroundImage: NetworkImage(
-      "https://firas.alwaysdata.net/storage/$fileName",
-    ),
-    radius: 30,
-  ),
-  ),
-),
-
+                    GestureDetector(
+                      onTap: () {
+                        pickSingleFile(); 
+                      }, 
+                      child: ListTile( 
+                        title: CircleAvatar( 
+                          backgroundImage: NetworkImage(
+                            "https://firas.alwaysdata.net/storage/$fileName",
+                          ),
+                          radius: 30,
+                        ),
+                      ),
+                    ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1, vertical: MediaQuery.of(context).size.height * 0.02),
                       child: TextFormField(
                         decoration: InputDecoration(
-                         labelText: 'Nom : ',
-                            border: OutlineInputBorder()
+                          labelText: 'Nom : ',
+                          border: OutlineInputBorder()
                         ),
                         initialValue: snapshot.data!['name'],
                         readOnly: true,
                       ),
                     ), 
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1, vertical: MediaQuery.of(context).size.height * 0.02),
                       child: TextFormField(
                         decoration: InputDecoration(
                           labelText: 'Email : ',
-                            border: OutlineInputBorder(),
+                          border: OutlineInputBorder(),
                         ),
                         initialValue: snapshot.data!['email'],
                         readOnly: true,
                       ),
                     ),
                     Container(
-                       padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1, vertical: MediaQuery.of(context).size.height * 0.02),
                       child: TextFormField(
                         onSaved: (newValue) {
                           password = newValue!;
@@ -136,8 +136,8 @@ Future<void> pickSingleFile() async {
                         keyboardType: TextInputType.text,
                         obscureText: hide, 
                         decoration: InputDecoration( 
-                         labelText: 'Modifier mot de passe :',
-  border: OutlineInputBorder(),
+                          labelText: 'Modifier mot de passe :',
+                          border: OutlineInputBorder(),
                           suffixIcon: IconButton(
                             icon: Icon(hide ? Icons.visibility : Icons.visibility_off), 
                             onPressed: () {
@@ -150,37 +150,40 @@ Future<void> pickSingleFile() async {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1, vertical: MediaQuery.of(context).size.height * 0.02),
                       child: TextFormField(
                         validator: (value) {
-                          if( value==null ||value.isEmpty){
+                          if(value == null || value.isEmpty){
                             return "champs obligatoire";
-                          }return null  ;
+                          }
+                          return null;
                         },
                         onSaved: (newValue) {
-                          phone=newValue;
+                          phone = newValue!;
                         },
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
-                         labelText: 'phone :',
-      border: OutlineInputBorder(),
+                          labelText: 'phone :',
+                          border: OutlineInputBorder(),
                         ),
                         initialValue: snapshot.data!['phone'],
                       ),
                     ),
                     Container(
-                       padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
-                      child: TextFormField(validator: (value) {
-                          if( value==null ||value.isEmpty){
+                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1, vertical: MediaQuery.of(context).size.height * 0.02),
+                      child: TextFormField(
+                        validator: (value) {
+                          if(value == null || value.isEmpty){
                             return "champs obligatoire";
-                          }return null  ;
-                        }, onSaved: (newValue) {
-                          address=newValue;
+                          }
+                          return null;
+                        },
+                        onSaved: (newValue) {
+                          address = newValue!;
                         }, 
                         decoration: InputDecoration(
-                         labelText: 'Address :',
-  
-      border: OutlineInputBorder(),
+                          labelText: 'Address :',
+                          border: OutlineInputBorder(),
                         ),
                         initialValue: snapshot.data!['address'],
                       ),
@@ -188,55 +191,52 @@ Future<void> pickSingleFile() async {
                     Padding(padding: EdgeInsets.symmetric(vertical: 10)),
                     Center(
                       child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
-                            
-                                  final request = http.MultipartRequest(
-                                    'POST',
-                                    Uri.parse('https://firas.alwaysdata.net/api/updateUser'),
-                                  )
-                                  
-                                    ..fields['email'] = widget.email
-                                    ..fields['password'] = password
-                                    ..fields['address'] = address ?? ''
-                                    ..fields['phone'] = phone ?? '' ;
-                           if (path != null && path!.isNotEmpty) {
-                                  if (kIsWeb) {
-                                    request.files.add(http.MultipartFile.fromBytes(
-                                      'file',
-                                      file!.bytes!,
-                                      filename: file!.name,
-                                    ));
-                                  } else {
-                                    request.files.add(await MultipartFile
-                                        .fromPath('file', path!));
-                                  }
-                                }
-                                  final streamedResponse = await request.send();
-                                  final response = await http.Response.fromStream(streamedResponse);
-                             
-                            if (response.statusCode == 200) {
-                              print(<String, dynamic>{
-                                'email': widget.email,
-                                'password':password,
-                                'file':path, 
-                                'phone':phone, 
-                                'address':address
-                              },);
-                             Navigator.pop(context);
-                            }
-                            print(response.statusCode);
-                            print(response.body);
-                          }
-                        },
+                       onPressed: () async {
+  if (_formKey.currentState!.validate()) {
+    _formKey.currentState!.save();
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('https://firas.alwaysdata.net/api/updateUser'),
+    );
+    request.fields['email'] = widget.email;
+    request.fields['password'] = password;
+    if (address.isNotEmpty) request.fields['address'] = address;
+    if (phone.isNotEmpty) request.fields['phone'] = phone;
+    if (file != null) {
+      if (kIsWeb) {
+        request.files.add(http.MultipartFile.fromBytes(
+          'file',
+          file!.bytes!,
+          filename: file!.name,
+        ));
+      } else {
+        request.files.add(await MultipartFile.fromPath('file', path!));
+      }
+    }
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    if (response.statusCode == 200) {
+      print(<String, dynamic>{
+        'email': widget.email,
+        'password': password,
+        'file': path,
+        'phone': phone,
+        'address': address
+      });
+      Navigator.pop(context);
+    }
+    print(response.statusCode);
+    print(response.body);
+  }
+},
+
                         child: Text('Valider'),
                       ),
                     ),
-                     Text(
-                          errorMessage,
-                          style: TextStyle(color: Colors.red),
-                        ),
+                    Text(
+                      errorMessage,
+                      style: TextStyle(color: Colors.red),
+                    ),
                   ],
                 ),
               ); 
@@ -246,4 +246,4 @@ Future<void> pickSingleFile() async {
       ),
     );
   }
-}  
+}
