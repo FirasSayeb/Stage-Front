@@ -38,14 +38,14 @@ class _GererEventsState extends State<GererEvents> {
               (responseData as List<dynamic>).map((data) => data as Map<String, dynamic>).toList();
           return parentList;
         } else {
-          throw Exception('Response data is null');
+          throw Exception('Échec du chargement des Événements');
         }
       } else {
-        throw Exception('Failed to load events');
+        throw Exception('Échec du chargement des Événements');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load events');
+      throw Exception('Échec du chargement des Événements');
     }
   }
 
@@ -53,7 +53,7 @@ class _GererEventsState extends State<GererEvents> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Events "),
+        title: const Text("Événements "),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Color.fromARGB(160, 0, 54, 99),

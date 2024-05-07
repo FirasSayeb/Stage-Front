@@ -29,7 +29,7 @@ class _ModServiceState extends State<ModEvent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Modifier Event'),
+        title: Text('Modifier Événement'),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Color.fromARGB(160, 0, 54, 99),
@@ -45,7 +45,7 @@ class _ModServiceState extends State<ModEvent> {
             final classe = snapshot.data as Map<String, dynamic>?;
 
             if (classe == null) {
-              return Center(child: Text('Event not found'));
+              return Center(child: Text('Événement introuvable'));
             }
 
             name = classe['name'] ?? '';
@@ -86,12 +86,12 @@ class _ModServiceState extends State<ModEvent> {
             name = value;
           },
           decoration: InputDecoration(
-            labelText: 'Name',
+            labelText: 'Nom',
             border: OutlineInputBorder(),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter some text';
+              return 'champs obligatoire';
             }
             return null;
           },
@@ -105,7 +105,7 @@ class _ModServiceState extends State<ModEvent> {
             price = double.tryParse(value) ?? 0.0;
           },
           decoration: InputDecoration(
-            labelText: 'Price',
+            labelText: 'Prix',
             border: OutlineInputBorder(),
           ),
         ),
@@ -166,11 +166,11 @@ class _ModServiceState extends State<ModEvent> {
       if (response.statusCode == 200) {
         return jsonDecode(response.body)['event'];
       } else {
-        throw Exception('Failed to load event');
+        throw Exception('Échec du chargement de lévénement');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load event');
+      throw Exception('Échec du chargement de lévénement');
     }
   }
 

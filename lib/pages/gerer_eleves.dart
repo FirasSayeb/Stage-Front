@@ -37,11 +37,11 @@ class _GererClassesState extends State<GererEleves> {
         List<dynamic> data = jsonDecode(response.body)['list'];
         return data.cast<Map<String, dynamic>>();
       } else {
-        throw Exception('Failed to load classes');
+        throw Exception('Échec du chargement des classes');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load classes');
+      throw Exception('Échec du chargement des classes');
     }
   }
 
@@ -52,11 +52,11 @@ class _GererClassesState extends State<GererEleves> {
         List<dynamic> data = jsonDecode(response.body)['list'];
         return data.cast<Map<String, dynamic>>();
       } else {
-        throw Exception('Failed to load eleves');
+        throw Exception('Échec du chargement des eleves');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load eleves');
+      throw Exception('Échec du chargement des eleves');
     }
   }
 

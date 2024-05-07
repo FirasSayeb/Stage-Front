@@ -239,11 +239,11 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
         List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);
         return classes;
       } else {
-        throw Exception('failed to get eleves');
+        throw Exception('échec du chargement des eleves');
       }
     } catch (e) {
       print(e);
-      throw Exception('Failed to load eleves');
+      throw Exception('échec du chargement des eleves');
     }
   }
   Future<List<Map<String, dynamic>>> getUsers() async {
@@ -254,11 +254,11 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
         List<Map<String, dynamic>> users = List<Map<String, dynamic>>.from(usersData);
         return users;
       } else {
-        throw Exception('failed to get users');
+        throw Exception('échec du chargement des utilisateurs');
       }
     } catch (e) {
       print(e);
-      throw Exception('Failed to load users');
+      throw Exception('échec du chargement des utilisateurs');
     }
   }
 }

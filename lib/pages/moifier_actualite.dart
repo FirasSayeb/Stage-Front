@@ -63,12 +63,12 @@ class _ModierActualiteState extends State<ModierActualite> {
                             });
                           },
                           decoration: InputDecoration(
-                            labelText: 'Body',
+                            labelText: 'Nom : ',
                             border: OutlineInputBorder(),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
+                              return 'champs obligatoire';
                             }
                             return null;
                           },
@@ -93,7 +93,7 @@ class _ModierActualiteState extends State<ModierActualite> {
                                       SizedBox(height: 8.0),
                                       ListTile(
                                         title: Text(
-                                          'File: ${name != null ? name! : 'No file'}',
+                                          'fichier: ${name != null ? name! : 'pas de fichier'}',
                                           style: TextStyle(fontSize: 14.0),
                                         ),
                                         onTap: () {
@@ -111,18 +111,18 @@ class _ModierActualiteState extends State<ModierActualite> {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
 
-                                  // Create a new multipart request
+                                  
                                   var request = http.MultipartRequest(
                                     'POST',
                                     Uri.parse(
                                         "https://firas.alwaysdata.net/api/updateActualite/${widget.id}"),
                                   );
 
-                                  // Add form fields (body and email)
+                                  
                                   request.fields['body'] = _body;
                                   request.fields['email'] = widget.email;
 
-                                  // Add file if it exists and contains bytes
+                                  
                                  if (file!=null) {
                                   if (kIsWeb) {
                                     request.files.add(http.MultipartFile.fromBytes(
@@ -139,16 +139,16 @@ class _ModierActualiteState extends State<ModierActualite> {
                                   var response2 =
                                       await http.Response.fromStream(response);
 
-                                  // Handle the response
+                                  
                                   if (response.statusCode == 200) {
-                                    // If the update was successful, navigate to Admin page
+                                   
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 Admin(widget.email)));
                                   } else {
-                                    // Handle error
+                                   
                                     print('Failed to update actualite');
                                     print(
                                         json.decode(json.encode(response2.body)));
@@ -185,7 +185,7 @@ class _ModierActualiteState extends State<ModierActualite> {
           path = responseData[0]["file_path"];
         });
       } else {
-        throw Exception('Failed to load actualite');
+        throw Exception('Échec du chargement de actualite');
       }
     } catch (e) {
       print('Error: $e');

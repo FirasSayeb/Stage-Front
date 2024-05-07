@@ -37,11 +37,11 @@ class _GererServicesState extends State<GererServices> {
             responseData.map((data) => data as Map<String, dynamic>).toList();
         return parentList;
       } else {
-        throw Exception('Failed to load services');
+        throw Exception('Échec du chargement des services');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load services');
+      throw Exception('Échec du chargement des services');
     }
   }
 

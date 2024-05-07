@@ -23,11 +23,11 @@ class _VoirAbsenceState extends State<VoirAbsence> {
         final List<Map<String, dynamic>> notes = List<Map<String, dynamic>>.from(responseData);
         return Future.value(notes); 
       } else {
-        throw Exception('Failed to load notes');
+        throw Exception('Échec du chargement des notes');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load notes');
+      throw Exception('Échec du chargement des notes');
     }
   }
 
@@ -39,19 +39,19 @@ class _VoirAbsenceState extends State<VoirAbsence> {
         final List<Map<String, dynamic>> eleves = List<Map<String, dynamic>>.from(responseData);
         return eleves;
       } else {
-        throw Exception('Failed to load eleves');
+        throw Exception('Échec du chargement des eleves');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load eleves');
+      throw Exception('Échec du chargement des eleves');
     }
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Absences Viewer'),
-        backgroundColor: Color(0xFF1995AD) 
+        title: Text('consulter  absences'),
+        backgroundColor: Color(0xFFFF9000)  
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -117,7 +117,7 @@ class _VoirAbsenceState extends State<VoirAbsence> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
-                              'Absences for selected eleve:',
+                              'Absences pour l eleve sélectionnée::',
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),

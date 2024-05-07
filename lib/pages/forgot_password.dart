@@ -27,7 +27,7 @@ String? validateEmail(String? value) {
       final regex = RegExp(pattern);
 
       return value!.isEmpty || !regex.hasMatch(value)
-          ? 'Enter a valid email address'
+          ? 'Entrez une adresse mail valide'
           : null;
     }
 

@@ -48,7 +48,7 @@ class _ModServiceState extends State<ModService> {
                     final classe = snapshot.data as Map<String, dynamic>?;
 
                     if (classe == null) {
-                      return Center(child: Text('Classe not found'));
+                      return Center(child: Text('Classe introuvable'));
                     }
 
                     return Column(
@@ -62,7 +62,7 @@ class _ModServiceState extends State<ModService> {
         color: Colors.grey.withOpacity(0.5),
         spreadRadius: 2,
         blurRadius: 4,
-        offset: Offset(0, 3), // changes position of shadow
+        offset: Offset(0, 3), 
       ),
     ],
     borderRadius: BorderRadius.circular(8),
@@ -82,12 +82,12 @@ class _ModServiceState extends State<ModService> {
             });
           },
           decoration: InputDecoration(
-            labelText: 'Nom',
+            labelText: 'Nom :',
             border: OutlineInputBorder(),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter some text';
+              return 'champs obligatoire';
             }
             return null;
           },
@@ -103,12 +103,12 @@ class _ModServiceState extends State<ModService> {
             });
           },
           decoration: InputDecoration(
-            labelText: 'Prix',
+            labelText: 'Prix : ',
             border: OutlineInputBorder(),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter some text';
+              return 'champs obligatoire';
             }
             return null;
           },
@@ -155,11 +155,11 @@ class _ModServiceState extends State<ModService> {
       if (response.statusCode == 200) {
         return jsonDecode(response.body)['service'];
       } else {
-        throw Exception('Failed to load service');
+        throw Exception('Échec du chargement de service');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load service');
+      throw Exception('Échec du chargement de service');
     }
   }
 }

@@ -70,7 +70,7 @@ class _AjouterServiceState extends State<AjouterService> {
                           validator: (value) {
                             if(value!.isEmpty || value.length==0){
                                    return "champs obligatoire";
-                            }
+                            }return null;
                           },
                         onSaved: (newValue) {
                           

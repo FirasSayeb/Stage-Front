@@ -206,7 +206,7 @@ class _AjouterEleveState extends State<AjouterEleve> {
                                         'Error: ${snapshot.error}');
                                   } else if (!snapshot.hasData ||
                                       snapshot.data!.isEmpty) {
-                                    return Text('No data available');
+                                    return Text('Pas de données disponibles');
                                   } else {
                                     return DropdownButton(
                                       value: selected.isNotEmpty
@@ -250,7 +250,7 @@ class _AjouterEleveState extends State<AjouterEleve> {
                                         'Error: ${snapshot.error}');
                                   } else if (!snapshot.hasData ||
                                       snapshot.data!.isEmpty) {
-                                    return Text('No data available');
+                                    return Text('Pas de données disponibles');
                                   } else {
                                     return DropdownButton(
                                       value: selectedParents.isNotEmpty
@@ -434,11 +434,11 @@ Future<void> _selectDate() async {
             responseData.map((data) => data as Map<String, dynamic>).toList();
         return parentList;
       } else {
-        throw Exception('Failed to load parents');
+        throw Exception('Échec du chargement des parents');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load parents');
+      throw Exception('Échec du chargement des parents');
     }
   }
 
@@ -453,11 +453,11 @@ Future<void> _selectDate() async {
             List<Map<String, dynamic>>.from(classesData);
         return classes;
       } else { 
-        throw Exception('Failed to load classes');
+        throw Exception('Échec du chargement des classes');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load classes');
+      throw Exception('Échec du chargement des classes');
     }
   }
 }

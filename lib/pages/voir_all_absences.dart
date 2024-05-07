@@ -29,11 +29,11 @@ class _ViewAllState extends State<ViewAll> {
         final List<Map<String, dynamic>> eleves = List<Map<String, dynamic>>.from(responseData);
         return eleves;
       } else {
-        throw Exception('Failed to load absences');
+        throw Exception('Échec du chargement des absences');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load absences');
+      throw Exception('Échec du chargement des absences');
     }
   }
 
@@ -41,7 +41,7 @@ class _ViewAllState extends State<ViewAll> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Voir Absences'),
+        title: Text('consulter Absences'),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _futureAbsences,

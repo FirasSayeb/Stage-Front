@@ -36,7 +36,7 @@ class _AjouterNotificationState extends State<AjouterNotification> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Envoyer Notification'),
+        title: Text('Envoyer Message'),
         centerTitle: true,
         elevation: 0,
         backgroundColor: const Color.fromARGB(160, 0, 54, 99),
@@ -73,7 +73,7 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Center(child: Text('Failed to get classes'));
+                    return Center(child: Text('Échec du chargement des classes'));
                   } else {
                     return DropdownButton(
                       value: selectedClasses.isNotEmpty ? selectedClasses.first : null,
@@ -94,7 +94,7 @@ class _AjouterNotificationState extends State<AjouterNotification> {
                   }
                 },
               ),Text(
-  'Selected Users:',
+  'Utilisateurs sélectionnés :',
   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
 ),
 SizedBox(height: 10),
@@ -215,11 +215,11 @@ Container(
         List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);
         return classes;
       } else {
-        throw Exception('failed to get users');
+        throw Exception('Échec du chargement des utilisateurs');
       }
     } catch (e) {
       print(e);
-      throw Exception('Failed to load users');
+      throw Exception('Échec du chargement des utilisateurs');
     }
   }
 }

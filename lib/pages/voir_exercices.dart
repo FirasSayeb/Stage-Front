@@ -22,11 +22,11 @@ class _VoirExcercicesState extends State<VoirExcercices> {
         final List<Map<String, dynamic>> notes = List<Map<String, dynamic>>.from(responseData);
         return Future.value(notes); 
       } else {
-        throw Exception('Failed to load exercices');
+        throw Exception('Échec du chargement des exercices');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load exercices');
+      throw Exception('Échec du chargement des exercices');
     }
   }
 
@@ -38,18 +38,18 @@ class _VoirExcercicesState extends State<VoirExcercices> {
         final List<Map<String, dynamic>> eleves = List<Map<String, dynamic>>.from(responseData);
         return eleves;
       } else {
-        throw Exception('Failed to load eleves');
+        throw Exception('Échec du chargement des eleves');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load eleves');
+      throw Exception('Échec du chargement des eleves');
     }
   }
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        title: Text('Exercices Viewer'),
+        title: Text(' consulter exercices '),
       ),
       body: SingleChildScrollView( 
         child: Column(
@@ -58,7 +58,7 @@ class _VoirExcercicesState extends State<VoirExcercices> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'Select an eleve:',
+                'Sélectionnez un  eleve:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
@@ -115,7 +115,7 @@ class _VoirExcercicesState extends State<VoirExcercices> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
-                              'Exercices for selected eleve:',
+                              'Exercices pour  élève sélectionné :',
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -127,7 +127,7 @@ class _VoirExcercicesState extends State<VoirExcercices> {
                               final subject = note['name'] ?? 'Unknown';
                               final noteText = note['description'] ?? 'No Description';
                               return ListTile(
-                                title: Text("Name: $subject"),
+                                title: Text("Nom: $subject"),
                                 subtitle: Text('Description: $noteText'),
                               );
                             },

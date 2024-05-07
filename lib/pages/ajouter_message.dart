@@ -34,7 +34,7 @@ class _AjouterMessageState extends State<AjouterMessage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Envoyer Notification'),centerTitle: true,
+      appBar: AppBar(title: Text('Envoyer Message'),centerTitle: true,
           elevation: 0, 
           backgroundColor: const Color.fromARGB(160, 0, 54, 99),),
     body: SingleChildScrollView(
@@ -61,7 +61,7 @@ class _AjouterMessageState extends State<AjouterMessage> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return Center(child: Text('Failed to get classes'));
+              return Center(child: Text('Échec du chargement des  classes'));
             } else {
               return DropdownButton(
                 value: selectedClasses.isNotEmpty ? selectedClasses.first : null,
@@ -82,7 +82,7 @@ class _AjouterMessageState extends State<AjouterMessage> {
             }
           },
         ),Text(
-  'Selected Users:',
+  'Utilisateurs sélectionnés :',
   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
 ),
 SizedBox(height: 10),
@@ -204,11 +204,11 @@ Container(
         //List<Map<String, dynamic>> users = responseData.values.toList().cast<Map<String, dynamic>>();
         return streetsList;
       } else {
-        throw Exception('Failed to get users');
+        throw Exception('Échec du chargement des utilisateurs');
       }
     } catch (e) {
       print(e);
-      throw Exception('Failed to load users');
+      throw Exception('Échec du chargement des utilisateurs');
     }
   }
 }

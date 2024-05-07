@@ -74,7 +74,7 @@ class _HomeState extends State<AjouterEnseignant> {
     final regex = RegExp(pattern);
 
     return value!.isEmpty || !regex.hasMatch(value)
-        ? 'Enter a valid email address'
+        ? 'Entrez une adresse mail valide'
         : null;
   }
 
@@ -260,11 +260,11 @@ class _HomeState extends State<AjouterEnseignant> {
                                 if (snapshot.connectionState == ConnectionState.waiting) {
                                   return Center(child: CircularProgressIndicator());
                                 } else if (snapshot.hasError) {
-                                  return Center(child: Text('Failed to get classes'));
+                                  return Center(child: Text('Échec du chargement des classes'));
                                 } else {
                                   return DropdownButton(
                                     value: selectedClasses.isNotEmpty ? selectedClasses.last : null,
-                                    hint: Text("select classe(s)"),
+                                    hint: Text("sélectionner classe(s)"),
                                     items: snapshot.data!.map((e) {
                                       return DropdownMenuItem(
                                         child: Text(e['name'].toString()),

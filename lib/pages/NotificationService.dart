@@ -14,7 +14,7 @@ Future<void> initNotification() async {
   await notificationsPlugin.initialize(
     initializationSettings,
     onDidReceiveNotificationResponse: (details) {
-      // Handle notification tap here
+      
     },
   );
 }

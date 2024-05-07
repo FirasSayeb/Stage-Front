@@ -22,7 +22,7 @@ class _AjouterServiceState extends State<AjouterEvent> {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-          title: Text('Ajouter Event') ,
+          title: Text('Ajouter Événement') ,
           centerTitle: true,
           elevation: 0,
           backgroundColor: const Color.fromARGB(160, 0, 54, 99),
@@ -68,6 +68,12 @@ class _AjouterServiceState extends State<AjouterEvent> {
                       Container(
                          padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
                         child: TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty ) {
+                                return "champs obligatoire";
+                              } 
+                              return null;
+                          },
                         onSaved: (newValue) {
                           
                           if (newValue != null && newValue.isNotEmpty) {
@@ -86,6 +92,12 @@ class _AjouterServiceState extends State<AjouterEvent> {
                              Container(
                               padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
                                child: TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } 
+                              return null;
+                                },
                                   controller: TextEditingController(text: date),
                                   onSaved: (newValue) {
                                     date = newValue!;

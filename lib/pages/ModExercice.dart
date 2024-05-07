@@ -46,7 +46,7 @@ class _ModExerciceState extends State<ModExercice> {
                   final exercice = snapshot.data as Map<String, dynamic>?;
 
                   if (exercice == null) {
-                    return Center(child: Text('Exercice not found'));
+                    return Center(child: Text('Exercice introuvable'));
                   }
 
                   return Form(
@@ -62,7 +62,7 @@ class _ModExerciceState extends State<ModExercice> {
         color: Colors.grey.withOpacity(0.5),
         spreadRadius: 2,
         blurRadius: 4,
-        offset: Offset(0, 3), // changes position of shadow
+        offset: Offset(0, 3), 
       ),
     ],
     borderRadius: BorderRadius.circular(8),
@@ -88,7 +88,7 @@ class _ModExerciceState extends State<ModExercice> {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter some text';
+              return 'champs obligatoire';
             }
             return null;
           },
@@ -110,7 +110,7 @@ class _ModExerciceState extends State<ModExercice> {
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter some text';
+              return 'champs obligatoire';
             }
             return null;
           },
@@ -132,7 +132,7 @@ class _ModExerciceState extends State<ModExercice> {
                                 },
                               );
                               if (response.statusCode == 200) {
-                                // Refresh the page when popping
+                                
                                 Navigator.of(context).pop(true);
                               }
                             }
@@ -157,11 +157,11 @@ class _ModExerciceState extends State<ModExercice> {
       if (response.statusCode == 200) {
         return jsonDecode(response.body)['exercice'];
       } else {
-        throw Exception('Failed to load exercice');
+        throw Exception('Échec du chargement de lexercice');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load exercice');
+      throw Exception('Échec du chargement de lexercice');
     }
   }
 }

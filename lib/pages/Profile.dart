@@ -56,11 +56,11 @@ class _ProfilState extends State<Profil> {
         final responseData = jsonDecode(response.body)['user'];
         return responseData;
       } else {
-        throw Exception('Failed to load user');
+        throw Exception('Échec du chargement de lutilisateur');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load user');
+      throw Exception('Échec du chargement de lutilisateur');
     }
   }
 
@@ -70,7 +70,7 @@ class _ProfilState extends State<Profil> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome ${widget.email}'),
+        title: Text('Bienvenu ${widget.email}'),
         backgroundColor: const Color.fromARGB(160, 0, 54, 99),
       ),
       body: SingleChildScrollView(

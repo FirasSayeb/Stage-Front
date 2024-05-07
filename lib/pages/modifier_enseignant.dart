@@ -41,7 +41,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
       file = result.files.first;
       name = file!.name;
       if (kIsWeb) {
-        path = base64Encode(file!.bytes!); // Convert bytes to base64 string
+        path = base64Encode(file!.bytes!);
       } else {
         path = file!.path;
       }
@@ -63,11 +63,11 @@ class _ModEnsignantState extends State<ModEnsignant> {
         final responseData = jsonDecode(response.body)['user'];
         return responseData;
       } else {
-        throw Exception('Failed to load user');
+        throw Exception('Échec du chargement dutilisateur');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load user');
+      throw Exception('Échec du chargement dutilisateur');
     }
   }
 
@@ -77,7 +77,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome ${widget.email}'),
+        title: Text('bienvenu ${widget.email}'),
         backgroundColor: const Color.fromARGB(160, 0, 54, 99),
       ),
       body: SingleChildScrollView(
@@ -97,7 +97,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
                   if (classesSnapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (classesSnapshot.hasError) {
-                    return Center(child: Text('Failed to get classes'));
+                    return Center(child: Text('Impossible dobtenir des  classes'));
                   } else {
                     return Form(
                       key: _formKey,
@@ -228,7 +228,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
                               },
                             ),
                           ),Text(
-  'Selected Classes:',
+  'Classes sélectionnés:',
   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
 ),
 SizedBox(height: 10),
@@ -321,11 +321,11 @@ Container(
         List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);
         return classes;
       } else {
-        throw Exception('Failed to load classes');
+        throw Exception('Échec du chargement des classes');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load classes');
+      throw Exception('Échec du chargement des classes');
     }
   }
 }

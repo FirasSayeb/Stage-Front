@@ -37,11 +37,11 @@ class _GererUtilisateursState extends State<GererUtilisateurs> {
         final List<Map<String, dynamic>> parentList = responseData.map((data) => data as Map<String, dynamic>).toList();
         return parentList;
       } else {
-        throw Exception('Failed to load parents');
+        throw Exception('Échec du chargement des parents');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load parents');
+      throw Exception('Échec du chargement des parents');
     }
   }
 
@@ -65,7 +65,7 @@ class _GererUtilisateursState extends State<GererUtilisateurs> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("Tuteurs "),
+          title: const Text("Parents "),
           centerTitle: true,
           elevation: 0,
           backgroundColor: Color.fromARGB(160, 0, 54, 99),

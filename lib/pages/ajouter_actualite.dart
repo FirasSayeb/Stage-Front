@@ -100,7 +100,7 @@ class _HomeState extends State<AjouterActualite> {
                             },
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                              labelText: 'Body',
+                              labelText: 'Nom',
                               border: OutlineInputBorder(),
                             ),
                           ),

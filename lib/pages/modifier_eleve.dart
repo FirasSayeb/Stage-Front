@@ -75,7 +75,7 @@ late Future<List<Map<String, dynamic>>> _classes;
           fileName = path != null ? path!.split('/').last : '';
         });
       } else {
-        throw Exception('Failed to load data');
+        throw Exception('Échec du chargement d eleve');
       }
     } catch (e) {
       print('Error: $e');
@@ -124,7 +124,7 @@ late Future<List<Map<String, dynamic>>> _classes;
                                   },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
+                                      return 'champs obligatoire';
                                     }
                                     return null;
                                   },
@@ -144,7 +144,7 @@ late Future<List<Map<String, dynamic>>> _classes;
                                   },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
+                                      return 'champs obligatoire';
                                     }
                                     return null;
                                   },
@@ -164,7 +164,7 @@ late Future<List<Map<String, dynamic>>> _classes;
                                   },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
+                                      return 'champs obligatoire';
                                     }
                                     return null;
                                   },
@@ -198,11 +198,11 @@ late Future<List<Map<String, dynamic>>> _classes;
                                   } else if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
                                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                                    return Text('No data available');
+                                    return Text('Pas de données disponibles');
                                   } else {
                                     return  DropdownButton(
                                       value: classe.isNotEmpty ? classe : null, 
-                                      hint: Text("select classe"),
+                                      hint: Text("sélectionner une classe"),
                                       items: snapshot.data!.map((e) {
                                         return DropdownMenuItem(
                                           child: Text(e['name'].toString()),
@@ -227,11 +227,11 @@ late Future<List<Map<String, dynamic>>> _classes;
                                   } else if (snapshot.hasError) { 
                                     return Text('Error: ${snapshot.error}');
                                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                                    return Text('No data available'); 
+                                    return Text('Pas de données disponibles'); 
                                   } else {
                                     return DropdownButton(
                                       value: selectedParents.isNotEmpty ? selectedParents[0] : null,
-                                      hint: Text("sélectionner tuteurs"), 
+                                      hint: Text("sélectionner parents"), 
                                       items: snapshot.data!.map((e){
                                         return DropdownMenuItem(
                                           child: Text(e['email'].toString()),
@@ -360,11 +360,11 @@ Container(
       final List<Map<String, dynamic>> parentList = responseData.map((data) => data as Map<String, dynamic>).toList();
       return parentList;
     } else {
-      throw Exception('Failed to load parents');
+      throw Exception('Échec du chargement des parents');
     }
   } catch (e) {
     print('Error: $e');  
-    throw Exception('Failed to load parents'); 
+    throw Exception('Échec du chargement des parents'); 
   }
 }
 
@@ -376,11 +376,11 @@ Container(
         List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);
         return classes;
       } else {
-        throw Exception('Failed to load classes');
+        throw Exception('Échec du chargement des classes');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load classes');
+      throw Exception('Échec du chargement des classes');
     }
   }
 }

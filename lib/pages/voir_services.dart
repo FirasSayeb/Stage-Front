@@ -23,11 +23,11 @@ class _VoirServicesState extends State<VoirServices> {
         final List<Map<String, dynamic>> eleves = List<Map<String, dynamic>>.from(responseData);
         return eleves;
       } else {
-        throw Exception('Failed to load eleves');
+        throw Exception('Échec du chargement des eleves');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load eleves');
+      throw Exception('Échec du chargement des eleves');
     }
   }
 
@@ -39,11 +39,11 @@ class _VoirServicesState extends State<VoirServices> {
         final List<Map<String, dynamic>> services = List<Map<String, dynamic>>.from(responseData);
         return services;
       } else {
-        throw Exception('Failed to load services');
+        throw Exception('Échec du chargement des  services');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load services');
+      throw Exception('Échec du chargement des services');
     }
   }
 
@@ -57,11 +57,11 @@ class _VoirServicesState extends State<VoirServices> {
           this.services = services;
         });
       } else {
-        throw Exception('Failed to load services');
+        throw Exception('Échec du chargement des services');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load services');
+      throw Exception('Échec du chargement des services');
     } 
   }
 
@@ -69,7 +69,7 @@ class _VoirServicesState extends State<VoirServices> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List Services'),
+        title: Text('consulter services'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -78,7 +78,7 @@ class _VoirServicesState extends State<VoirServices> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'Select an eleve:',
+                'Sélectionnez un eleve:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),

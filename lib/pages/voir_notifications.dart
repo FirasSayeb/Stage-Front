@@ -21,11 +21,11 @@ class _VoirNotificationsState extends State<VoirNotifications> {
         final List<Map<String, dynamic>> eleves = List<Map<String, dynamic>>.from(responseData);
         return eleves;
       } else {
-        throw Exception('Failed to load notifications');
+        throw Exception('Échec du chargement des notifications');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load notifications');
+      throw Exception('Échec du chargement des notifications');
     }
   }
 
@@ -33,7 +33,7 @@ class _VoirNotificationsState extends State<VoirNotifications> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Voir Notifications'),
+        title: Text('consulter messages'),
       ),
       body: Container(
         child: FutureBuilder<List<Map<String,dynamic>>>( 
@@ -55,7 +55,7 @@ class _VoirNotificationsState extends State<VoirNotifications> {
                           contentPadding: EdgeInsets.all(16.0),
                           title: Column(
                             children: [
-                              Text("Body  : ${snapshot.data![index]["body"]}",
+                              Text("message  : ${snapshot.data![index]["body"]}",
                                 style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                               ),
                                Text("Envoyer Par  : ${snapshot.data![index]["sender_name"]}",

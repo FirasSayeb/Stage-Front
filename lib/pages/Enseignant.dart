@@ -28,11 +28,11 @@ class _SigninState extends State<Enseignant> {
       List<dynamic> data = jsonDecode(response.body)['list'];
       return data.cast<Map<String, dynamic>>(); 
     } else {
-      throw Exception('Failed to load classes');
+      throw Exception('Échec du chargement des  classes');
     }
   } catch (e) {
     print('Error: $e');
-    throw Exception('Failed to load classes');
+    throw Exception('Échec du chargement des  classes');
   }
 }
   @override
@@ -40,7 +40,7 @@ class _SigninState extends State<Enseignant> {
     return MaterialApp(  
       debugShowCheckedModeBanner: false,        
      home:Scaffold(
-      appBar: AppBar(title: const Text("Enseignant "),centerTitle: true,elevation: 0,backgroundColor: Color.fromARGB(160,0,54,99),), 
+      appBar: AppBar(title:  Text("bienvenu ${widget.email} "),centerTitle: true,elevation: 0,backgroundColor: Color.fromARGB(160,0,54,99),), 
       body: SingleChildScrollView(child: Column(
         children: [ Padding(padding: EdgeInsets.all(5)),
           FutureBuilder<List<Map<String, dynamic>>>(
@@ -77,7 +77,7 @@ String fileName2WithExtension = pathPart.last;
       MaterialPageRoute(builder: (context) => ListEleves(widget.email,snapshot.data![index]['name'])));
       },
       title: Text( 
-        "Name: ${snapshot.data![index]['name']}\n ",
+        "Nom: ${snapshot.data![index]['name']}\n ",
        
       ), 
       subtitle: Row(

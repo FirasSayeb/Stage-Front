@@ -39,7 +39,7 @@ class _ModifierClasseState extends State<ModifierClasse> {
         final Map<String, dynamic> responseData =
             jsonDecode(response.body)['classe'];
         setState(() {
-          body = responseData["name"] ?? ''; // Set body with response data
+          body = responseData["name"] ?? ''; 
           name = responseData["emploi"] != null
               ? responseData["emploi"].split('/').last
               : '';
@@ -50,11 +50,11 @@ class _ModifierClasseState extends State<ModifierClasse> {
           path2 = responseData["examens"];
         });
       } else {
-        throw Exception('Failed to load classe');
+        throw Exception('Échec du chargement de  classe');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load classe');
+      throw Exception('Échec du chargement de  classe');
     }
   }
 
@@ -117,7 +117,7 @@ class _ModifierClasseState extends State<ModifierClasse> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
+                        return 'champs obligatoire';
                       }
                       return null;
                     },
@@ -133,7 +133,7 @@ Container(
         color: Colors.grey.withOpacity(0.5),
         spreadRadius: 2,
         blurRadius: 4,
-        offset: Offset(0, 3), // changes position of shadow
+        offset: Offset(0, 3), 
       ),
     ],
     borderRadius: BorderRadius.circular(8),
@@ -146,7 +146,7 @@ Container(
       children: [
         ListTile(
           title: Text(
-            'Emlpoi: ${name != null ? name! : 'No file'}',
+            'Emlpoi: ${name != null ? name! : 'Pas de fichier'}',
             style: TextStyle(fontSize: 14.0),
           ),
           onTap: () {
@@ -155,7 +155,7 @@ Container(
         ),
         ListTile(
           title: Text(
-            'Examens: ${name2 != null ? name2! : 'No file'}',
+            'Examens: ${name2 != null ? name2! : 'Pas de fichier'}',
             style: TextStyle(fontSize: 14.0),
           ),
           onTap: () {

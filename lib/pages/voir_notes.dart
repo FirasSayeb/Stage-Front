@@ -22,11 +22,11 @@ class _VoirNotesState extends State<VoirNotes> {
         final List<Map<String, dynamic>> notes = List<Map<String, dynamic>>.from(responseData);
         return Future.value(notes); 
       } else {
-        throw Exception('Failed to load notes');
+        throw Exception('Échec du chargement des notes');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load notes');
+      throw Exception('Échec du chargement des notes');
     }
   }
 
@@ -38,11 +38,11 @@ class _VoirNotesState extends State<VoirNotes> {
         final List<Map<String, dynamic>> eleves = List<Map<String, dynamic>>.from(responseData);
         return eleves;
       } else {
-        throw Exception('Failed to load eleves');
+        throw Exception('Échec du chargement des eleves');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load eleves');
+      throw Exception('Échec du chargement des eleves');
     }
   }
 
@@ -50,7 +50,7 @@ class _VoirNotesState extends State<VoirNotes> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notes Viewer'),
+        title: Text('consulter notes'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -59,7 +59,7 @@ class _VoirNotesState extends State<VoirNotes> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'Select an eleve:',
+                'Sélectionnez un  eleve:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
@@ -116,7 +116,7 @@ class _VoirNotesState extends State<VoirNotes> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
-                              'Notes for selected eleve:',
+                              'Notes pour lélève sélectionné :',
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),

@@ -42,11 +42,11 @@ class _AdminState extends State<Admin> {
         print(responseData[0]['file_path']);
         return responseData.map((data) => Actualite.fromJson(data)).toList();
       } else {
-        throw Exception('Failed to load actualites');
+        throw Exception('Échec du chargement des actualités');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load actualites');
+      throw Exception('Échec du chargement des actualités');
     }
   }
 
@@ -56,7 +56,7 @@ class _AdminState extends State<Admin> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Welcome ${widget.email}'),
+          title: Text('Bienvenu ${widget.email}'),
           centerTitle: true,
           elevation: 0,
           backgroundColor: const Color.fromARGB(160, 0, 54, 99),
@@ -184,12 +184,12 @@ class _AdminState extends State<Admin> {
                                 children: [
                                   SizedBox(height: 8.0),
                                   Text(
-                                    'Created At: ${snapshot.data![index].createdAt}',
+                                    'Créé à: ${snapshot.data![index].createdAt}',
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   SizedBox(height: 4.0),
                                   Text(
-                                    'Created By: ${snapshot.data![index].userName}',
+                                    'Créé par: ${snapshot.data![index].userName}',
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   Image.network(

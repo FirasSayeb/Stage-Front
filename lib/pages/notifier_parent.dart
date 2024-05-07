@@ -53,7 +53,7 @@ class _NotifierParentState extends State<NotifierParent> {
   
                             } else if (snapshot.hasError) {
   
-                              return Center(child: Text('Failed to get parents'));
+                              return Center(child: Text('Impossible dobtenir les parents'));
    
                             } else {
   
@@ -192,11 +192,11 @@ class _NotifierParentState extends State<NotifierParent> {
       List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);
       return classes;
    }else{
-    throw Exception('failed to get parents');
+    throw Exception('Échec du chargement des parents');
    } 
    }catch(e){ 
     print(e); 
-    throw Exception('Failed to load parents'); 
+    throw Exception('Échec du chargement des parents'); 
    }
   }
 }

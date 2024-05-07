@@ -27,14 +27,14 @@ class _GererExercicesState extends State<GererExercices> {
               (responseData as List<dynamic>).map((data) => data as Map<String, dynamic>).toList();
           return parentList;
         } else {
-          throw Exception('Response data is null');
+          throw Exception('Échec du chargement des exercices');
         }
       } else {
-        throw Exception('Failed to load exercices');
+        throw Exception('Échec du chargement des exercices');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load exercices');
+      throw Exception('Échec du chargement des exercices');
     }
   }
 

@@ -21,18 +21,18 @@ class _ValiderEventState extends State<ValiderEvent> {
         final List<Map<String, dynamic>> services = List<Map<String, dynamic>>.from(responseData);
         return services;
       } else {
-        throw Exception('Failed to load services');
+        throw Exception('Échec du chargement des événements');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load services');
+      throw Exception('Échec du chargement des événements');
     } 
   }
   @override
   Widget build(BuildContext context) {
      return Scaffold(
       appBar: AppBar(
-        title: const Text("Valider Events "),
+        title: const Text("Valider événements "),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Color.fromARGB(160, 0, 54, 99),

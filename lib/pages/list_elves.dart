@@ -128,11 +128,11 @@ class _ListElevesState extends State<ListEleves> {
         List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);
         return classes;
       } else {
-        throw Exception('failed to get eleves');
+        throw Exception('échec du chargement des  eleves');
       }
     } catch (e) {
       print(e);
-      throw Exception('Failed to load eleves');
+      throw Exception('échec du chargement des eleves');
     }
   }
 }

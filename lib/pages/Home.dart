@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
       final regex = RegExp(pattern);
 
       return value!.isEmpty || !regex.hasMatch(value)
-          ? 'Enter a valid email address'
+          ? 'Entrez une adresse mail valide'
           : null;
     }
 

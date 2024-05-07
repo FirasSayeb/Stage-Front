@@ -70,7 +70,7 @@ class _HomeState extends State<AjouterClasse> {
                 Container(
                   alignment: FractionalOffset.center,
                   height: MediaQuery.of(context).size.height*0.4,
-                  child: Lottie.asset("assets/add.json"),
+                  child: Lottie.asset("assets/addclass.json"),
                 ),
                 
                 Center(

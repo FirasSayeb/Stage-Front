@@ -23,11 +23,11 @@ class _ListActualitesState extends State<ListActualites> {
         final List responseData = jsonDecode(response.body)['list']; 
         return responseData.map((data) => Actualite.fromJson(data)).toList();
       } else {
-        throw Exception('Failed to load actualites');
+        throw Exception('Échec du chargement des actualites');
       }
     } catch (e) { 
       print('Error: $e');  
-      throw Exception('Failed to load actualites');
+      throw Exception('Échec du chargement des actualites');
     }
   } 
   @override
@@ -95,12 +95,12 @@ class _ListActualitesState extends State<ListActualites> {
                                 children: [
                                   SizedBox(height: 8.0),
                                   Text(
-                                    'Created At: ${snapshot.data![index].createdAt}',
+                                    'Créé à: ${snapshot.data![index].createdAt}',
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   SizedBox(height: 4.0),
                                   Text(
-                                    'Created By: ${snapshot.data![index].userName}',
+                                    'Créé par: ${snapshot.data![index].userName}',
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   Image.network(

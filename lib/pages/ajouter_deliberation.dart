@@ -188,11 +188,11 @@ class _AjouterDelState extends State<AjouterDel> {
       List<Map<String, dynamic>> classes = List<Map<String, dynamic>>.from(classesData);
       return classes;
    }else{
-    throw Exception('failed to get parents');
+    throw Exception('échec du chargement des parents');
    } 
    }catch(e){ 
     print(e); 
-    throw Exception('Failed to load parents'); 
+    throw Exception('échec du chargement des parents'); 
    }
   }
 }

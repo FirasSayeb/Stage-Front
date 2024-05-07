@@ -24,11 +24,11 @@ class _VoirEventState extends State<VoirEvent> {
         final List<Map<String, dynamic>> eleves = List<Map<String, dynamic>>.from(responseData);
         return eleves;
       } else {
-        throw Exception('Failed to load eleves');
+        throw Exception('Échec du chargement des eleves');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load eleves');
+      throw Exception('Échec du chargement des  eleves');
     }
   }
 
@@ -40,11 +40,11 @@ class _VoirEventState extends State<VoirEvent> {
         final List<Map<String, dynamic>> services = List<Map<String, dynamic>>.from(responseData);
         return services;
       } else {
-        throw Exception('Failed to load services');
+        throw Exception('Échec du chargement des  services');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load services');
+      throw Exception('Échec du chargement des  services');
     }
   }
 
@@ -58,18 +58,18 @@ class _VoirEventState extends State<VoirEvent> {
           this.services = services;
         });
       } else {
-        throw Exception('Failed to load services');
+        throw Exception('Échec du chargement des services');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load services');
+      throw Exception('Échec du chargement des  services');
     } 
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List Events'),
+        title: Text('Liste des événements'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -78,7 +78,7 @@ class _VoirEventState extends State<VoirEvent> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'Select an eleve:',
+                'Sélectionnez un  eleve :',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),

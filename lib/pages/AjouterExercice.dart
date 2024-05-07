@@ -19,7 +19,7 @@ class _AjouterExerciceState extends State<AjouterExercice> {
   final fkey = GlobalKey<FormState>();
   late String description;
   late String name;
-  late Response response2 = Response('', 200); // Initialize response2
+  late Response response2 = Response('', 200); 
 
   @override
   Widget build(BuildContext context) {
@@ -101,9 +101,9 @@ class _AjouterExerciceState extends State<AjouterExercice> {
                             } else if (snapshot.hasError) {
                               return Center(
                                   child: Text(
-                                      'Failed to get users: ${snapshot.error}'));
+                                      'Échec du chargement des utilisateurs: ${snapshot.error}'));
                             } else {
-                              // Debug: print the snapshot data
+                              
                               print('Snapshot data: ${snapshot.data}');
 
                               return Center(

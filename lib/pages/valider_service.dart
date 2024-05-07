@@ -21,11 +21,11 @@ class _ValiderServiceState extends State<ValiderService> {
         final List<Map<String, dynamic>> services = List<Map<String, dynamic>>.from(responseData);
         return services;
       } else {
-        throw Exception('Failed to load services');
+        throw Exception('Échec du chargement des services');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load services');
+      throw Exception('Échec du chargement des services');
     } 
   }
   @override

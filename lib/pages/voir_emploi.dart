@@ -24,11 +24,11 @@ class _VoirEmploiState extends State<VoirEmploi> {
        
         return notes; 
       } else {
-        throw Exception('Failed to load classes');
+        throw Exception('Échec du chargement des classes');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load classes');
+      throw Exception('Échec du chargement des classes');
     }
   }
   
@@ -40,11 +40,11 @@ class _VoirEmploiState extends State<VoirEmploi> {
         final List<Map<String, dynamic>> eleves = List<Map<String, dynamic>>.from(responseData);
         return eleves;
       } else {
-        throw Exception('Failed to load eleves');
+        throw Exception('Échec du chargement des  eleves');
       }
     } catch (e) {
       print('Error: $e');
-      throw Exception('Failed to load eleves');
+      throw Exception('Échec du chargement des eleves');
     }
   }
   
@@ -52,7 +52,7 @@ class _VoirEmploiState extends State<VoirEmploi> {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        title: Text('Emploi'),
+        title: Text('consulter emploi'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -61,7 +61,7 @@ class _VoirEmploiState extends State<VoirEmploi> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'Select an eleve:',
+                'Sélectionnez un  eleve:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
@@ -132,7 +132,7 @@ class _VoirEmploiState extends State<VoirEmploi> {
                                 },
                                 child: ListTile( 
                                   title: Text( 
-                                    "Name: ${snapshot.data!['name']}\n ",
+                                    "${snapshot.data!['name']}\n ",
                                   ), 
                                   subtitle: Row(
                                     children: [
