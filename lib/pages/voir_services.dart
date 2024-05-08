@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 
 class VoirServices extends StatefulWidget {
   final String email;
@@ -145,9 +146,17 @@ final serviceId = service['id'];
 bool isSubscribed = services.any((element) => element['service_id'] == serviceId);
 print(isSubscribed);
                     return ListTile(
+                      contentPadding: EdgeInsets.all(16.0),
+  leading: SizedBox(
+    width: MediaQuery.of(context).size.width * 0.4,
+    child: Lottie.asset(
+      'assets/ser.json',
+      fit: BoxFit.contain,
+    ),
+  ),
                       title: Text(serviceName),
                       subtitle: Text("${service["price"]}"),
-                      leading: isSubscribed
+                      trailing: isSubscribed
     ? ElevatedButton(
         onPressed: () async {
           /*Response response = await delete(

@@ -4,6 +4,7 @@ import 'package:app/pages/AjouterExercice.dart';
 import 'package:app/pages/ModExercice.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 
 class GererExercices extends StatefulWidget {
   final String email;
@@ -98,6 +99,14 @@ class _GererExercicesState extends State<GererExercices> {
                             elevation: 4,
                             margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                             child: ListTile(
+                               contentPadding: EdgeInsets.all(16.0),
+  leading: SizedBox(
+    width: MediaQuery.of(context).size.width * 0.4,
+    child: Lottie.asset( 
+      'assets/exe.json',
+      fit: BoxFit.contain,
+    ),
+  ),
                               title: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [

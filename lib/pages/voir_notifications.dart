@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 
 class VoirNotifications extends StatefulWidget {
   final String email;
@@ -54,6 +55,15 @@ class _VoirNotificationsState extends State<VoirNotifications> {
                         margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                         child: ListTile(
                           contentPadding: EdgeInsets.all(16.0),
+                                        leading: SizedBox(
+                                          width: MediaQuery.of(context).size.width * 0.4,
+                                          height: MediaQuery.of(context).size.width * 0.4, 
+                                          child: Lottie.asset(
+                                            'assets/mess.json',
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                          
                           title: Column(
                             children: [
                               Text("message  : ${snapshot.data![index]["body"]}",

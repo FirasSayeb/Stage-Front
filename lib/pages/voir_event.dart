@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 
 class VoirEvent extends StatefulWidget {
   final String email;
@@ -144,36 +145,49 @@ final eventId = event['id'];
  print(services);          
 bool isSubscribed = services.any((element) => element['event_id'] == eventId);
 print(isSubscribed);
-                    return ListTile(
-                      title: Text(eventName),
-                      subtitle: Text("${event["price"]} ${event["date"]}"),
-                      leading: isSubscribed
-    ? ElevatedButton(
-        onPressed: () async {
-          /*Response response = await delete(
-            Uri.parse("https://firas.alwaysdata.net/api/delEvt/$_selectedEleveId"),
-          ); 
-          if (response.statusCode == 200) {
-            getServi(_selectedEleveId!);
-          }*/
-        },
-        child: Text('Ajouter'),
-      )
-    : ElevatedButton(
-        onPressed: () async {
-          Response response = await post(
-            Uri.parse("https://firas.alwaysdata.net/api/addEvt"),
-            body: <String, dynamic>{
-              'eleve': _selectedEleveId.toString(),
-              'event': eventId.toString(), 
-            },
-          );
-          if (response.statusCode == 200) {
-           getServi(_selectedEleveId!);
-          }
-        },
-        child: Text('Ajouter'),
-      ),
+                    return Card(
+                       elevation: 4,
+    margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                      child: ListTile(
+                      
+                      contentPadding: EdgeInsets.all(16.0),
+                      leading: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: Lottie.asset(
+                          'assets/even.json',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                        title: Text(eventName),
+                        subtitle: Text("${event["price"]} ${event["date"]}"),
+                        trailing: isSubscribed
+                        ? ElevatedButton(
+                            onPressed: () async {
+                              /*Response response = await delete(
+                                Uri.parse("https://firas.alwaysdata.net/api/delEvt/$_selectedEleveId"),
+                              ); 
+                              if (response.statusCode == 200) {
+                                getServi(_selectedEleveId!);
+                              }*/
+                            },
+                            child: Text('Ajouter'),
+                          )
+                        : ElevatedButton(
+                            onPressed: () async {
+                              Response response = await post(
+                                Uri.parse("https://firas.alwaysdata.net/api/addEvt"),
+                                body: <String, dynamic>{
+                                  'eleve': _selectedEleveId.toString(),
+                                  'event': eventId.toString(), 
+                                },
+                              );
+                              if (response.statusCode == 200) {
+                               getServi(_selectedEleveId!);
+                              }
+                            },
+                            child: Text('Ajouter'),
+                          ),
+                      ),
                     );
                   },
                 );

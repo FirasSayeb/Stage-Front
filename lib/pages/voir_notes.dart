@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 
 class VoirNotes extends StatefulWidget {
   final String email;
@@ -128,9 +129,24 @@ class _VoirNotesState extends State<VoirNotes> {
                               final note = notes[index];
                               final subject = note['matiere'] ?? 'Unknown';
                               final noteText = note['note'] ?? 'No Note';
-                              return ListTile(
-                                title: Text("Matiere: $subject"),
-                                subtitle: Text('Note: $noteText'),
+                              return Container(
+                                child: Card(
+                                    elevation: 4,
+                                  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                                  child: ListTile(
+                                     contentPadding: EdgeInsets.all(16.0),
+                                        leading: SizedBox(
+                                          width: MediaQuery.of(context).size.width * 0.4,
+                                          height: MediaQuery.of(context).size.width * 0.4, 
+                                          child: Lottie.asset(
+                                            'assets/not.json',
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                    title: Text("Matiere: $subject"),
+                                    subtitle: Text('Note: $noteText'),
+                                  ),
+                                ),
                               );
                             },
                           ),
