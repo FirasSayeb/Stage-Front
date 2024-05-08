@@ -79,7 +79,7 @@ String? validateEmail(String? value) {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ajouter Tuteur'),
+        title: Text('Ajouter Parent'),
         centerTitle: true,
         elevation: 0,
         backgroundColor: const Color.fromARGB(160, 0, 54, 99),

@@ -14,6 +14,7 @@ import 'package:app/pages/gerer_utilisateurs.dart';
 import 'package:app/pages/valider_event.dart';
 import 'package:app/pages/valider_service.dart';
 import 'package:app/pages/voir_all_absences.dart';
+import 'package:app/pages/voir_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -240,14 +241,14 @@ class _GererEventsState extends State<GererEvents> {
                 },
               ),
               ListTile(
-                title: const Text("Events"),
+                title: const Text("événements"),
                 leading: const Icon(Icons.event),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererEvents(widget.email)));
                 },
               ),
               ListTile(
-                title: const Text("Tuteurs"),
+                title: const Text("Parents"),
                 leading: const Icon(Icons.verified_user),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)));
@@ -268,19 +269,26 @@ class _GererEventsState extends State<GererEvents> {
                 },
               ),
               ListTile(
-                title: const Text("Eleves"),
+                title: const Text("élèves"),
                 leading: const Icon(Icons.smart_toy_rounded),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));
                 },
               ),
               ListTile(
-                title: const Text("Envoyer Notification"),
+                title: const Text("Envoyer Message"),
                 leading: const Icon(Icons.notification_add),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterNotification(widget.email)));
                 },
               ),ListTile(
+                title: Text("Consulter Messages"),
+                leading: Icon(Icons.notification_add),
+                onTap: () { Navigator.push(
+      context,   
+      MaterialPageRoute(builder: (context) => VoirNotifications(widget.email)));},
+              ),
+              ListTile(
                   title: const Text("Absences"), 
                   leading: const Icon(Icons.edit_calendar),
                   onTap: () {
@@ -295,7 +303,7 @@ class _GererEventsState extends State<GererEvents> {
                 },
               ),
               ListTile(
-                title: const Text("Valider Events"),
+                title: const Text("Valider événements"),
                 leading: const Icon(Icons.check),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderEvent(widget.email)));

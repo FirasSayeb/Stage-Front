@@ -157,55 +157,55 @@ class _SignupState extends State<Parent> {
       MaterialPageRoute(builder: (context) => Parent(widget.email)));},
               ),
               ListTile(
-                title: Text("Voir Notes"),
+                title: Text("Consulter Notes"),
                 leading: Icon(Icons.grade),
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirNotes(widget.email)));},
               ),
                ListTile(
-                title: Text("Voir Absences"),
+                title: Text("Consulter Absences"),
                 leading: Icon(Icons.do_not_disturb_alt_sharp),
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) =>VoirAbsence(widget.email)));},
               ),
               ListTile(
-                title: Text("Voir Exercices"),
+                title: Text("Consulter Exercices"),
                 leading: Icon(Icons.task),
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirExcercices(widget.email)));},
               ), ListTile(
-                title: Text("Voir Emplois"),
+                title: Text("Consulter Emplois"),
                 leading: Icon(Icons.calendar_month),
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirEmploi(widget.email)));},
               ),
                ListTile(
-                title: Text("Voir Notifications"),
+                title: Text("Consulter Messages"),
                 leading: Icon(Icons.notification_add),
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirNotifications(widget.email)));},
               ),
                ListTile(
-                title: Text("Voir Services"),
+                title: Text("Consulter Services"),
                 leading: Icon(Icons.miscellaneous_services),
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirServices(widget.email)));},
               ),
               ListTile(
-                title: Text("Voir Events"),
+                title: Text("Consulter Events"),
                 leading: Icon(Icons.event),
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirEvent(widget.email)));},
               ),
               ListTile(
-                  title: const Text("Envoyer Notification"), 
+                  title: const Text("Envoyer Message"), 
                   leading: const Icon(Icons.notification_add),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterMessage(widget.email)));

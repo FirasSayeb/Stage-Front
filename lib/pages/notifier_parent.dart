@@ -27,7 +27,7 @@ class _NotifierParentState extends State<NotifierParent> {
   @override
   Widget build(BuildContext context) { 
     return Scaffold(
-       appBar: AppBar(title: Text('Envoyer Notification'),centerTitle: true,
+       appBar: AppBar(title: Text('Envoyer Message'),centerTitle: true,
           elevation: 0,  
           backgroundColor: const Color.fromARGB(160, 0, 54, 99),),
       body: SingleChildScrollView(

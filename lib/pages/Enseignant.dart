@@ -155,7 +155,7 @@ String fileName2WithExtension = pathPart.last;
       MaterialPageRoute(builder: (context) => ListActualites(widget.email)));},
               ), 
                ListTile(
-                title: Text("Voir Notifications"),
+                title: Text("Consulter Messages"),
                 leading: Icon(Icons.notification_add),
                 onTap: () { Navigator.push(
       context,   
