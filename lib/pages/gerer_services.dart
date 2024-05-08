@@ -17,6 +17,7 @@ import 'package:app/pages/voir_all_absences.dart';
 import 'package:app/pages/voir_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 
 class GererServices extends StatefulWidget {
   final String email;
@@ -100,88 +101,94 @@ class _GererServicesState extends State<GererServices> {
                               elevation: 4,
                               margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                               child: ListTile(
-                                title: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Nom : " + snapshot.data![index]['name'],
-                                      style: TextStyle(fontWeight: FontWeight.bold),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        PopupMenuButton<String>(
-                                          itemBuilder: (BuildContext context) => [
-                                            PopupMenuItem<String>(
-                                              value: 'modify',
-                                              child: Text('Modifier'),
-                                            ),
-                                            PopupMenuItem<String>(
-                                              value: 'delete',
-                                              child: Text('Supprimer', style: TextStyle(color: Colors.red)),
-                                            ),
-                                          ],
-                                          onSelected: (String value) async {
-                                            if (value == 'modify') {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => ModService(
-                                                    snapshot.data![index]["name"],
-                                                  ),
-                                                ),
-                                              );
-                                            } else if (value == 'delete') {
-                                              bool confirmDelete = await showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text("Confirmation"),
-                                                    content: Text("Etes-vous sûr que vous voulez supprimer?"),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context).pop(false);
-                                                        },
-                                                        child: Text("Non"),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context).pop(true);
-                                                        },
-                                                        child: Text("Oui"),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
+  contentPadding: EdgeInsets.all(16.0),
+  leading: SizedBox(
+    width: MediaQuery.of(context).size.width * 0.4,
+    child: Lottie.asset(
+      'assets/ser.json',
+      fit: BoxFit.contain,
+    ),
+  ),
+  title: Text(
+    "Nom : " + snapshot.data![index]['name'],
+    style: TextStyle(fontWeight: FontWeight.bold),
+  ),
+  subtitle: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      SizedBox(height: 4),
+      Text(
+        "Prix: ${snapshot.data![index]['price'].toString()}",
+        style: TextStyle(color: Colors.grey),
+      ),
+     
+    ],
+  ),
+  trailing: PopupMenuButton<String>(
+    itemBuilder: (BuildContext context) => [
+      PopupMenuItem<String>(
+        value: 'modify',
+        child: Text('Modifier'),
+      ),
+      PopupMenuItem<String>(
+        value: 'delete',
+        child: Text(
+          'Supprimer',
+          style: TextStyle(color: Colors.red),
+        ),
+      ),
+    ],
+    onSelected: (String value) async {
+      if (value == 'modify') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ModService(
+              snapshot.data![index]["name"],
+            ),
+          ),
+        );
+      } else if (value == 'delete') {
+        bool confirmDelete = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Confirmation"),
+              content: Text("Etes-vous sûr que vous voulez supprimer?"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text("Non"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                  child: Text("Oui"),
+                ),
+              ],
+            );
+          },
+        );
 
-                                              if (confirmDelete == true) {
-                                                print(snapshot.data![index]["email"]);
-                                                deleteService(snapshot.data![index]["name"]);
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(builder: (context) => GererServices(widget.email)),
-                                                ).then((_) => setState(() {}));
-                                              }
-                                            }
-                                          },
-                                          icon: Icon(Icons.more_vert),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Prix: ${snapshot.data![index]['price'].toString()}",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                  ],
-                                ),
-                              ),
+        if (confirmDelete == true) {
+          print(snapshot.data![index]["email"]);
+          deleteService(snapshot.data![index]["name"]);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GererServices(widget.email),
+            ),
+          );
+        }
+      }
+    },
+    icon: Icon(Icons.more_vert),
+  ),
+)
+
                             );
                           } else {
                             return Container();

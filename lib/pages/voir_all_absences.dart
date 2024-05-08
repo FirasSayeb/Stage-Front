@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 
 class ViewAll extends StatefulWidget {
   final String email;
@@ -90,44 +91,61 @@ final date = (absence['date'] ?? 'No Date').toLowerCase();
                     ),
                     Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.01)),
                     for (final absence in filteredAbsences)
-                      ListTile(
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Prof: ${absence['user_name']}",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              "Eleve: ${absence['eleve_name']}",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Matiere: ${absence['matiere'] ?? 'Unknown'}',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                            Text(
-                              'Date: ${absence['date'] ?? 'No Date'}',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                       Container(
+  width: MediaQuery.of(context).size.width,
+  child: Card(
+    elevation: 4,
+    margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+    child: ListTile(
+      contentPadding: EdgeInsets.all(16.0),
+      leading: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.4,
+        height: MediaQuery.of(context).size.width * 0.4, 
+        child: Lottie.asset(
+          'assets/abs2.json',
+          fit: BoxFit.contain,
+        ),
+      ),
+                             title: Column(
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               children: [
+                                 Text(
+                                   "Prof: ${absence['user_name']}",
+                                   style: TextStyle(
+                                     fontSize: 18,
+                                     fontWeight: FontWeight.bold,
+                                   ),
+                                 ),
+                                 Text(
+                                   "Eleve: ${absence['eleve_name']}",
+                                   style: TextStyle(
+                                     fontSize: 18,
+                                     fontWeight: FontWeight.bold,
+                                   ),
+                                 ),
+                               ],
+                             ),
+                             subtitle: Column(
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               children: [
+                                 SizedBox(height: 4),
+                                 Text(
+                                   'Matiere: ${absence['matiere'] ?? 'Unknown'}',
+                                   style: TextStyle(
+                                     fontSize: 16,
+                                   ),
+                                 ),
+                                 Text(
+                                   'Date: ${absence['date'] ?? 'No Date'}',
+                                   style: TextStyle(
+                                     fontSize: 16,
+                                   ),
+                                 ),
+                               ],
+                             ),
+                           ),
+                         ),
+                       ),
                   ],
                 ),
               ),

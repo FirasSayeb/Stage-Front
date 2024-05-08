@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 
 class VoirAbsence extends StatefulWidget {
   final String email;
@@ -117,7 +118,7 @@ class _VoirAbsenceState extends State<VoirAbsence> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
-                              'Absences pour l eleve sélectionnée::',
+                              'Absences pour l eleve sélectionnée:',
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -129,32 +130,45 @@ class _VoirAbsenceState extends State<VoirAbsence> {
                               final subject = absence['matiere'] ?? 'Unknown';
                               final date = absence['date'] ?? 'No Date';
                               final prof =absence['user_name'];
-                              return ListTile(
-  title: Text(
-    "Prof: $prof",
-    style: TextStyle(
-      fontSize: 18, 
-      fontWeight: FontWeight.bold, 
-    ),
-  ),
-  subtitle: Column(
-    crossAxisAlignment: CrossAxisAlignment.start, 
-    children: [
-      Text(
-        'Matiere: $subject',
-        style: TextStyle(
-          fontSize: 16, 
-        ),
-      ),
-      Text(
-        'Date: $date',
-        style: TextStyle(
-          fontSize: 16, 
-        ),
-      ),
-    ],
-  ),
-);
+                              return Card(
+                                elevation: 4,
+    margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.all(16.0),
+                                    leading: SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.4,
+                                      height: MediaQuery.of(context).size.width * 0.4, 
+                                      child: Lottie.asset(
+                                        'assets/abs2.json',
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                title: Text(
+                                  "Prof: $prof",
+                                  style: TextStyle(
+                                    fontSize: 18, 
+                                    fontWeight: FontWeight.bold, 
+                                  ),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start, 
+                                  children: [
+                                    Text(
+                                      'Matiere: $subject',
+                                      style: TextStyle(
+                                        fontSize: 16, 
+                                      ),
+                                    ),
+                                    Text(
+                                      'Date: $date',
+                                      style: TextStyle(
+                                        fontSize: 16, 
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              );
 
                             },
                           ),
