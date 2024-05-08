@@ -87,7 +87,7 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
         title: Text("Marquer Absence"),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Color.fromARGB(160, 0, 54, 99),
+         backgroundColor: Color.fromARGB(255, 4, 166, 235),
       ),
       body: Form(
         key: _formKey,

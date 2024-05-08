@@ -19,7 +19,7 @@ class _ENSHomeState extends State<ENSHome> {
     return Scaffold(
       appBar: AppBar(title:Text('${widget.name}',),centerTitle: true,
           elevation: 0, 
-          backgroundColor: const Color.fromARGB(160, 0, 54, 99),),
+          backgroundColor: Color.fromARGB(255, 4, 166, 235),),
           body: GridView(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),children: [
             Card(child: GestureDetector(onTap: () {
                Navigator.push(

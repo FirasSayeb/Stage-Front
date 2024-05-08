@@ -71,7 +71,7 @@ class _ProfilState extends State<Profil> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Bienvenu ${widget.email}'),
-        backgroundColor: const Color.fromARGB(160, 0, 54, 99),
+        backgroundColor: Color.fromARGB(255, 4, 166, 235),
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<Map<String, dynamic>>(

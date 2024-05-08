@@ -70,6 +70,7 @@ class _VoirServicesState extends State<VoirServices> {
     return Scaffold(
       appBar: AppBar(
         title: Text('consulter services'),
+         backgroundColor: Color.fromARGB(255, 4, 166, 235),
       ),
       body: SingleChildScrollView(
         child: Column(

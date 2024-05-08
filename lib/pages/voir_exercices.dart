@@ -50,6 +50,7 @@ class _VoirExcercicesState extends State<VoirExcercices> {
     return  Scaffold(
       appBar: AppBar(
         title: Text(' consulter exercices '),
+         backgroundColor: Color.fromARGB(255, 4, 166, 235),
       ),
       body: SingleChildScrollView( 
         child: Column(

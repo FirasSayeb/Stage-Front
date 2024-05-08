@@ -25,7 +25,7 @@ class _AjouterServiceState extends State<AjouterEvent> {
           title: Text('Ajouter Événement') ,
           centerTitle: true,
           elevation: 0,
-          backgroundColor: const Color.fromARGB(160, 0, 54, 99),
+          backgroundColor: Color.fromARGB(255, 4, 166, 235),
         ),
       body: SingleChildScrollView(
         child: Stack(

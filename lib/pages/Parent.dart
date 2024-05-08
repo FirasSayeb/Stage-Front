@@ -44,7 +44,7 @@ class _SignupState extends State<Parent> {
     return MaterialApp( 
       debugShowCheckedModeBanner: false,
      home:Scaffold(
-      appBar: AppBar(title:  Text("Bienvenu ${widget.email} "),centerTitle: true,elevation: 0,backgroundColor: Color.fromARGB(160,0,54,99),), 
+      appBar: AppBar(title:  Text("Bienvenu ${widget.email} "),centerTitle: true,elevation: 0, backgroundColor: Color.fromARGB(255, 4, 166, 235),), 
       body:Column(
           children: [
             TextField(

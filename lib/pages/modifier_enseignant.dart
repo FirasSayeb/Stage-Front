@@ -78,7 +78,7 @@ class _ModEnsignantState extends State<ModEnsignant> {
     return Scaffold(
       appBar: AppBar(
         title: Text('bienvenu ${widget.email}'),
-        backgroundColor: const Color.fromARGB(160, 0, 54, 99),
+        backgroundColor: Color.fromARGB(255, 4, 166, 235),
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<Map<String, dynamic>>(

@@ -70,6 +70,7 @@ class _VoirEventState extends State<VoirEvent> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Liste des événements'),
+         backgroundColor: Color.fromARGB(255, 4, 166, 235),
       ),
       body: SingleChildScrollView(
         child: Column(

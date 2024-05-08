@@ -42,6 +42,7 @@ class _ViewAllState extends State<ViewAll> {
     return Scaffold(
       appBar: AppBar(
         title: Text('consulter Absences'),
+         backgroundColor: Color.fromARGB(255, 4, 166, 235),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _futureAbsences,

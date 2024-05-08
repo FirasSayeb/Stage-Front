@@ -51,6 +51,7 @@ class _VoirNotesState extends State<VoirNotes> {
     return Scaffold(
       appBar: AppBar(
         title: Text('consulter notes'),
+         backgroundColor: Color.fromARGB(255, 4, 166, 235),
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -36,7 +36,7 @@ class _AjouterMessageState extends State<AjouterMessage> {
     return Scaffold(
       appBar: AppBar(title: Text('Envoyer Message'),centerTitle: true,
           elevation: 0, 
-          backgroundColor: const Color.fromARGB(160, 0, 54, 99),),
+           backgroundColor: Color.fromARGB(255, 4, 166, 235),),
     body: SingleChildScrollView(
       child: Form(key:fkey ,child:Column(children: [ 
         Lottie.asset('assets/aaa.json',height: MediaQuery.of(context).size.height*0.4,width:MediaQuery.of(context).size.width),

@@ -31,7 +31,7 @@ class _ForgotPasswordState extends State<ResetPassword> {
           title: Text('réinitialiser le mot de passe') ,
           centerTitle: true,
           elevation: 0,
-          backgroundColor: const Color.fromARGB(160, 0, 54, 99),
+          backgroundColor: Color.fromARGB(255, 4, 166, 235),
         ),
         body: SingleChildScrollView(
           child: Column(

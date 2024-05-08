@@ -53,6 +53,7 @@ class _VoirEmploiState extends State<VoirEmploi> {
     return  Scaffold(
       appBar: AppBar(
         title: Text('consulter emploi'),
+         backgroundColor: Color.fromARGB(255, 4, 166, 235),
       ),
       body: SingleChildScrollView(
         child: Column(

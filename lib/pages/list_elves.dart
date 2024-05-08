@@ -25,7 +25,7 @@ class _ListElevesState extends State<ListEleves> {
         title: Text('${widget.name}'),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.lightBlue[800],
+        backgroundColor: Color.fromARGB(255, 4, 166, 235),
       ),
       body: SingleChildScrollView(
         child: Column(

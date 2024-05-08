@@ -33,7 +33,7 @@ class _ListActualitesState extends State<ListActualites> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Actualites "),centerTitle: true,elevation: 0,backgroundColor: Color.fromARGB(160,0,54,99),),
+      appBar: AppBar(title: const Text("Actualites "),centerTitle: true,elevation: 0, backgroundColor: Color.fromARGB(255, 4, 166, 235),),
       body: Column(
           children: [
             TextField(

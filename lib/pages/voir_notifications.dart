@@ -34,6 +34,7 @@ class _VoirNotificationsState extends State<VoirNotifications> {
     return Scaffold(
       appBar: AppBar(
         title: Text('consulter messages'),
+         backgroundColor: Color.fromARGB(255, 4, 166, 235),
       ),
       body: Container(
         child: FutureBuilder<List<Map<String,dynamic>>>( 

@@ -51,7 +51,7 @@ class _VoirAbsenceState extends State<VoirAbsence> {
     return Scaffold(
       appBar: AppBar(
         title: Text('consulter  absences'),
-        backgroundColor: Color(0xFFFF9000)  
+         backgroundColor: Color.fromARGB(255, 4, 166, 235), 
       ),
       body: SingleChildScrollView(
         child: Column(
