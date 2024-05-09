@@ -144,7 +144,7 @@ final eventName = event['name'] ?? 'Unknown';
 final eventId = event['id']; 
  print(services);          
 bool isSubscribed = services.any((element) => element['event_id'] == eventId);
-print(isSubscribed);
+print(isSubscribed); 
                     return Card(
                        elevation: 4,
     margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
@@ -154,7 +154,7 @@ print(isSubscribed);
                       leading: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.4,
                         child: Lottie.asset(
-                          'assets/even.json',
+                          'assets/av.json',
                           fit: BoxFit.contain,
                         ),
                       ),

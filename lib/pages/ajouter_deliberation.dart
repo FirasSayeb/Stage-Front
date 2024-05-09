@@ -58,7 +58,7 @@ class _AjouterDelState extends State<AjouterDel> {
           key: fkey,
           child: Column(
             children: [
-              Lottie.asset('assets/file.json',
+              Lottie.asset('assets/not.json',
                   height: MediaQuery.of(context).size.height * 0.4,
                   width: MediaQuery.of(context).size.width),
               Padding(padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.02)),

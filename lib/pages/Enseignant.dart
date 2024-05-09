@@ -40,7 +40,7 @@ class _SigninState extends State<Enseignant> {
     return MaterialApp(  
       debugShowCheckedModeBanner: false,        
      home:Scaffold(
-      appBar: AppBar(title:  Text("bienvenu ${widget.email} "),centerTitle: true,elevation: 0, backgroundColor: Color.fromARGB(255, 4, 166, 235),), 
+      appBar: AppBar(title:  Text("Bienvenu ${widget.email} "),centerTitle: true,elevation: 0, backgroundColor: Color.fromARGB(255, 4, 166, 235),), 
       body: SingleChildScrollView(child: Column(
         children: [ Padding(padding: EdgeInsets.all(5)),
           FutureBuilder<List<Map<String, dynamic>>>(

@@ -110,92 +110,97 @@ class _GererEventsState extends State<GererEvents> {
   leading: SizedBox(
     width: MediaQuery.of(context).size.width * 0.4,
     child: Lottie.asset(
-      'assets/even.json',
+      'assets/av.json',
       fit: BoxFit.contain,
     ),
   ),
-  title: Text(
-    "Nom : " + snapshot.data![index]['name'],
-    style: TextStyle(fontWeight: FontWeight.bold),
+  title: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(
+        "Nom : " + snapshot.data![index]['name'],
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      PopupMenuButton<String>(
+        itemBuilder: (BuildContext context) => [
+          PopupMenuItem<String>(
+            value: 'modify',
+            child: Text('Modifier'),
+          ),
+          PopupMenuItem<String>(
+            value: 'delete',
+            child: Text('Supprimer', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+        onSelected: (String value) async {
+          if (value == 'modify') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ModEvent(
+                  snapshot.data![index]["name"],
+                ),
+              ),
+            );
+          } else if (value == 'delete') {
+            bool confirmDelete = await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Confirmation"),
+                  content: Text("Etes-vous sûr que vous voulez supprimer?"),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                      child: Text("Non"),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                      child: Text("Oui"),
+                    ),
+                  ],
+                );
+              },
+            );
+
+            if (confirmDelete == true) {
+              print(snapshot.data![index]["email"]);
+              deleteEvent(snapshot.data![index]["name"]);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => GererEvents(widget.email)),
+              );
+            }
+          }
+        },
+        icon: Icon(Icons.more_vert),
+      ),
+    ],
   ),
   subtitle: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      SizedBox(height: 4),
-      Text(
-        "Prix: ${snapshot.data![index]['price'].toString()}",
-        style: TextStyle(color: Colors.grey),
-      ),
-      Text(
-        "Date: ${snapshot.data![index]['date']}",
-        style: TextStyle(color: Colors.grey),
-      ),
-    ],
-  ),
-  trailing: PopupMenuButton<String>(
-    itemBuilder: (BuildContext context) => [
-      PopupMenuItem<String>(
-        value: 'modify',
-        child: Text('Modifier'),
-      ),
-      PopupMenuItem<String>(
-        value: 'delete',
-        child: Text(
-          'Supprimer',
-          style: TextStyle(color: Colors.red),
-        ),
-      ),
-    ],
-    onSelected: (String value) async {
-      if (value == 'modify') {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ModEvent(
-              snapshot.data![index]["name"],
-            ),
+      SizedBox(height: 8), // Increased height
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Prix: ${snapshot.data![index]['price'].toString()}",
+            style: TextStyle(color: Colors.grey),
           ),
-        );
-      } else if (value == 'delete') {
-        bool confirmDelete = await showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Confirmation"),
-              content: Text("Etes-vous sûr que vous voulez supprimer?"),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                  child: Text("Non"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                  child: Text("Oui"),
-                ),
-              ],
-            );
-          },
-        );
-
-        if (confirmDelete == true) {
-          print(snapshot.data![index]["email"]);
-          deleteEvent(snapshot.data![index]["name"]);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => GererEvents(widget.email),
-            ),
-          );
-        }
-      }
-    },
-    icon: Icon(Icons.more_vert),
+          Text(
+            "Date: ${snapshot.data![index]['date']}",
+            style: TextStyle(color: Colors.grey),
+          ),
+        ],
+      ),
+    ],
   ),
-)
+),
 
                             );
                           } else {
