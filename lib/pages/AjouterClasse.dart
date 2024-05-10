@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:app/pages/gerer_classes.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http; // Alias http package to avoid conflicts
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
@@ -22,11 +25,12 @@ class _HomeState extends State<AjouterClasse> {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
       file = result.files.first;
-      path = file!.path;
-      print(file!.bytes);
-      print(file!.extension);
-      print(file!.name);
-      print(file!.path);
+
+      if (kIsWeb) {
+        path = base64Encode(file!.bytes!); 
+      } else {
+        path = file!.path;
+      }
     }
   }
 
@@ -34,10 +38,11 @@ class _HomeState extends State<AjouterClasse> {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
       file = result.files.first;
-      setState(() {
+      if (kIsWeb) {
+        secondFilePath = base64Encode(file!.bytes!); 
+      } else {
         secondFilePath = file!.path;
-      });
-      print(secondFilePath); 
+      }
     }
   }
 
@@ -70,7 +75,7 @@ class _HomeState extends State<AjouterClasse> {
                 Container(
                   alignment: FractionalOffset.center,
                   height: MediaQuery.of(context).size.height*0.4,
-                  child: Lottie.asset("assets/addclass.json"),
+                  child: Lottie.asset("assets/cla.json"),
                 ),
                 
                 Center(
@@ -142,15 +147,31 @@ class _HomeState extends State<AjouterClasse> {
                                 
 
                                 if (path != null && path!.isNotEmpty) {
-                                   var file = await MultipartFile.fromPath('file', path!);
-        request.files.add(file);
+                                   if (kIsWeb) {
+                                    request.files.add(http.MultipartFile.fromBytes(
+                                      'file',
+                                      file!.bytes!,
+                                      filename: file!.name,
+                                    ));
+                                  } else {
+                                    request.files.add(await MultipartFile
+                                        .fromPath('file', path!));
+                                  }
                                  
                                 }
 
                                 if (secondFilePath != null && secondFilePath!.isNotEmpty) {
                                  
-var file2 = await MultipartFile.fromPath('examens', secondFilePath!);
-        request.files.add(file2);}
+ if (kIsWeb) {
+                                    request.files.add(http.MultipartFile.fromBytes(
+                                      'examens',
+                                      file!.bytes!,
+                                      filename: file!.name,
+                                    ));
+                                  } else {
+                                    request.files.add(await MultipartFile
+                                        .fromPath('examens', path!));
+                                  }}
                                 try {
                                   final streamedResponse = await request.send();
                                   final response = await http.Response.fromStream(streamedResponse);

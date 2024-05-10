@@ -136,7 +136,7 @@ class _VoirExcercicesState extends State<VoirExcercices> {
                                 leading: SizedBox(
                                   width: MediaQuery.of(context).size.width * 0.4,
                                   child: Lottie.asset( 
-                                    'assets/exe.json',
+                                    'assets/ex.json',
                                     fit: BoxFit.contain,
                                   ),
                                 ),  

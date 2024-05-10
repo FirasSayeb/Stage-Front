@@ -82,7 +82,7 @@ class _GererExercicesState extends State<GererExercices> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else {
-                    // Filter the data based on the search string
+                    
                     final List<Map<String, dynamic>> filteredData = snapshot.data!.where((exercise) {
   final name = exercise['name'].toLowerCase();
   final description = exercise['description'].toLowerCase();
@@ -103,7 +103,7 @@ class _GererExercicesState extends State<GererExercices> {
   leading: SizedBox(
     width: MediaQuery.of(context).size.width * 0.4,
     child: Lottie.asset( 
-      'assets/exe.json',
+      'assets/ex.json',
       fit: BoxFit.contain,
     ),
   ),

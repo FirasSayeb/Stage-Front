@@ -39,7 +39,7 @@ class _AjouterExerciceState extends State<AjouterExercice> {
                 Container(
                   alignment: FractionalOffset.center,
                   height: MediaQuery.of(context).size.height * 0.44,
-                  child: Lottie.asset("assets/homework.json"),
+                  child: Lottie.asset("assets/ex.json"),
                 ),
                 
                 Center(
@@ -164,7 +164,7 @@ class _AjouterExerciceState extends State<AjouterExercice> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     GererExercices(widget.email,
-                                                        widget.name)));
+                                                        widget.name))).then((_) => setState(() {}));
                                       } else {
                                         setState(() {
                                           errorMessage =

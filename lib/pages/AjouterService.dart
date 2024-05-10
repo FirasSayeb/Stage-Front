@@ -35,7 +35,7 @@ class _AjouterServiceState extends State<AjouterService> {
                 Container(
                   alignment: FractionalOffset.center,
                   height: MediaQuery.of(context).size.height*0.4,
-                  child: Lottie.asset("assets/anii.json"),
+                  child: Lottie.asset("assets/ser.json"),
                 ),
                 Center(
                   child: Form( 

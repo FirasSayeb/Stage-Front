@@ -59,12 +59,12 @@ class _HomeState extends State<AjouterActualite> {
         child: Stack(
           children: [
             Column(
-              children: [
+              children: [  
                 const Padding(padding: EdgeInsets.all(10)),
                 Container(
                   alignment: FractionalOffset.center,
                   height: MediaQuery.of(context).size.height * 0.4,
-                  child: Lottie.asset("assets/add.json"),
+                  child:  Lottie.asset("assets/news.json"),
                 ),
                 const Padding(padding: EdgeInsets.all(5)),
                 Container(

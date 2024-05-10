@@ -36,7 +36,7 @@ class _AjouterServiceState extends State<AjouterEvent> {
                 Container(
                   alignment: FractionalOffset.center,
                   height: MediaQuery.of(context).size.height*0.3,
-                  child: Lottie.asset("assets/event.json"),
+                  child: Lottie.asset("assets/av.json"),
                 ),
                
                 Center(

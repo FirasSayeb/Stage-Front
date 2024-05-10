@@ -145,44 +145,48 @@ final serviceId = service['id'];
  print(services);          
 bool isSubscribed = services.any((element) => element['service_id'] == serviceId);
 print(isSubscribed);
-                    return ListTile(
-                      contentPadding: EdgeInsets.all(16.0),
-  leading: SizedBox(
-    width: MediaQuery.of(context).size.width * 0.4,
-    child: Lottie.asset(
-      'assets/ser.json',
-      fit: BoxFit.contain,
-    ),
-  ),
-                      title: Text(serviceName),
-                      subtitle: Text("${service["price"]}"),
-                      trailing: isSubscribed
-    ? ElevatedButton(
-        onPressed: () async {
-          /*Response response = await delete(
-            Uri.parse("https://firas.alwaysdata.net/api/delSer/$_selectedEleveId"),
-          );
-          if (response.statusCode == 200) {
-            getServi(_selectedEleveId!);
-          }*/
-        },
-        child: Text('Ajouter'), 
-      )
-    : ElevatedButton( 
-        onPressed: () async {
-          Response response = await post(
-            Uri.parse("https://firas.alwaysdata.net/api/addSer"),
-            body: <String, dynamic>{
-              'eleve': _selectedEleveId.toString(),
-              'service': serviceId.toString(), 
-            },
-          ); 
-          if (response.statusCode == 200) {
-           getServi(_selectedEleveId!);
-          }
-        },
-        child: Text('Ajouter'),
-      ),
+                    return Card(
+                      elevation: 4,
+    margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(16.0),
+                      leading: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: Lottie.asset(
+                          'assets/ser.json',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                        title: Text(serviceName),
+                        subtitle: Text("${service["price"]}"),
+                        trailing: isSubscribed
+                        ? ElevatedButton(
+                            onPressed: () async {
+                              /*Response response = await delete(
+                                Uri.parse("https://firas.alwaysdata.net/api/delSer/$_selectedEleveId"),
+                              );
+                              if (response.statusCode == 200) {
+                                getServi(_selectedEleveId!);
+                              }*/
+                            },
+                            child: Text('Ajouter'), 
+                          )
+                        : ElevatedButton( 
+                            onPressed: () async {
+                              Response response = await post(
+                                Uri.parse("https://firas.alwaysdata.net/api/addSer"),
+                                body: <String, dynamic>{
+                                  'eleve': _selectedEleveId.toString(),
+                                  'service': serviceId.toString(), 
+                                },
+                              ); 
+                              if (response.statusCode == 200) {
+                               getServi(_selectedEleveId!);
+                              }
+                            },
+                            child: Text('Ajouter'),
+                          ),
+                      ),
                     );
                   },
                 );
