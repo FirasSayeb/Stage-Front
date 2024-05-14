@@ -121,6 +121,10 @@ class _GererServicesState extends State<GererServices> {
         "Prix: ${snapshot.data![index]['price'].toString()}",
         style: TextStyle(color: Colors.grey),
       ),
+      Text(
+        "Description: ${snapshot.data![index]['description']}",
+        style: TextStyle(color: Colors.grey),
+      ),
      
     ],
   ),
@@ -144,6 +148,7 @@ class _GererServicesState extends State<GererServices> {
           context,
           MaterialPageRoute(
             builder: (context) => ModService(
+              widget.email,
               snapshot.data![index]["name"],
             ),
           ),
@@ -181,7 +186,7 @@ class _GererServicesState extends State<GererServices> {
             MaterialPageRoute(
               builder: (context) => GererServices(widget.email),
             ),
-          );
+          ).then((_) => setState(() {}));
         }
       }
     },

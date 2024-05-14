@@ -12,7 +12,7 @@ class AjouterService extends StatefulWidget {
 }
 
 class _AjouterServiceState extends State<AjouterService> {
-
+   late String description;
    late String name;
    late double price;
   final fkey = GlobalKey<FormState>(); 
@@ -86,7 +86,27 @@ class _AjouterServiceState extends State<AjouterService> {
                         ),
                       ),
                       ),
-
+ Container(
+                           padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } else if (value.length < 3) {
+                                return "verifier votre champs";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              description = newValue!;
+                            },
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                             border: OutlineInputBorder(),
+                              labelText: "Description:",
+                            ),
+                          ),
+                        ),
                      
                            Padding(padding: EdgeInsets.all(5)), 
                         Center(
@@ -98,6 +118,7 @@ class _AjouterServiceState extends State<AjouterService> {
 
                                 Map<String, dynamic> userData = {
                                  'name':name,
+                                 'description':description,
                                  'price':price.toString()  
                                 };
                                 

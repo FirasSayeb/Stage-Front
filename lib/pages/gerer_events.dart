@@ -138,6 +138,7 @@ class _GererEventsState extends State<GererEvents> {
               context,
               MaterialPageRoute(
                 builder: (context) => ModEvent(
+                  widget.email,
                   snapshot.data![index]["name"],
                 ),
               ),
@@ -173,7 +174,7 @@ class _GererEventsState extends State<GererEvents> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => GererEvents(widget.email)),
-              );
+              ).then((_) => setState(() {}));
             }
           }
         },
@@ -184,7 +185,7 @@ class _GererEventsState extends State<GererEvents> {
   subtitle: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      SizedBox(height: 8), // Increased height
+      SizedBox(height: 8),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -194,6 +195,10 @@ class _GererEventsState extends State<GererEvents> {
           ),
           Text(
             "Date: ${snapshot.data![index]['date']}",
+            style: TextStyle(color: Colors.grey),
+          ),
+          Text(
+            "Description: ${snapshot.data![index]['description']}",
             style: TextStyle(color: Colors.grey),
           ),
         ],

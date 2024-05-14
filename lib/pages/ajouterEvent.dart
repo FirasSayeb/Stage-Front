@@ -16,6 +16,7 @@ class _AjouterServiceState extends State<AjouterEvent> {
   late String date='';
    late String name;
    late double price;
+   late String description;
   final fkey = GlobalKey<FormState>(); 
   String errorMessage = '';
   @override
@@ -116,6 +117,27 @@ class _AjouterServiceState extends State<AjouterEvent> {
                                   },
                                 ),
                              ),
+                              Container(
+                           padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } else if (value.length < 3) {
+                                return "verifier votre champs";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              description = newValue!;
+                            },
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                             border: OutlineInputBorder(),
+                              labelText: "Description:",
+                            ),
+                          ),
+                        ),
                         Center(
                           child: GestureDetector(
                             onTap: () async {
@@ -125,6 +147,7 @@ class _AjouterServiceState extends State<AjouterEvent> {
 
                                 Map<String, dynamic> userData = { 
                                  'name':name,
+                                 'description':description,
                                  'price':price.toString(),
                                  'date':date 
                                 };

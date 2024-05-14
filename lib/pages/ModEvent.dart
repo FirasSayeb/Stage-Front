@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:app/pages/gerer_events.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class ModEvent extends StatefulWidget {
   final String name;
-  ModEvent(this.name);
+  final String email;
+  ModEvent(this.email,this.name);
 
   @override
   State<ModEvent> createState() => _ModServiceState();
@@ -15,6 +17,7 @@ class _ModServiceState extends State<ModEvent> {
   final fkey = GlobalKey<FormState>();
   late String name = '';
   double? price;
+  late String description;
   late String date;
   late String select = '';
   late Future<Map<String, dynamic>> _eventFuture;
@@ -47,11 +50,8 @@ class _ModServiceState extends State<ModEvent> {
             if (classe == null) {
               return Center(child: Text('Événement introuvable'));
             }
-
-            name = classe['name'] ?? '';
-            price = double.tryParse(classe['price'].toString()) ?? 0.0;
-            date = classe['date'] ?? '';
-
+            date =classe["date"]??'';
+           
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -60,7 +60,7 @@ class _ModServiceState extends State<ModEvent> {
                     child: Column(
                       children: [
                         Container(
-  height: MediaQuery.of(context).size.height*0.35,
+  height: MediaQuery.of(context).size.height*0.5,
   margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
   decoration: BoxDecoration(
     boxShadow: [
@@ -80,7 +80,7 @@ class _ModServiceState extends State<ModEvent> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFormField(
-          initialValue: name,
+          initialValue: classe['name'] ?? '',
           style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
           onChanged: (value) {
             name = value;
@@ -98,7 +98,7 @@ class _ModServiceState extends State<ModEvent> {
         ),
         SizedBox(height: 8.0),
         TextFormField(
-          initialValue: price.toString(),
+          initialValue:classe['price'].toString() ?? '',
           keyboardType: TextInputType.number,
           style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
           onChanged: (value) {
@@ -122,6 +122,25 @@ class _ModServiceState extends State<ModEvent> {
           onTap: () {
             _selectDate(date);
           },
+        ), SizedBox(height: 8.0),
+        TextFormField(
+          initialValue: classe['description'] ?? '',
+          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+          onChanged: (value) {
+            setState(() {
+              description = value;
+            });
+          },
+          decoration: InputDecoration(
+            labelText: 'description :',
+            border: OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'champs obligatoire';
+            }
+            return null;
+          },
         ),
       ],
     ),
@@ -136,12 +155,16 @@ class _ModServiceState extends State<ModEvent> {
                                 Uri.parse("https://firas.alwaysdata.net/api/updateEvent/${widget.name}"),
                                 body: <String, dynamic>{
                                   'name': name,
+                                  'description':description,
                                   'price': price.toString(),
                                   'date': select,
                                 },
                               );
                               if (response.statusCode == 200) {
-                                Navigator.pop(context);
+                               Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => GererEvents(widget.email)),
+              ).then((_) => setState(() {}));
                               }
                             }
                           },

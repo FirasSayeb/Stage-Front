@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:app/pages/gerer_services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class ModService extends StatefulWidget {
   final String name;
-  ModService(this.name);
+  final String email;
+  ModService(this.email,this.name);
 
   @override
   State<ModService> createState() => _ModServiceState();
@@ -14,7 +16,7 @@ class _ModServiceState extends State<ModService> {
   final fkey = GlobalKey<FormState>();
   late String name = '';
   double? price;
-
+  late String description='';
   late Future<Map<String, dynamic>> _serviceFuture;
 
   @override
@@ -54,7 +56,7 @@ class _ModServiceState extends State<ModService> {
                     return Column(
                       children: [
                         Container(
-  height: 200,
+  height: 300,
   margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
   decoration: BoxDecoration(
     boxShadow: [
@@ -113,6 +115,26 @@ class _ModServiceState extends State<ModService> {
             return null;
           },
         ),
+ SizedBox(height: 8.0),
+        TextFormField(
+          initialValue: classe['description'] ?? '',
+          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+          onChanged: (value) {
+            setState(() {
+              description = value;
+            });
+          },
+          decoration: InputDecoration(
+            labelText: 'description :',
+            border: OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'champs obligatoire';
+            }
+            return null;
+          },
+        ),
       ],
     ),
   ),
@@ -127,10 +149,16 @@ class _ModServiceState extends State<ModService> {
                                 body: <String, dynamic>{
                                   'name': name.isNotEmpty ? name : classe['name'],
                                   'price': price != null ? price.toString() : classe['price'].toString(),
+                                  'description': description.isNotEmpty ? description : classe['description'],
                                 },
                               );
                               if (response.statusCode == 200) {
-                                Navigator.pop(context);
+                               Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GererServices(widget.email),
+            ),
+          ).then((_) => setState(() {}));
                               }
                             }
                           },
