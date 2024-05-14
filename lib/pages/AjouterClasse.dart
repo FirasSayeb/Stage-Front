@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:app/pages/gerer_classes.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http; // Alias http package to avoid conflicts
+import 'package:http/http.dart' as http; 
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class AjouterClasse extends StatefulWidget {
 }
 
 class _HomeState extends State<AjouterClasse> { 
-  PlatformFile? file;
+  PlatformFile? file,file2;
   String? path;
   String? secondFilePath;
   Future<void> picksinglefile() async {
@@ -37,7 +37,7 @@ class _HomeState extends State<AjouterClasse> {
   Future<void> pickSecondFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
-      file = result.files.first;
+      file2 = result.files.first;
       if (kIsWeb) {
         secondFilePath = base64Encode(file!.bytes!); 
       } else {
@@ -150,7 +150,7 @@ class _HomeState extends State<AjouterClasse> {
                                    if (kIsWeb) {
                                     request.files.add(http.MultipartFile.fromBytes(
                                       'file',
-                                      file!.bytes!,
+                                      file!.bytes!, 
                                       filename: file!.name,
                                     ));
                                   } else {
@@ -165,12 +165,12 @@ class _HomeState extends State<AjouterClasse> {
  if (kIsWeb) {
                                     request.files.add(http.MultipartFile.fromBytes(
                                       'examens',
-                                      file!.bytes!,
-                                      filename: file!.name,
+                                      file2!.bytes!,
+                                      filename: file2!.name,
                                     ));
                                   } else {
                                     request.files.add(await MultipartFile
-                                        .fromPath('examens', path!));
+                                        .fromPath('examens', secondFilePath!));
                                   }}
                                 try {
                                   final streamedResponse = await request.send();

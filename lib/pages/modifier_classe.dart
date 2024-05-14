@@ -1,8 +1,10 @@
  import 'dart:convert';
 import 'package:app/pages/gerer_classes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
+import 'package:http/http.dart';
 
 class ModifierClasse extends StatefulWidget {
   final int id;
@@ -61,12 +63,13 @@ class _ModifierClasseState extends State<ModifierClasse> {
   Future<void> pickSingleFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
+       file = result.files.first;
       setState(() {
-        file = result.files.first;
-        name = file!.name;
+         if (kIsWeb) {
+        path = base64Encode(file!.bytes!); 
+      } else {
         path = file!.path;
-        print("$name  name from function");
-        print("$path path from function");
+      }
       });
     }
   }
@@ -74,12 +77,13 @@ class _ModifierClasseState extends State<ModifierClasse> {
   Future<void> pickSecondFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
+       file2 = result.files.first;
       setState(() {
-        file2 = result.files.first;
-        name2 = file2!.name;
+          if (kIsWeb) {
+        path2 = base64Encode(file2!.bytes!); 
+      } else {
         path2 = file2!.path;
-        print("$name2  name2 from function");
-        print("$path2 path2 from function");
+      }
       });
     }
   }
@@ -178,18 +182,32 @@ Container(
                               "https://firas.alwaysdata.net/api/updateClasse/${widget.id}"),
                         );
                         request.fields['body'] = body!;
-                        if (file != null && file!.path!.isNotEmpty) {
-                          print(path);
-                          var file =
-                              await http.MultipartFile.fromPath('file', path!);
-                          request.files.add(file);
-                        }
-                        if (file2 != null && file2!.path!.isNotEmpty) {
-                          print(path2);
-                          var file2 = await http.MultipartFile.fromPath(
-                              'examens', path2!);
-                          request.files.add(file2);
-                        }
+                        if (path != null && path!.isNotEmpty) {
+                                   if (kIsWeb) {
+                                    request.files.add(http.MultipartFile.fromBytes(
+                                      'file',
+                                      file!.bytes!, 
+                                      filename: file!.name,
+                                    ));
+                                  } else {
+                                    request.files.add(await MultipartFile
+                                        .fromPath('file', path!));
+                                  }
+                                 
+                                }
+
+                                if (path2 != null && path2!.isNotEmpty) {
+                                 
+ if (kIsWeb) {
+                                    request.files.add(http.MultipartFile.fromBytes(
+                                      'examens',
+                                      file2!.bytes!,
+                                      filename: file2!.name,
+                                    ));
+                                  } else {
+                                    request.files.add(await MultipartFile
+                                        .fromPath('examens', path2!));
+                                  }}
                         var response = await request.send();
                         if (response.statusCode == 200) {
                           Navigator.push(
