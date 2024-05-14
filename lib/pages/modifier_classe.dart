@@ -182,7 +182,7 @@ Container(
                               "https://firas.alwaysdata.net/api/updateClasse/${widget.id}"),
                         );
                         request.fields['body'] = body!;
-                        if (path != null && path!.isNotEmpty) {
+                        if (file!=null) {
                                    if (kIsWeb) {
                                     request.files.add(http.MultipartFile.fromBytes(
                                       'file',
@@ -196,7 +196,7 @@ Container(
                                  
                                 }
 
-                                if (path2 != null && path2!.isNotEmpty) {
+                                if (file2!=null) {
                                  
  if (kIsWeb) {
                                     request.files.add(http.MultipartFile.fromBytes(
