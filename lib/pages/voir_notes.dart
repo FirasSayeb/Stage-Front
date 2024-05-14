@@ -61,7 +61,7 @@ class _VoirNotesState extends State<VoirNotes> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'Sélectionnez un  eleve:',
+                'Sélectionner un élevé:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
@@ -118,7 +118,7 @@ class _VoirNotesState extends State<VoirNotes> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
-                              'Notes pour lélève sélectionné :',
+                              "Notes pour l'élevé sélectionné :",
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),

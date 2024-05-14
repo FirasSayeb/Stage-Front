@@ -38,13 +38,49 @@ class _SignupState extends State<Parent> {
       print('Error: $e');  
       throw Exception('Échec du chargement des actualités');
     }
-  }   
+  } 
+  late Future<String> name;
+
+  Future<String> getName() async {
+    try {
+      final res = await get(Uri.parse("https://firas.alwaysdata.net/api/getName/${widget.email}"));
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body)['name'];
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Échec du chargement nom');
+    }
+    return ''; 
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    name = getName();
+  }  
   @override
   Widget build(BuildContext context) { 
     return MaterialApp( 
       debugShowCheckedModeBanner: false,
      home:Scaffold(
-      appBar: AppBar(title:  Text("Bienvenu ${widget.email} "),centerTitle: true,elevation: 0, backgroundColor: Color.fromARGB(255, 4, 166, 235),), 
+      appBar:  AppBar(
+          title: FutureBuilder<String>(
+            future: name,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Text('Chargement...');
+              } else if (snapshot.hasError) {
+                return Text('Erreur');
+              } else {
+                return Text('Bienvenu ${snapshot.data}');
+              }
+            },
+          ),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Color.fromARGB(255, 4, 166, 235),
+        ), 
       body:Column(
           children: [
             TextField(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:app/pages/gerer_classes.dart';
+import 'package:app/pages/voir_messages.dart';
 import 'package:app/pages/voir_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -111,7 +112,7 @@ class _GererClassesState extends State<GererEleves> {
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Text(
-                  'Select classe:',
+                  'Sélectionner une classe:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -253,19 +254,19 @@ class _GererClassesState extends State<GererEleves> {
                                                 "Numero: ${snapshot.data![index]['num']}",
                                               ),
                                               Text(
-                                                "Name: ${snapshot.data![index]['name']}",
+                                                "Nom: ${snapshot.data![index]['name']}",
                                               ),
                                               Text(
-                                                "LastName: ${snapshot.data![index]['lastname']}",
+                                                "prénom: ${snapshot.data![index]['lastname']}",
                                               ),
                                               Text(
-                                                "ClassName: ${snapshot.data![index]['class']['name']}",
+                                                "Classe: ${snapshot.data![index]['class']['name']}",
                                               ),
                                               Text(
-                                                "Date of birth: ${snapshot.data![index]['date_of_birth']}",
+                                                "Date de naissance: ${snapshot.data![index]['date_of_birth']}",
                                               ),
                                               Text(
-  "Tuteurs: ${
+  "Parents: ${
     snapshot.data![index] != null && 
     snapshot.data![index]['parents'] != null && 
     snapshot.data![index]['parents'].isNotEmpty 
@@ -303,87 +304,76 @@ class _GererClassesState extends State<GererEleves> {
             ],
           ),
         ),
-        drawer: Drawer(
-          child: Container(
+        drawer:Drawer(
+          child: Container( 
             color: Colors.white,
             child: ListView(
-              children: [
-                const Padding(padding: EdgeInsets.only(top: 30)),
-                ListTile(
-                  title: Text(" ${widget.email}"),
-                  leading: Icon(Icons.person),
-                  onTap: () {
+              children: [const Padding(padding: EdgeInsets.only(top: 30)),ListTile( 
+                  title:  Text(" ${widget.email}"),
+                  leading: const Icon(Icons.person),
+                  onTap: () { 
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Profil(widget.email)));
                   },
                 ),
+                
                 ListTile(
-                  title: Text("Home"),
-                  leading: Icon(Icons.home),
+                  title: const Text("Home"), 
+                  leading: const Icon(Icons.home),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: Text("Enseignants"),
-                  leading: Icon(Icons.school),
+                  title: const Text("Enseignants"),
+                  leading: const Icon(Icons.school),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEmploi(widget.email)));
                   },
-                ),
+                ),ListTile(
+                title: const Text("Services"),
+                leading: const Icon(Icons.miscellaneous_services),
+                onTap: () { 
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
+                },
+              ),ListTile(
+                title: const Text("événements"),
+                leading: const Icon(Icons.event),
+                onTap: () { 
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => GererEvents(widget.email)));
+                },
+              ),
                 ListTile(
-                  title: Text("Services"),
-                  leading: Icon(Icons.miscellaneous_services),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
-                  },
-                ),
-                ListTile(
-                  title: Text("événements"),
-                  leading: Icon(Icons.event),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => GererEvents(widget.email)));
-                  },
-                ),
-                ListTile(
-                  title: Text("Parents"),
-                  leading: Icon(Icons.verified_user),
+                  title: const Text("Parents"),
+                  leading: const Icon(Icons.verified_user), 
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)));
                   },
-                ),
-                ListTile(
-                  title: Text("Notes"),
-                  leading: Icon(Icons.grade),
+                ), ListTile(
+                  title: const Text("Notes"), 
+                  leading: const Icon(Icons.grade),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterDel(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: Text("Classes"),
-                  leading: Icon(Icons.class_),
+                  title: const Text("Classes"), 
+                  leading: const Icon(Icons.class_),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererClasses(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: Text("élèves"),
-                  leading: Icon(Icons.smart_toy_rounded),
+                  title: const Text("élevés"), 
+                  leading: const Icon(Icons.smart_toy_rounded),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));
                   },
-                ),
-                ListTile(
-                  title: Text("Envoyer Message"),
-                  leading: Icon(Icons.notification_add),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterNotification(widget.email)));
-                  },
-                ),ListTile(
-                title: Text("Consulter Messages"),
+                ),ListTile( 
+                title: Text("Messages"),
                 leading: Icon(Icons.notification_add),
                 onTap: () { Navigator.push(
       context,   
-      MaterialPageRoute(builder: (context) => VoirNotifications(widget.email)));},
+      MaterialPageRoute(builder: (context) => VoirMessages(widget.email)));},
               ),
                 ListTile(
                   title: const Text("Absences"), 
@@ -393,26 +383,26 @@ class _GererClassesState extends State<GererEleves> {
                   },
                 ),
                 ListTile(
-                  title: Text("Valider Services"),
-                  leading: Icon(Icons.check),
+                  title: const Text("Valider Services"), 
+                  leading: const Icon(Icons.check),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderService(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: Text("Valider événements"),
-                  leading: Icon(Icons.check),
+                  title: const Text("Valider événements"), 
+                  leading: const Icon(Icons.check),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderEvent(widget.email)));
                   },
                 ),
-                ListTile(
-                  title: Text("Deconnexion"),
-                  leading: Icon(Icons.exit_to_app),
+                ListTile(  
+                  title: const Text("Deconnexion"),
+                  leading: const Icon(Icons.exit_to_app),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
                   },
-                ),
+                ), 
               ],
             ),
           ),

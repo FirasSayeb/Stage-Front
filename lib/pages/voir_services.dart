@@ -80,7 +80,7 @@ class _VoirServicesState extends State<VoirServices> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'Sélectionnez un eleve:',
+                'Sélectionner un élevé:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),

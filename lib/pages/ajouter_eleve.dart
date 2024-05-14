@@ -256,7 +256,7 @@ class _AjouterEleveState extends State<AjouterEleve> {
                                       value: selectedParents.isNotEmpty
                                           ? selectedParents[0]
                                           : null,
-                                      hint: Text("sélectionner tuteurs"),
+                                      hint: Text("sélectionner parents"),
                                       items: snapshot.data!.map((e) {
                                         return DropdownMenuItem(
                                           child: Text(
@@ -285,7 +285,7 @@ class _AjouterEleveState extends State<AjouterEleve> {
                                 },
                               ),
                               Text(
-  'Selected Tuteurs:',
+  'Parents sélectionnés :',
   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
 ),
 SizedBox(height: 10),

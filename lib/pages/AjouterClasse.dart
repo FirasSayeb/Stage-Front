@@ -113,7 +113,7 @@ class _HomeState extends State<AjouterClasse> {
                           ),
                           icon: Icon(Icons.insert_drive_file_sharp),
                           label: Text(
-                            'Choisissez Emploi',
+                            'Choisir Emploi',
                             style: TextStyle(fontSize: 25),
                           )
                         ),
@@ -127,7 +127,7 @@ class _HomeState extends State<AjouterClasse> {
                           ),
                           icon: Icon(Icons.insert_drive_file_sharp),
                           label: Text(
-                            'Choisir le calendrier des examens',
+                            'Choisir  calendrier des examens',
                             style: TextStyle(fontSize: 12),
                           )
                         ),

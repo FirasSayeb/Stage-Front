@@ -60,7 +60,7 @@ class _VoirExcercicesState extends State<VoirExcercices> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'Sélectionnez un  eleve:',
+                'Sélectionner un élevé:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
@@ -117,7 +117,7 @@ class _VoirExcercicesState extends State<VoirExcercices> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
-                              'Exercices pour  élève sélectionné :',
+                              "Exercices pour l'élevé sélectionné :",
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),

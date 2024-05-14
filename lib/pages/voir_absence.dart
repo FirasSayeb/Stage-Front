@@ -51,7 +51,7 @@ class _VoirAbsenceState extends State<VoirAbsence> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('consulter  absences'),
+        title: Text('consulter absences'),
          backgroundColor: Color.fromARGB(255, 4, 166, 235), 
       ),
       body: SingleChildScrollView(
@@ -61,7 +61,7 @@ class _VoirAbsenceState extends State<VoirAbsence> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'Sélectionnez un étudiant:',
+                'Sélectionner un élevé:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
@@ -118,7 +118,7 @@ class _VoirAbsenceState extends State<VoirAbsence> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
-                              'Absences pour l eleve sélectionnée:',
+                              "Absences pour l'élevé sélectionné :",
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
