@@ -9,8 +9,8 @@ import 'package:app/pages/voir_absence.dart';
 import 'package:app/pages/voir_emploi.dart';
 import 'package:app/pages/voir_event.dart';
 import 'package:app/pages/voir_exercices.dart';
+import 'package:app/pages/voir_messages_parent.dart';
 import 'package:app/pages/voir_notes.dart';
-import 'package:app/pages/voir_notifications.dart';
 import 'package:app/pages/voir_services.dart';
 
 import 'package:flutter/material.dart';
@@ -157,60 +157,54 @@ class _SignupState extends State<Parent> {
       MaterialPageRoute(builder: (context) => Parent(widget.email)));},
               ),
               ListTile(
-                title: Text("Consulter Notes"),
+                title: Text("Notes"),
                 leading: Icon(Icons.grade),
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirNotes(widget.email)));},
               ),
                ListTile(
-                title: Text("Consulter Absences"),
+                title: Text("Absences"),
                 leading: Icon(Icons.do_not_disturb_alt_sharp),
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) =>VoirAbsence(widget.email)));},
               ),
               ListTile(
-                title: Text("Consulter Exercices"),
+                title: Text("Exercices"),
                 leading: Icon(Icons.task),
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirExcercices(widget.email)));},
               ), ListTile(
-                title: Text("Consulter Emplois"),
+                title: Text("Emplois"),
                 leading: Icon(Icons.calendar_month),
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirEmploi(widget.email)));},
               ),
                ListTile(
-                title: Text("Consulter Messages"),
+                title: Text("Messages"),
                 leading: Icon(Icons.notification_add),
                 onTap: () { Navigator.push(
       context,   
-      MaterialPageRoute(builder: (context) => VoirNotifications(widget.email)));},
+      MaterialPageRoute(builder: (context) => VoirMessagesP(widget.email)));},
               ),
                ListTile(
-                title: Text("Consulter Services"),
+                title: Text("Services"),
                 leading: Icon(Icons.miscellaneous_services),
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirServices(widget.email)));},
               ),
               ListTile(
-                title: Text("Consulter Events"),
+                title: Text("Événements"),
                 leading: Icon(Icons.event),
                 onTap: () { Navigator.push(
       context,   
       MaterialPageRoute(builder: (context) => VoirEvent(widget.email)));},
               ),
-              ListTile(
-                  title: const Text("Envoyer Message"), 
-                  leading: const Icon(Icons.notification_add),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterMessage(widget.email)));
-                  },
-                ),
+             
                ListTile(
                 title: Text("Deconnexion"),
                 leading: Icon(Icons.exit_to_app),

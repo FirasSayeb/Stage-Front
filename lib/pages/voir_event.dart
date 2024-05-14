@@ -161,17 +161,7 @@ print(isSubscribed);
                         title: Text(eventName),
                         subtitle: Text("${event["price"]} ${event["date"]}"),
                         trailing: isSubscribed
-                        ? ElevatedButton(
-                            onPressed: () async {
-                              /*Response response = await delete(
-                                Uri.parse("https://firas.alwaysdata.net/api/delEvt/$_selectedEleveId"),
-                              ); 
-                              if (response.statusCode == 200) {
-                                getServi(_selectedEleveId!);
-                              }*/
-                            },
-                            child: Text('Ajouter'),
-                          )
+                        ? Text('Déjà ajouté')
                         : ElevatedButton(
                             onPressed: () async {
                               Response response = await post(

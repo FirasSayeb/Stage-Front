@@ -42,7 +42,7 @@ class _ListElevesState extends State<ListEleves> {
                     ),
                   );
                 },
-                child: Text('Ajouter Exercice'),
+                child: Text('Exercices'),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.indigo[300],
                   padding: EdgeInsets.symmetric(vertical: 16),
@@ -70,7 +70,7 @@ class _ListElevesState extends State<ListEleves> {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Center(
                 child: Text(
-                  "Sélectionnez l'étudiant pour envoyer une notification : ",
+                  "Sélectionnez l'éleve pour envoyer une notification : ",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), 
                 ),
               ),

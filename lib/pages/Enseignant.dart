@@ -43,6 +43,9 @@ class _SigninState extends State<Enseignant> {
       appBar: AppBar(title:  Text("Bienvenu ${widget.email} "),centerTitle: true,elevation: 0, backgroundColor: Color.fromARGB(255, 4, 166, 235),), 
       body: SingleChildScrollView(child: Column(
         children: [ Padding(padding: EdgeInsets.all(5)),
+        Text("Choisir classe",style: TextStyle(
+          fontSize: 20
+        ),),
           FutureBuilder<List<Map<String, dynamic>>>(
                 future: getClasses(),
                 builder: (context, snapshot) {
@@ -155,7 +158,7 @@ String fileName2WithExtension = pathPart.last;
       MaterialPageRoute(builder: (context) => ListActualites(widget.email)));},
               ), 
                ListTile(
-                title: Text("Consulter Messages"),
+                title: Text("Messages"),
                 leading: Icon(Icons.notification_add),
                 onTap: () { Navigator.push(
       context,   
