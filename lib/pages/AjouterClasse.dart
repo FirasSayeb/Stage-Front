@@ -39,9 +39,9 @@ class _HomeState extends State<AjouterClasse> {
     if (result != null) {
       file2 = result.files.first;
       if (kIsWeb) {
-        secondFilePath = base64Encode(file!.bytes!); 
+        secondFilePath = base64Encode(file2!.bytes!); 
       } else {
-        secondFilePath = file!.path;
+        secondFilePath = file2!.path;
       }
     }
   }

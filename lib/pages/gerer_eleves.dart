@@ -82,78 +82,72 @@ class _GererClassesState extends State<GererEleves> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("Eleves "),
+          title: const Text("Eleves"),
           centerTitle: true,
           elevation: 0,
-           backgroundColor: Color.fromARGB(255, 4, 166, 235),
+          backgroundColor: Color.fromARGB(255, 4, 166, 235),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              TextField(
-                onChanged: (value) {
-                  setState(() {
-                    searchString = value.toLowerCase();
-                  });
-                },
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  hintText: 'Rechercher...',
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () {
-                      setState(() {
-                        searchString = '';
-                      });
+        body: Column(
+          children: [
+            TextField(
+              onChanged: (value) {
+                setState(() {
+                  searchString = value.toLowerCase();
+                });
+              },
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                hintText: 'Rechercher...',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() {
+                      searchString = '';
+                    });
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                'Sélectionner une classe:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            FutureBuilder<List<Map<String, dynamic>>>(
+              future: getClasses(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else {
+                  List<Map<String, dynamic>> classes = snapshot.data!;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: classes.length,
+                    itemBuilder: (context, index) {
+                      final classItem = classes[index];
+                      final className = classItem['name'] ?? 'Unknown';
+                      return RadioListTile<int>(
+                        title: Text(className),
+                        value: classItem['id'],
+                        groupValue: _selectedclass,
+                        onChanged: (int? value) {
+                          setState(() {
+                            _selectedclass = value;
+                          });
+                        },
+                      );
                     },
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Text(
-                  'Sélectionner une classe:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-              FutureBuilder<List<Map<String, dynamic>>>(
-                future: getClasses(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else {
-                    List<Map<String, dynamic>> eleves = snapshot.data!;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: eleves.length,
-                          itemBuilder: (context, index) {
-                            final eleve = eleves[index];
-                            final eleveName = eleve['name'] ?? 'Unknown';
-                            return RadioListTile<int>(
-                              title: Text(eleveName),
-                              value: eleve['id'],
-                              groupValue: _selectedclass,
-                              onChanged: (int? value) {
-                                setState(() {
-                                  _selectedclass = value;
-                                });
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  }
-                },
-              ),
-              if (_selectedclass != null) ...[
-                Padding(padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.01)),
-                FutureBuilder<List<Map<String, dynamic>>>(
+                  );
+                }
+              },
+            ),
+            if (_selectedclass != null)
+              Expanded(
+                child: FutureBuilder<List<Map<String, dynamic>>>(
                   future: getEleves(_selectedclass!),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -161,163 +155,135 @@ class _GererClassesState extends State<GererEleves> {
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else {
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.8,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (context, index) {
-                                  String? filePath = snapshot.data![index]['profil'];
-                                  String fileName = filePath != null ? filePath.split('/').last : '';
-                                  if (searchString.isEmpty ||
-                                      (snapshot.data![index]['name'].toLowerCase().contains(searchString) ||
-                                          snapshot.data![index]['num'].toLowerCase().contains(searchString) ||
-                                          snapshot.data![index]['lastname'].toLowerCase().contains(searchString) ||
-                                          snapshot.data![index]['class_name'].toLowerCase().contains(searchString))) {
-                                    return Card(
-                                      elevation: 4,
-                                      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                                      child: GestureDetector(
-                                        child: ListTile(
-                                          title: Column(
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  PopupMenuButton<String>(
-                                                    itemBuilder: (BuildContext context) => [
-                                                      PopupMenuItem<String>(
-                                                        value: 'modify',
-                                                        child: Text('Modifier'),
-                                                      ),
-                                                      PopupMenuItem<String>(
-                                                        value: 'delete',
-                                                        child: Text('Supprimer', style: TextStyle(color: Colors.red)),
-                                                      ),
-                                                    ],
-                                                    onSelected: (String value) async {
-                                                      if (value == 'modify') {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) => ModifierEleve(widget.email, snapshot.data![index]['id']),
-                                                          ),
-                                                        );
-                                                      } else if (value == 'delete') {
-                                                        bool confirmDelete = await showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext context) {
-                                                            return AlertDialog(
-                                                              title: Text("Confirmation"),
-                                                              content: Text("Etes-vous sûr que vous voulez supprimer?"),
-                                                              actions: <Widget>[
-                                                                TextButton(
-                                                                  onPressed: () {
-                                                                    Navigator.of(context).pop(false);
-                                                                  },
-                                                                  child: Text("Non"),
-                                                                ),
-                                                                TextButton(
-                                                                  onPressed: () {
-                                                                    Navigator.of(context).pop(true);
-                                                                  },
-                                                                  child: Text("Oui"),
-                                                                ),
-                                                              ],
-                                                            );
-                                                          },
-                                                        );
-
-                                                        if (confirmDelete == true) {
-                                                          deleteEleve(snapshot.data![index]['name']);
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(builder: (context) => GererEleves(widget.email)),
-                                                          ).then((_) => setState(() {}));
-                                                        }
-                                                      }
-                                                    },
-                                                    icon: Icon(Icons.more_vert),
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          String? filePath = snapshot.data![index]['profil'];
+                          String fileName = filePath != null ? filePath.split('/').last : '';
+                          if (searchString.isEmpty ||
+                              (snapshot.data![index]['name'].toLowerCase().contains(searchString) ||
+                                  snapshot.data![index]['num'].toLowerCase().contains(searchString) ||
+                                  snapshot.data![index]['lastname'].toLowerCase().contains(searchString) ||
+                                  snapshot.data![index]['class_name'].toLowerCase().contains(searchString))) {
+                            return Card(
+                              elevation: 4,
+                              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                              child: GestureDetector(
+                                child: ListTile(
+                                  title: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          PopupMenuButton<String>(
+                                            itemBuilder: (BuildContext context) => [
+                                              PopupMenuItem<String>(
+                                                value: 'modify',
+                                                child: Text('Modifier'),
+                                              ),
+                                              PopupMenuItem<String>(
+                                                value: 'delete',
+                                                child: Text('Supprimer', style: TextStyle(color: Colors.red)),
+                                              ),
+                                            ],
+                                            onSelected: (String value) async {
+                                              if (value == 'modify') {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => ModifierEleve(widget.email, snapshot.data![index]['id']),
                                                   ),
-                                                ],
-                                              ),
-                                              CircleAvatar(
-                                                backgroundImage: NetworkImage(
-                                                  "https://firas.alwaysdata.net/storage/$fileName",
-                                                ),
-                                                radius: 30,
-                                              ),
-                                              Text(
-                                                "Numero: ${snapshot.data![index]['num']}",
-                                              ),
-                                              Text(
-                                                "Nom: ${snapshot.data![index]['name']}",
-                                              ),
-                                              Text(
-                                                "prénom: ${snapshot.data![index]['lastname']}",
-                                              ),
-                                              Text(
-                                                "Classe: ${snapshot.data![index]['class']['name']}",
-                                              ),
-                                              Text(
-                                                "Date de naissance: ${snapshot.data![index]['date_of_birth']}",
-                                              ),
-                                              Text(
-  "Parents: ${
-    snapshot.data![index] != null && 
-    snapshot.data![index]['parents'] != null && 
-    snapshot.data![index]['parents'].isNotEmpty 
-      ? snapshot.data![index]['parents']
-          .map((parent) => parent['name'])
-          .join(', ') 
-      : ''
-  }",
-),
+                                                );
+                                              } else if (value == 'delete') {
+                                                bool confirmDelete = await showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: Text("Confirmation"),
+                                                      content: Text("Etes-vous sûr que vous voulez supprimer?"),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop(false);
+                                                          },
+                                                          child: Text("Non"),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop(true);
+                                                          },
+                                                          child: Text("Oui"),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
 
-                                            ],
+                                                if (confirmDelete == true) {
+                                                  deleteEleve(snapshot.data![index]['name']);
+                                                  setState(() {});
+                                                }
+                                              }
+                                            },
+                                            icon: Icon(Icons.more_vert),
                                           ),
-                                          subtitle: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              // Subtitle content
-                                            ],
-                                          ),
-                                        ),
+                                        ],
                                       ),
-                                    );
-                                  } else {
-                                    return Container();
-                                  }
-                                },
+                                      CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                          "https://firas.alwaysdata.net/storage/$fileName",
+                                        ),
+                                        radius: 30,
+                                      ),
+                                      Text(
+                                        "Numero: ${snapshot.data![index]['num']}",
+                                      ),
+                                      Text(
+                                        "Nom: ${snapshot.data![index]['name']}",
+                                      ),
+                                      Text(
+                                        "prénom: ${snapshot.data![index]['lastname']}",
+                                      ),
+                                      Text(
+                                        "Classe: ${snapshot.data![index]['class']['name']}",
+                                      ),
+                                      Text(
+                                        "Date de naissance: ${snapshot.data![index]['date_of_birth']}",
+                                      ),
+                                      Text(
+                                        "Parents: ${snapshot.data![index]['parents']?.map((parent) => parent['name'])?.join(', ') ?? ''}",
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ],
-                          ),
-                        ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
                       );
                     }
                   },
                 ),
-              ]
-            ],
-          ),
+              ),
+          ],
         ),
-        drawer:Drawer(
-          child: Container( 
+        drawer: Drawer(
+          child: Container(
             color: Colors.white,
             child: ListView(
-              children: [const Padding(padding: EdgeInsets.only(top: 30)),ListTile( 
-                  title:  Text(" ${widget.email}"),
+              children: [
+                const Padding(padding: EdgeInsets.only(top: 30)),
+                ListTile(
+                  title: Text(" ${widget.email}"),
                   leading: const Icon(Icons.person),
-                  onTap: () { 
+                  onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Profil(widget.email)));
                   },
                 ),
-                
                 ListTile(
-                  title: const Text("Home"), 
+                  title: const Text("Home"),
                   leading: const Icon(Icons.home),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Admin(widget.email)));
@@ -329,80 +295,84 @@ class _GererClassesState extends State<GererEleves> {
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEmploi(widget.email)));
                   },
-                ),ListTile(
-                title: const Text("Services"),
-                leading: const Icon(Icons.miscellaneous_services),
-                onTap: () { 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
-                },
-              ),ListTile(
-                title: const Text("événements"),
-                leading: const Icon(Icons.event),
-                onTap: () { 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => GererEvents(widget.email)));
-                },
-              ),
+                ),
+                ListTile(
+                  title: const Text("Services"),
+                  leading: const Icon(Icons.miscellaneous_services),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => GererServices(widget.email)));
+                  },
+                ),
+                ListTile(
+                  title: const Text("événements"),
+                  leading: const Icon(Icons.event),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => GererEvents(widget.email)));
+                  },
+                ),
                 ListTile(
                   title: const Text("Parents"),
-                  leading: const Icon(Icons.verified_user), 
+                  leading: const Icon(Icons.verified_user),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererUtilisateurs(widget.email)));
                   },
-                ), ListTile(
-                  title: const Text("Notes"), 
+                ),
+                ListTile(
+                  title: const Text("Notes"),
                   leading: const Icon(Icons.grade),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AjouterDel(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: const Text("Classes"), 
+                  title: const Text("Classes"),
                   leading: const Icon(Icons.class_),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererClasses(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: const Text("élevés"), 
+                  title: const Text("élevés"),
                   leading: const Icon(Icons.smart_toy_rounded),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => GererEleves(widget.email)));
                   },
-                ),ListTile( 
-                title: Text("Messages"),
-                leading: Icon(Icons.notification_add),
-                onTap: () { Navigator.push(
-      context,   
-      MaterialPageRoute(builder: (context) => VoirMessages(widget.email)));},
-              ),
+                ),
                 ListTile(
-                  title: const Text("Absences"), 
+                  title: Text("Messages"),
+                  leading: Icon(Icons.notification_add),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => VoirMessages(widget.email)));
+                  },
+                ),
+                ListTile(
+                  title: const Text("Absences"),
                   leading: const Icon(Icons.edit_calendar),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAll(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: const Text("Valider Services"), 
+                  title: const Text("Valider Services"),
                   leading: const Icon(Icons.check),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderService(widget.email)));
                   },
                 ),
                 ListTile(
-                  title: const Text("Valider événements"), 
+                  title: const Text("Valider événements"),
                   leading: const Icon(Icons.check),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderEvent(widget.email)));
                   },
                 ),
-                ListTile(  
+                ListTile(
                   title: const Text("Deconnexion"),
                   leading: const Icon(Icons.exit_to_app),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
                   },
-                ), 
+                ),
               ],
             ),
           ),
