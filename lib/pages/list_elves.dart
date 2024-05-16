@@ -70,7 +70,7 @@ class _ListElevesState extends State<ListEleves> {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Center(
                 child: Text(
-                  "Sélectionnez l'éleve pour envoyer une notification : ",
+                  "Sélectionner l'éleve pour envoyer un message : ",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), 
                 ),
               ),

@@ -124,7 +124,7 @@ class _SignupState extends State<Parent> {
                           String fileName = filePath != null ? filePath.split('/').last : '';
                           return Card(
                             elevation: 4,
-                            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                           
                             child: ListTile(
                               contentPadding: EdgeInsets.all(16.0),
                               title: Row(
@@ -133,7 +133,7 @@ class _SignupState extends State<Parent> {
                                     " ${snapshot.data![index].body}",
                                     style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                   ),
-                                  Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.45)),
+                                  
                                     
                                 ],
                               ),

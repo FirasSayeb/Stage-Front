@@ -105,7 +105,7 @@ class _GererEventsState extends State<GererEvents> {
                               snapshot.data![index]['date'].toLowerCase().contains(searchString)) {
                             return Card(
                               elevation: 4,
-                              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                             
                               child: ListTile(
   contentPadding: EdgeInsets.all(16.0),
   leading: SizedBox(
@@ -187,7 +187,7 @@ class _GererEventsState extends State<GererEvents> {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       SizedBox(height: 8),
-      Row(
+      Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(

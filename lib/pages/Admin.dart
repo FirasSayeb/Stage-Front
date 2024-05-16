@@ -144,7 +144,7 @@ class _AdminState extends State<Admin> {
                                     " ${snapshot.data![index].body}",
                                     style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                   ),
-                                  Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.33)),
+                                  //Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.2)),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [

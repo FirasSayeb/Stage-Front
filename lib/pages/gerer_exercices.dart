@@ -97,7 +97,7 @@ class _GererExercicesState extends State<GererExercices> {
                         itemBuilder: (context, index) {
                           return Card(
                             elevation: 4,
-                            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                           
                             child: ListTile(
                                contentPadding: EdgeInsets.all(16.0),
   leading: SizedBox(
