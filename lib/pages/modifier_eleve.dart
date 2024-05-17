@@ -255,7 +255,7 @@ late Future<List<Map<String, dynamic>>> _classes;
                                 },
                               ),
                               Text(
-  'Selected Tuteurs:',
+  'Parents sélectionnés :',
   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
 ),
 SizedBox(height: 10),

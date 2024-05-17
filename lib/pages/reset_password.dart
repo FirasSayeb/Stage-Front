@@ -120,7 +120,7 @@ class _ForgotPasswordState extends State<ResetPassword> {
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                              border: OutlineInputBorder(),
-                              labelText:"Confirme Password:",
+                              labelText:"Confirme mot de passe:",
                             suffixIcon: IconButton(
                                 icon: Icon(Icons.remove_red_eye),
                                 onPressed: () {

@@ -283,7 +283,7 @@ class _HomeState extends State<AjouterEnseignant> {
                             ),
                             
                           ),Text(
-  'Selected Classes:',
+  'Classes sélectionnés :',
   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
 ),
 SizedBox(height: 10),
