@@ -178,7 +178,12 @@ class _AjouterEleveState extends State<AjouterEleve> {
                                       TextEditingController(text: date),
                                   onSaved: (newValue) {
                                     date = newValue!;
-                                  },
+                                  }, validator: (value) {
+                                  if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } 
+                              return null;
+                                },
                                   decoration: InputDecoration(
                                     labelText: 'date de naissance',
                                     filled: true,

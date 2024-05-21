@@ -36,6 +36,12 @@ class _NotifierParentState extends State<NotifierParent> {
         Container(
           padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width*0.1,vertical:MediaQuery.of(context).size.height*0.02 ),
           child: TextFormField( 
+             validator: (value) {
+                                  if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } 
+                              return null;
+                                },
             onChanged: (value) { 
               message=value; 
             },onSaved: (newValue) {

@@ -48,7 +48,12 @@ class _AjouterMessageState extends State<AjouterMessage> {
               message=value;
             },onSaved: (newValue) {
               message=newValue!;
-            },
+            }, validator: (value) {
+                                  if (value!.isEmpty || value.length == 0) {
+                                return "champs obligatoire";
+                              } 
+                              return null;
+                                },
             decoration: InputDecoration( 
               border: OutlineInputBorder(),
                               labelText: "Message :", 
@@ -198,7 +203,7 @@ Container(
     try {
       final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getUserss/${widget.email}"));
       if (response.statusCode == 200) {
-        // Parse the response JSON object into a list of maps
+       
         final responseData = jsonDecode(response.body)['list'];
         List<Map<String,dynamic>> streetsList =  List<Map<String,dynamic>>.from(responseData);
         //List<Map<String, dynamic>> users = responseData.values.toList().cast<Map<String, dynamic>>();
