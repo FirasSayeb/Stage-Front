@@ -21,6 +21,7 @@ import 'package:app/pages/voir_messages.dart';
 import 'package:app/pages/voir_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Admin extends StatefulWidget {
   final String email;
@@ -34,6 +35,12 @@ class Admin extends StatefulWidget {
 
 class _AdminState extends State<Admin> {
   late String searchString = '';
+  Future<void> _clearUserSession() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('email');
+  await prefs.remove('role');
+}
+
   Future<List<Actualite>> getActualites() async {
     try {
       final response =
@@ -340,13 +347,15 @@ class _AdminState extends State<Admin> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ValiderEvent(widget.email)));
                   },
                 ),
-                ListTile(  
-                  title: const Text("Deconnexion"),
-                  leading: const Icon(Icons.exit_to_app),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-                  },
-                ), 
+               ListTile(
+  title: const Text("Deconnexion"),
+  leading: const Icon(Icons.exit_to_app),
+  onTap: () async {
+    await _clearUserSession();
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
+  },
+)
+ 
               ],
             ),
           ),

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
 import 'package:open_file/open_file.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class Enseignant extends StatefulWidget { 
   final String email;
   Enseignant(this.email);
@@ -21,6 +22,11 @@ class Enseignant extends StatefulWidget {
 
 class _SigninState extends State<Enseignant> { 
 
+Future<void> _clearUserSession() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('email');
+  await prefs.remove('role');
+}
   Future<List<Map<String, dynamic>>> getClasses() async { 
   try {
     final response = await get(Uri.parse("https://firas.alwaysdata.net/api/getClasses"));
@@ -200,13 +206,14 @@ String fileName2WithExtension = pathPart.last;
       context,   
       MaterialPageRoute(builder: (context) => VoirNotifications(widget.email)));},
               ), 
-               ListTile(
-                title: Text("Deconnexion"),
-                leading: Icon(Icons.exit_to_app),
-                onTap: () { Navigator.push(
-      context,   
-      MaterialPageRoute(builder: (context) => Home()));},
-              )
+              ListTile(
+  title: const Text("Deconnexion"),
+  leading: const Icon(Icons.exit_to_app),
+  onTap: () async {
+    await _clearUserSession();
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
+  },
+)
             ],
           ),
         ),

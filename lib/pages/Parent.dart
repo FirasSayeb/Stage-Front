@@ -15,6 +15,7 @@ import 'package:app/pages/voir_services.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Parent extends StatefulWidget {
   final String email;
@@ -24,6 +25,13 @@ class Parent extends StatefulWidget {
 } 
 
 class _SignupState extends State<Parent> { 
+
+  Future<void> _clearUserSession() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('email');
+  await prefs.remove('role');
+}
+
   late String searchString='';
    Future<List<Actualite>> getActualites() async {
     try { 
@@ -241,13 +249,14 @@ class _SignupState extends State<Parent> {
       MaterialPageRoute(builder: (context) => VoirEvent(widget.email)));},
               ),
              
-               ListTile(
-                title: Text("Deconnexion"),
-                leading: Icon(Icons.exit_to_app),
-                onTap: () { Navigator.push(
-      context,   
-      MaterialPageRoute(builder: (context) => Home()));},
-              )
+              ListTile(
+  title: const Text("Deconnexion"),
+  leading: const Icon(Icons.exit_to_app),
+  onTap: () async {
+    await _clearUserSession();
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
+  },
+)
             ],
           ),
         ),
