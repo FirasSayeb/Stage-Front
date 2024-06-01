@@ -14,7 +14,7 @@ void main() async {
  // await NotificationService().initNotification();    
   runApp(const MaterialApp(   
     debugShowCheckedModeBanner: false,    
-    home: Home(),      
+    home: Home(),        
   )); 
 }
    
