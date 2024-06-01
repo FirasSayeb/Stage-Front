@@ -50,7 +50,7 @@ class _ModServiceState extends State<ModService> {
                     final classe = snapshot.data as Map<String, dynamic>?;
 
                     if (classe == null) {
-                      return Center(child: Text('Classe introuvable'));
+                      return Center(child: Text('Service introuvable'));
                     }
 
                     return Column(
