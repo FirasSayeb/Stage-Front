@@ -40,7 +40,7 @@ class _MarquerAbsenceState extends State<MarquerAbsence> {
     
     
     for (var user in users) {
-      if (!val) {
+      if (val==false) {  
        
         tokens.add(user['token'].toString());
       }
