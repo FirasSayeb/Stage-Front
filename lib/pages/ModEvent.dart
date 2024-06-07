@@ -17,14 +17,14 @@ class _ModServiceState extends State<ModEvent> {
   final fkey = GlobalKey<FormState>();
   late String name = '';
   double? price;
-  late String description;
+  late String description="";   
   late String date;
   late String select = '';
   late Future<Map<String, dynamic>> _eventFuture;
 
   @override
   void initState() {
-    super.initState();
+    super.initState(); 
     _eventFuture = getService();
   }
 
@@ -154,9 +154,9 @@ class _ModServiceState extends State<ModEvent> {
                               final response = await put(
                                 Uri.parse("https://firas.alwaysdata.net/api/updateEvent/${widget.name}"),
                                 body: <String, dynamic>{
-                                  'name': name,
-                                  'description':description,
-                                  'price': price.toString(),
+                                  'name': name.isNotEmpty ? name : classe['name'],
+                                  'price': price != null ? price.toString() : classe['price'].toString(),
+                                  'description': description.isNotEmpty ? description : classe['description'],
                                   'date': select,
                                 },
                               );
@@ -165,6 +165,8 @@ class _ModServiceState extends State<ModEvent> {
                 context,
                 MaterialPageRoute(builder: (context) => GererEvents(widget.email)),
               ).then((_) => setState(() {}));
+                              }else{
+                                print(response.body);
                               }
                             }
                           },
